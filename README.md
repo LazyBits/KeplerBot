@@ -1,3 +1,3 @@
 KeplerBot
 =========
-An IRC bot!
+A Twitch bot!
