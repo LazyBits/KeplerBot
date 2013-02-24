@@ -1,2 +1,3 @@
 KeplerBot
 =========
+An IRC bot!
