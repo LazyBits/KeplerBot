@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- config.xml --><config>
+    <twitch_login>/</twitch_login>
+    <twitch_pass>/</twitch_pass>
+	<commandcooldown_sec>10</commandcooldown_sec>
+	<commandcooldown_enabled>true</commandcooldown_enabled>
+	<close_message>Bye :z</close_message>
+	<join_message>keplerbot initialized</join_message>
+	<join_own_channel>true</join_own_channel>
+	<cap_timeout>5</cap_timeout>
+	<url_timeout>5</url_timeout>
+	<blacklist_timeout>5</blacklist_timeout>
+	<message_deleted_timeout>300</message_deleted_timeout>
+	<urls_allowed>false</urls_allowed>
+	<caps_allowed>false</caps_allowed>
+	<blacklist_enabled>true</blacklist_enabled>
+	<whitelist_enabled>true</whitelist_enabled>
+	<timeout_interval>4</timeout_interval></config>
