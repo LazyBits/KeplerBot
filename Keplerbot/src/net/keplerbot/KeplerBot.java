@@ -1,8 +1,10 @@
 package net.keplerbot;
 
 import org.pircbotx.PircBotX;
+import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.Listener;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.MessageEvent;
 
 public class KeplerBot extends ListenerAdapter implements Listener
 {
@@ -30,5 +32,16 @@ public class KeplerBot extends ListenerAdapter implements Listener
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void onEvent( Event rawevent ) throws Exception {
+		super.onEvent(rawevent);
+		
+		//TODO General event handling
+	}
+	
+	@Override
+	public void onMessage( MessageEvent event ) throws Exception {
+		//TODO MessageEvent handling
 	}
 }
