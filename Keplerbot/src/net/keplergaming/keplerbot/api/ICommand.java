@@ -4,9 +4,9 @@ import net.keplergaming.keplerbot.KeplerBot;
 
 public interface ICommand 
 {
-	public abstract String getCommand();
+    public abstract String getCommand();
 	
-	public abstract String getCommandUsage();
+    public abstract String getCommandUsage();
 	
     public abstract boolean canUseCommand( String sender, String channel );
     
