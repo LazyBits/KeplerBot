@@ -12,9 +12,9 @@ public class KeplerBot extends ListenerAdapter implements Listener
 	{
 		PircBotX bot = new PircBotX();
 		
-		bot.setName( "keplerbot" ); //TODO Change to variable :p
+		bot.setName( "keplerbot" ); //TODO Change to config :p
 		bot.setVerbose( true );
-		bot.setLogin( "keplerbot" ); //TODO Find out what this is and if this is right
+		bot.setLogin( "keplerbot" );
 		try 
 		{
 			if( isPassNeeded )
@@ -34,14 +34,20 @@ public class KeplerBot extends ListenerAdapter implements Listener
 		}
 	}
 	
-	public void onEvent( Event rawevent ) throws Exception {
+	public void onEvent( Event rawevent ) throws Exception 
+	{
 		super.onEvent(rawevent);
 		
 		//TODO General event handling
 	}
 	
 	@Override
-	public void onMessage( MessageEvent event ) throws Exception {
+	public void onMessage( MessageEvent event ) throws Exception 
+	{
+		if( event.getMessage().startsWith( "!" ) )
+		{
+			//TODO Command handling
+		}
 		//TODO MessageEvent handling
 	}
 }
