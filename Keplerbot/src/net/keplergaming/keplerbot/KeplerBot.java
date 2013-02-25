@@ -1,4 +1,4 @@
-package net.keplerbot;
+package net.keplergaming.keplerbot;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.Event;
