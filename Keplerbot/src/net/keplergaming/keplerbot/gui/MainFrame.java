@@ -13,6 +13,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import net.keplergaming.keplerbot.logger.Logger;
+
 public class MainFrame {
 
 	private JFrame frmKeplerbot;
@@ -33,7 +35,7 @@ public class MainFrame {
 					MainFrame window = new MainFrame();
 					window.frmKeplerbot.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					Logger.error("Failed to load MainFrame", e);
 				}
 			}
 		});
