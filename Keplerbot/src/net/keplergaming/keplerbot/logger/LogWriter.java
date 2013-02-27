@@ -34,8 +34,10 @@ public class LogWriter implements ILogListener{
 		try {
 			fileoutwrite.write(Logger.logToString(message, logLevel));
 			fileoutwrite.newLine();
-			PrintWriter printWriter = new PrintWriter(fileoutwrite);
-			t.printStackTrace(printWriter);
+			if (t != null) {
+				PrintWriter printWriter = new PrintWriter(fileoutwrite);
+				t.printStackTrace(printWriter);
+			}
 			fileoutwrite.flush();
 		} catch (IOException e) {
 			Logger.error("Failed to save log message ", e);
