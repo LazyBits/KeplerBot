@@ -1,19 +1,28 @@
 package net.keplergaming.keplerbot.gui;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.UIManager;
-import javax.swing.JTabbedPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.SystemColor;
-import javax.swing.border.BevelBorder;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import net.keplergaming.keplerbot.logger.Logger;
+import net.keplergaming.keplerbot.utils.DesktopUtils;
 
 public class MainFrame {
 
@@ -21,7 +30,6 @@ public class MainFrame {
 	private JTextField txtNothingToSee;
 	private JTextField txtOrHere;
 	private JTextField txtYupNothingHere;
-	private JTextField txtAndNothingAgain;
 
 	/**
 	 * Launch the application.
@@ -58,6 +66,7 @@ public class MainFrame {
 		frmKeplerbot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		tabbedPane.setFocusable(false);
 		GroupLayout groupLayout = new GroupLayout(frmKeplerbot.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -156,27 +165,47 @@ public class MainFrame {
 		aboutPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		aboutPanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>About</body></html>", null, aboutPanel, null);
+		aboutPanel.setLayout(null);
 		
-		txtAndNothingAgain = new JTextField();
-		txtAndNothingAgain.setText("And nothing again :O");
-		txtAndNothingAgain.setHorizontalAlignment(SwingConstants.CENTER);
-		txtAndNothingAgain.setColumns(10);
-		GroupLayout gl_aboutPanel = new GroupLayout(aboutPanel);
-		gl_aboutPanel.setHorizontalGroup(
-			gl_aboutPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_aboutPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(txtAndNothingAgain, GroupLayout.PREFERRED_SIZE, 395, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(249, Short.MAX_VALUE))
-		);
-		gl_aboutPanel.setVerticalGroup(
-			gl_aboutPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_aboutPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(txtAndNothingAgain, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(242, Short.MAX_VALUE))
-		);
-		aboutPanel.setLayout(gl_aboutPanel);
+		JTextPane aboutTextPane = new JTextPane();
+		aboutTextPane.addHyperlinkListener(new HyperlinkListener() {
+			public void hyperlinkUpdate(HyperlinkEvent arg0) {
+				if (HyperlinkEvent.EventType.ACTIVATED.equals(arg0.getEventType())) {
+					DesktopUtils.openUrl(arg0.getURL().toString());
+		        }
+			}
+		});
+		aboutTextPane.setFont(new Font("Dialog", Font.BOLD, 13));
+		aboutTextPane.setBounds(9, 9, 639, 143);
+		aboutTextPane.setBackground(SystemColor.activeCaptionBorder);
+		aboutTextPane.setEditable(false);
+		aboutTextPane.setContentType("text/html");
+		aboutTextPane.setText("<center><a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a><br /><span xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://purl.org/dc/dcmitype/Dataset\" property=\"dct:title\" rel=\"dct:type\">KeplerBot</span> by <a xmlns:cc=\"http://creativecommons.org/ns#\" href=\"http://keplergaming.com/\" property=\"cc:attributionName\" rel=\"cc:attributionURL\">Crazyputje and Logomaster256</a> is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br /><br />Based on a work at <a xmlns:dct=\"http://purl.org/dc/terms/\" href=\"https://code.google.com/p/pircbotx\" rel=\"dct:source\">https://code.google.com/p/pircbotx</a>.</center>");
+		aboutPanel.add(aboutTextPane);
+		
+		ImagePanel keplerImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/logo.png")));
+		keplerImage.setBounds(297, 252, 351, 292);
+		aboutPanel.add(keplerImage);
+		keplerImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DesktopUtils.openUrl("www.keplergaming.com");
+			}
+		});
+		
+		JLabel label = new JLabel("");
+		label.setBounds(367, 179, 284, 150);
+		aboutPanel.add(label);
+		
+		ImagePanel githubImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/github.png")));
+		githubImage.setBounds(9, 303, 269, 125);
+		aboutPanel.add(githubImage);
+		githubImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				DesktopUtils.openUrl("https://github.com/KeplerGaming/KeplerBot");
+			}
+		});
 		
 		frmKeplerbot.getContentPane().setLayout(groupLayout);
 	}

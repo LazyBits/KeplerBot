@@ -96,16 +96,17 @@ public class Logger {
 			return "";
 		}
 		
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        pw.flush();
-        StringTokenizer tokenizer = new StringTokenizer(sw.toString(), "\r\n");
-        StringBuilder builder = new StringBuilder();
-        while (tokenizer.hasMoreTokens()) {
-        	builder.append("\n" + tokenizer.nextToken());
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		t.printStackTrace(pw);
+		pw.flush();
+		StringTokenizer tokenizer = new StringTokenizer(sw.toString(), "\r\n");
+		StringBuilder builder = new StringBuilder();
+		
+		while (tokenizer.hasMoreTokens()) {
+			builder.append("\n" + tokenizer.nextToken());
         }
-        
+		
 		return builder.toString();
 	}
 
