@@ -235,6 +235,7 @@ public class Updater extends JDialog implements ActionListener
         //if the user doesn't want to update
         if(noButton == e.getSource()) {
             setVisible(false);
+            this.dispose();
         }
         
         
