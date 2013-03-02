@@ -4,32 +4,36 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.logger.Logger;
 import net.keplergaming.keplerbot.utils.DesktopUtils;
 
 public class MainFrame {
 
 	private JFrame frmKeplerbot;
-	private JTextField txtNothingToSee;
 	private JTextField txtOrHere;
-	private JTextField txtYupNothingHere;
+	private Configuration config;
+	private static MainFrame Instance;
+	private ErrorPanel errorPanel = new ErrorPanel();
 
 	/**
 	 * Launch the application.
@@ -53,6 +57,11 @@ public class MainFrame {
 	 * Create the application.
 	 */
 	public MainFrame() {
+		Instance = this;
+		
+		config = new Configuration("keplerbot.properties");
+		config.loadConfig();
+		
 		initialize();
 	}
 
@@ -61,11 +70,12 @@ public class MainFrame {
 	 */
 	private void initialize() {
 		frmKeplerbot = new JFrame();
+		frmKeplerbot.setResizable(false);
 		frmKeplerbot.setTitle("Keplerbot");
 		frmKeplerbot.setBounds(100, 100, 800, 500);
 		frmKeplerbot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setFocusable(false);
 		GroupLayout groupLayout = new GroupLayout(frmKeplerbot.getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -83,33 +93,32 @@ public class MainFrame {
 					.addContainerGap())
 		);
 		
-		JPanel homePanel = new JPanel();
+		final JPanel homePanel = new JPanel();
 		homePanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		homePanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>Home</body></html>", null, homePanel, null);
 		
-		txtNothingToSee = new JTextField();
-		txtNothingToSee.setHorizontalAlignment(SwingConstants.CENTER);
-		txtNothingToSee.setText("Nothing to see here ;p");
-		txtNothingToSee.setColumns(10);
+		errorPanel = new ErrorPanel();
+		errorPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		
 		GroupLayout gl_homePanel = new GroupLayout(homePanel);
 		gl_homePanel.setHorizontalGroup(
 			gl_homePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_homePanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtNothingToSee, GroupLayout.PREFERRED_SIZE, 395, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(249, Short.MAX_VALUE))
+					.addComponent(errorPanel, GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_homePanel.setVerticalGroup(
 			gl_homePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_homePanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtNothingToSee, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(242, Short.MAX_VALUE))
+					.addComponent(errorPanel, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(391, Short.MAX_VALUE))
 		);
 		homePanel.setLayout(gl_homePanel);
 		
-		JPanel streamPanel = new JPanel();
+		final JPanel streamPanel = new JPanel();
 		streamPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		streamPanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>Streams</body></html>", null, streamPanel, null);
@@ -135,31 +144,105 @@ public class MainFrame {
 		);
 		streamPanel.setLayout(gl_streamPanel);
 		
-		JPanel configPanel = new JPanel();
+		final JPanel configPanel = new JPanel();
 		configPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		configPanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>Config</body></html>", null, configPanel, null);
 		
-		txtYupNothingHere = new JTextField();
-		txtYupNothingHere.setText("yup, Nothing here");
-		txtYupNothingHere.setHorizontalAlignment(SwingConstants.CENTER);
-		txtYupNothingHere.setColumns(10);
+		final JPanel loginPanel = new JPanel();
+		loginPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		loginPanel.setBackground(SystemColor.activeCaptionBorder);
+		
+		final JPanel generalPanel = new JPanel();
+		generalPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		generalPanel.setBackground(SystemColor.activeCaptionBorder);
+		
+		final ConfigFieldPanel botNameConfig = new ConfigFieldPanel("Bot name", "bot_name", "KeplerBot", SystemColor.activeCaptionBorder);
+		
+		final ConfigFieldPanel joinMessageConfig = new ConfigFieldPanel("Join Message", "join_message", "Keplerbot has joined your stream", SystemColor.activeCaptionBorder);
+		
+		final ConfigFieldPanel leaveConfig = new ConfigFieldPanel("Leave Message", "leave_message", "Keplerbot has left your stream", SystemColor.activeCaptionBorder);
+		
+		GroupLayout gl_generalPanel = new GroupLayout(generalPanel);
+		gl_generalPanel.setHorizontalGroup(
+			gl_generalPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_generalPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_generalPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(botNameConfig, GroupLayout.PREFERRED_SIZE, 604, GroupLayout.PREFERRED_SIZE)
+						.addComponent(joinMessageConfig, GroupLayout.PREFERRED_SIZE, 604, GroupLayout.PREFERRED_SIZE)
+						.addComponent(leaveConfig, GroupLayout.PREFERRED_SIZE, 604, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_generalPanel.setVerticalGroup(
+			gl_generalPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_generalPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(botNameConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(joinMessageConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(leaveConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		generalPanel.setLayout(gl_generalPanel);
 		GroupLayout gl_configPanel = new GroupLayout(configPanel);
 		gl_configPanel.setHorizontalGroup(
 			gl_configPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_configPanel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_configPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtYupNothingHere, GroupLayout.PREFERRED_SIZE, 395, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(249, Short.MAX_VALUE))
+					.addGroup(gl_configPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(generalPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+						.addComponent(loginPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_configPanel.setVerticalGroup(
 			gl_configPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_configPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtYupNothingHere, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(242, Short.MAX_VALUE))
+					.addComponent(loginPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(generalPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(232, Short.MAX_VALUE))
 		);
+		
+		final ConfigFieldPanel usernameConfig = new ConfigFieldPanel("Twitch username", "twitch_name", "", loginPanel.getBackground());
+		final ConfigFieldPanel passwordConfig = new ConfigFieldPanel("Password", "twitch_password", "", loginPanel.getBackground());
+
+		GroupLayout gl_loginPanel = new GroupLayout(loginPanel);
+		gl_loginPanel.setHorizontalGroup(
+			gl_loginPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_loginPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(usernameConfig, GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+						.addComponent(passwordConfig, GroupLayout.PREFERRED_SIZE, 604, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		gl_loginPanel.setVerticalGroup(
+			gl_loginPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_loginPanel.createSequentialGroup()
+					.addGap(10)
+					.addComponent(usernameConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(passwordConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		loginPanel.setLayout(gl_loginPanel);
 		configPanel.setLayout(gl_configPanel);
+		
+		configPanel.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+				config.setString(botNameConfig.getConfigKey(), botNameConfig.getValue());
+				config.setString(joinMessageConfig.getConfigKey(), joinMessageConfig.getValue());
+				config.setString(leaveConfig.getConfigKey(), leaveConfig.getValue());
+				config.setString(usernameConfig.getConfigKey(), usernameConfig.getValue());
+				config.setString(passwordConfig.getConfigKey(), passwordConfig.getValue());
+
+				config.saveConfig();
+			}
+		});
 		
 		JPanel aboutPanel = new JPanel();
 		aboutPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -193,10 +276,6 @@ public class MainFrame {
 			}
 		});
 		
-		JLabel label = new JLabel("");
-		label.setBounds(367, 179, 284, 150);
-		aboutPanel.add(label);
-		
 		ImagePanel githubImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/github.png")));
 		githubImage.setBounds(9, 303, 269, 125);
 		aboutPanel.add(githubImage);
@@ -208,5 +287,21 @@ public class MainFrame {
 		});
 		
 		frmKeplerbot.getContentPane().setLayout(groupLayout);
+	}
+
+	public void addError(String key, String message) {
+		errorPanel.addError(key, message);
+	}
+
+	public void removeError(String key) {
+		errorPanel.removeError(key);
+	}
+
+	public static MainFrame getInstance() {
+		return Instance;
+	}
+
+	public Configuration getConfig() {
+		return config;
 	}
 }
