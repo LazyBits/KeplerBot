@@ -26,6 +26,8 @@ import javax.swing.event.HyperlinkListener;
 import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.logger.Logger;
 import net.keplergaming.keplerbot.utils.DesktopUtils;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame {
 
@@ -240,6 +242,19 @@ public class MainFrame {
 				config.setString(usernameConfig.getConfigKey(), usernameConfig.getValue());
 				config.setString(passwordConfig.getConfigKey(), passwordConfig.getValue());
 
+				config.saveConfig();
+			}
+		});
+		
+		frmKeplerbot.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				config.setString(botNameConfig.getConfigKey(), botNameConfig.getValue());
+				config.setString(joinMessageConfig.getConfigKey(), joinMessageConfig.getValue());
+				config.setString(leaveConfig.getConfigKey(), leaveConfig.getValue());
+				config.setString(usernameConfig.getConfigKey(), usernameConfig.getValue());
+				config.setString(passwordConfig.getConfigKey(), passwordConfig.getValue());
+				
 				config.saveConfig();
 			}
 		});
