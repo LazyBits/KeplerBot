@@ -72,7 +72,7 @@ public class ErrorPanel extends JPanel {
 		txtrTre.setText("Error \r\n");
 		txtrTre.setBounds(10, 11, 540, 18);
 		add(txtrTre);
-		setVisible(true);
+		setVisible(false);
 	}
 
 	public void addError(String key, String message) {
