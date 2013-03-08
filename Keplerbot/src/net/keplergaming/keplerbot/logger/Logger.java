@@ -1,5 +1,6 @@
 package net.keplergaming.keplerbot.logger;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 public class Logger {
 
 	private static ArrayList<ILogListener> listeners;
+	private static PrintStream console;
 
 	public static boolean addListener(ILogListener listener) {
 		return listeners.add(listener);
@@ -21,6 +23,8 @@ public class Logger {
 	}
 
 	static {
+		console = System.out;
+		System.setOut(new PrintStream(new LoggingOutputStream(), true));
 		listeners = new ArrayList<ILogListener>();
 		addListener(new LogWriter());
 	}
@@ -29,7 +33,7 @@ public class Logger {
 		if (logLevel == Level.SEVERE) {
 			System.err.println(logToString(message, logLevel) + throwableToString(t));
 		} else {
-			System.out.println(logToString(message, logLevel) + throwableToString(t));
+			console.println(logToString(message, logLevel) + throwableToString(t));
 		}
 		
 		for (ILogListener listener : listeners) {
@@ -88,7 +92,11 @@ public class Logger {
 	}
 
 	public static String logToString(String message, Level logLevel) {
-		return getDateString() + "[" + logLevel.toString() + "] " + message;
+		if (logLevel != null) {
+			return getDateString() + "[" + logLevel.toString() + "] " + message;
+		}
+		
+		return getDateString() + message;
 	}
 	
 	private static String throwableToString(Throwable t) {
