@@ -2,6 +2,7 @@ package net.keplergaming.keplerbot.logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class LoggingOutputStream extends ByteArrayOutputStream {
 
@@ -24,7 +25,7 @@ public class LoggingOutputStream extends ByteArrayOutputStream {
 				return;
 			}
 
-			Logger.log(record, null, null);
+			Logger.log(record, Level.ALL, null);
 		}
 	}
 }
