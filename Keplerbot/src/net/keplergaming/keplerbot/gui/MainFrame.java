@@ -12,12 +12,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -26,16 +25,31 @@ import javax.swing.event.HyperlinkListener;
 import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.logger.Logger;
 import net.keplergaming.keplerbot.utils.DesktopUtils;
+import net.keplergaming.keplerbot.version.Version;
+import net.keplergaming.keplerbot.version.VersionChecker;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
 public class MainFrame {
-
-	private JFrame frmKeplerbot;
-	private JTextField txtOrHere;
-	private Configuration config;
+	
 	private static MainFrame Instance;
+	private JFrame frmKeplerbot;
+	
+	private Configuration config;
+	
 	private ErrorPanel errorPanel = new ErrorPanel();
+	private JTextField chatBox;
+	
+	private VersionChecker versionChecker;
+	private Thread checkerThread;
 
 	/**
 	 * Launch the application.
@@ -44,10 +58,13 @@ public class MainFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Logger.info("Starting KeplerBot " + Version.getVersion());
+					
+					Logger.fine("Setting look and feel of the gui");
 					UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
 					
-					MainFrame window = new MainFrame();
-					window.frmKeplerbot.setVisible(true);
+					Logger.fine("Creating new Mainframe");
+					new MainFrame();
 				} catch (Exception e) {
 					Logger.error("Failed to load MainFrame", e);
 				}
@@ -64,6 +81,7 @@ public class MainFrame {
 		config = new Configuration("keplerbot.properties");
 		config.loadConfig();
 		
+		Logger.fine("Creating gui");
 		initialize();
 	}
 
@@ -77,22 +95,50 @@ public class MainFrame {
 		frmKeplerbot.setBounds(100, 100, 800, 500);
 		frmKeplerbot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		Logger.fine("Creating threaded version checker");
+		checkerThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				versionChecker = new VersionChecker();
+				
+				if (versionChecker.requiresUpdate()) {
+					Logger.info("Update found");
+					
+		            int confirm = JOptionPane.showOptionDialog(null, "Would you like to update?", "Update Available", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+		            if (confirm == 0) {
+		            	versionChecker.startUpdater();
+		            }
+				} else {
+						Logger.info("KeplerBot is up to date");
+				}
+			}
+			
+		});
+		checkerThread.start();
+		
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setFocusable(false);
+				
+		JLabel lblVersion = new JLabel(Version.getVersion());
+		lblVersion.setToolTipText("Up to date\r\n");
+		lblVersion.setHorizontalAlignment(SwingConstants.RIGHT);
 		GroupLayout groupLayout = new GroupLayout(frmKeplerbot.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(lblVersion, GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-					.addContainerGap())
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 438, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblVersion, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+					.addGap(4))
 		);
 		
 		final JPanel homePanel = new JPanel();
@@ -125,24 +171,123 @@ public class MainFrame {
 		streamPanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>Streams</body></html>", null, streamPanel, null);
 		
-		txtOrHere = new JTextField();
-		txtOrHere.setText("Or here");
-		txtOrHere.setHorizontalAlignment(SwingConstants.CENTER);
-		txtOrHere.setColumns(10);
+		JButton btnResetStream = new JButton("Reset connection");
+		btnResetStream.setFocusable(false);
+		btnResetStream.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		
+		JButton btnRemoveStream = new JButton("Remove stream");
+		btnRemoveStream.setFocusable(false);
+		btnRemoveStream.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		
+		JButton btnAddStream = new JButton("Add stream");
+		btnAddStream.setFocusable(false);
+		btnAddStream.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				AddStreamDialog dialog = new AddStreamDialog(frmKeplerbot);
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
+			}
+		});
+		
+		JTabbedPane streamTabs = new JTabbedPane(JTabbedPane.TOP);
+		streamTabs.setFocusable(false);
+		streamTabs.setBackground(SystemColor.inactiveCaptionBorder);
+		
+		JComboBox comboBoxPresets = new JComboBox();
+		comboBoxPresets.setModel(new DefaultComboBoxModel(new String[] {"crazyputje", "welshtony"}));
+		
+		JLabel lblPresets = new JLabel("Presents");
+		
+		chatBox = new JTextField();
+		chatBox.setColumns(10);
+		
+		JButton btnAddPreset = new JButton("Add preset");
+		btnAddPreset.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		btnAddPreset.setFocusable(false);
+		
+		JButton btnSend = new JButton("Send");
+		btnSend.setFocusable(false);
+		btnSend.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		
+		JButton btnAddPresetStream = new JButton("Add stream");
+		btnAddPresetStream.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		btnAddPresetStream.setFocusable(false);
 		GroupLayout gl_streamPanel = new GroupLayout(streamPanel);
 		gl_streamPanel.setHorizontalGroup(
 			gl_streamPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_streamPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtOrHere, GroupLayout.PREFERRED_SIZE, 395, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(249, Short.MAX_VALUE))
+					.addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING, gl_streamPanel.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblPresets)
+							.addComponent(comboBoxPresets, 0, 167, Short.MAX_VALUE))
+						.addGroup(Alignment.TRAILING, gl_streamPanel.createSequentialGroup()
+							.addComponent(btnAddPresetStream)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddPreset))
+						.addComponent(btnRemoveStream, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+						.addComponent(btnAddStream, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+						.addComponent(btnResetStream, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_streamPanel.createSequentialGroup()
+							.addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnSend))
+						.addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
+					.addGap(7))
 		);
 		gl_streamPanel.setVerticalGroup(
 			gl_streamPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_streamPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(txtOrHere, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(242, Short.MAX_VALUE))
+					.addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_streamPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblPresets)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_streamPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnAddPreset)
+								.addComponent(btnAddPresetStream))
+							.addGap(78)
+							.addComponent(btnAddStream)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnRemoveStream)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnResetStream))
+						.addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnSend)
+						.addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		streamPanel.setLayout(gl_streamPanel);
 		
@@ -282,7 +427,7 @@ public class MainFrame {
 		aboutPanel.add(aboutTextPane);
 		
 		ImagePanel keplerImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/logo.png")));
-		keplerImage.setBounds(297, 252, 351, 292);
+		keplerImage.setBounds(297, 228, 351, 292);
 		aboutPanel.add(keplerImage);
 		keplerImage.addMouseListener(new MouseAdapter() {
 			@Override
@@ -292,7 +437,7 @@ public class MainFrame {
 		});
 		
 		ImagePanel githubImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/github.png")));
-		githubImage.setBounds(9, 303, 269, 125);
+		githubImage.setBounds(9, 291, 269, 125);
 		aboutPanel.add(githubImage);
 		githubImage.addMouseListener(new MouseAdapter() {
 			@Override
@@ -302,6 +447,7 @@ public class MainFrame {
 		});
 		
 		frmKeplerbot.getContentPane().setLayout(groupLayout);
+		frmKeplerbot.setVisible(true);
 	}
 
 	public void addError(String key, String message) {
