@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.keplergaming.keplerbot.logger.Logger;
+import net.keplergaming.keplerbot.logger.MainLogger;
 
 public class VersionChecker {
 
@@ -26,11 +26,11 @@ public class VersionChecker {
 
 			File file = new File("./updater.jar");
 			if (file.exists()) {
-				Logger.info("Detected updater.jar, Attempting to delete it");
+				MainLogger.info("Detected updater.jar, Attempting to delete it");
 				if (!file.delete()) {
-					Logger.warning("Failed to delete updater.jar");
+					MainLogger.warning("Failed to delete updater.jar");
 				} else {
-					Logger.info("Deleted updater.jar");
+					MainLogger.info("Deleted updater.jar");
 				}
 			}
 		} catch (Exception e) {
@@ -39,27 +39,27 @@ public class VersionChecker {
 	}
 
 	public boolean requiresUpdate() {
-		return !Version.getVersion().equalsIgnoreCase(latest);
+		return !Version.getVersion().equalsIgnoreCase(latest) && latest != null;
 	}
 
 	private void checkVersion() {
 		try {
-			Logger.info("Fetching remote version file");
+			MainLogger.info("Fetching remote version file");
 			URL url = new URL("https://dl.dropbox.com/u/36116005/keplerbot/version.xml");
 			InputStream input = url.openStream();
 			Scanner in = new Scanner(input);
 
 			while (in.hasNext()) {
 				String s = in.nextLine();
-				
+
 				if (s.contains("<latest>")) {
 					Pattern p = Pattern.compile("\\<latest\\>(.*?)\\</latest\\>");
 					Matcher m = p.matcher(s);
 					m.find();
-					Logger.info("Latest is " + m.group(1));
+					MainLogger.info("Latest is " + m.group(1));
 					latest = m.group(1);
 				}
-				
+
 				if (s.toLowerCase().contains("<link>")) {
 					Pattern p = Pattern.compile("\\<link\\>(.*?)\\</link\\>");
 					Matcher m = p.matcher(s);
@@ -69,16 +69,16 @@ public class VersionChecker {
 			}
 			input.close();
 		} catch (IOException e) {
-			Logger.warning("Failed to connect to remote version.xml", e);
+			MainLogger.warning("Failed to connect to remote version.xml", e);
 		}
 	}
 
 	public void startUpdater() {
 		try {
-			Logger.info("Starting update process");
+			MainLogger.info("Starting update process");
 			File jar = new File("./updater.jar");
 			if (!jar.exists()) {
-				Logger.fine("Extracting updater.jar");
+				MainLogger.fine("Extracting updater.jar");
 				URL url = ClassLoader.getSystemResource("net/keplergaming/keplerbot/resources/updater.jar");
 				FileOutputStream output = new FileOutputStream(jar);
 				InputStream input = url.openStream();
@@ -92,12 +92,12 @@ public class VersionChecker {
 				input.close();
 
 			}
-			
-			Logger.fine("Running updater");
+
+			MainLogger.fine("Running updater");
 			Runtime.getRuntime().exec("java -jar ./updater.jar " + " " + link + " Keplerbot.jar");
 			System.exit(1);
 		} catch (IOException e) {
-			Logger.warning("Failed to start updater.jar", e);
+			MainLogger.warning("Failed to start updater.jar", e);
 		}
 	}
 }
