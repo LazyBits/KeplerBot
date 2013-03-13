@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import net.keplergaming.keplerbot.logger.Logger;
+import net.keplergaming.keplerbot.logger.MainLogger;
 
 public class Configuration {
 
@@ -26,11 +26,11 @@ public class Configuration {
 			setInteger(key, defaultValue);
 			return defaultValue;
 		}
-		
+
 		try {
 			return Integer.valueOf(prop.getProperty(key, value));
 		} catch (Exception e) {
-			Logger.warning("Expected Integer", e);
+			MainLogger.warning("Expected Integer", e);
 			return defaultValue;
 		}
 	}
@@ -58,11 +58,11 @@ public class Configuration {
 			setBoolean(key, defaultValue);
 			return defaultValue;
 		}
-		
+
 		try {
 			return Boolean.valueOf(prop.getProperty(key, value));
 		} catch (Exception e) {
-			Logger.warning("Expected Boolean", e);
+			MainLogger.warning("Expected Boolean", e);
 			return defaultValue;
 		}
 	}
@@ -73,26 +73,33 @@ public class Configuration {
 	}
 
 	public void loadConfig() {
-	    try {
-	    	Logger.info("Loading config file");
-	    	File configFile = new File(fileName);
-	    	if (configFile.exists()) {
-		    	InputStream in = new FileInputStream(configFile);
+		try {
+			MainLogger.info("Loading config file");
+			File configFile = new File(fileName);
+			if (configFile.exists()) {
+				InputStream in = new FileInputStream(configFile);
 				prop.load(in);
-	    	}
+			}
 		} catch (IOException e) {
-			Logger.error("Failed to load config file", e);
+			MainLogger.error("Failed to load config file", e);
 		}
 	}
 
 	public void saveConfig() {
-	    try {
-	    	Logger.info("Saving config file");
-	    	File configFile = new File(fileName);
-	    	OutputStream out = new FileOutputStream(configFile);
+		try {
+			MainLogger.info("Saving config file");
+			File configFile = new File(fileName);
+			OutputStream out = new FileOutputStream(configFile);
 			prop.store(out, "KeplerBot");
 		} catch (IOException e) {
-			Logger.error("Failed to save config file", e);
+			MainLogger.error("Failed to save config file", e);
 		}
 	}
+
+	public static String[] USERNAME = new String[] { "twitch_name", "" };
+	public static String[] PASSWORD = new String[] { "twitch_password", "" };
+
+	public static String[] BOT_NAME = new String[] { "bot_name", "KeplerBot" };
+	public static String[] JOIN_MESSAGE = new String[] { "join_message", "%s has joined your stream" };
+	public static String[] LEAVE_MESSAGE = new String[] { "leave_message", "%s has left your stream" };
 }
