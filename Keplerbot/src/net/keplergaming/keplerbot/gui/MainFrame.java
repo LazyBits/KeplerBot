@@ -197,7 +197,7 @@ public class MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (model.getSelectedItem().equals("Add Preset")) {
 					String stream = JOptionPane.showInputDialog(frmKeplerbot, "Stream name", "Add Preset", JOptionPane.PLAIN_MESSAGE);
-					if (!stream.isEmpty()) {
+					if (stream != null && !stream.isEmpty()) {
 						model.addElement(stream);
 						model.setSelectedItem(stream);
 					}
