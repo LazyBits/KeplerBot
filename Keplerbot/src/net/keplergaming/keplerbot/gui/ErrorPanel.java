@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class ErrorPanel extends JPanel {
 	private JTextField txtErrorsFound;
 	private JTextArea txtrTre;

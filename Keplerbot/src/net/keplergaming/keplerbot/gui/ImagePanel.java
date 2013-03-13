@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class ImagePanel extends JPanel {
 
 	private Image img;
