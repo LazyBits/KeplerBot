@@ -7,20 +7,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 
-public class LogWriter implements ILogListener{
+public class LogWriter implements ILogListener {
 
 	private BufferedWriter fileoutwrite;
 
-	public LogWriter() {
+	public LogWriter(String fileName) {
 		FileWriter fstream;
-		
+
 		try {
-			File file = new File("./log.txt");
+			File file;
+			if (fileName != null) {
+				file = new File("./logs/log_" + fileName + ".txt");
+			} else {
+				file = new File("./log.txt");
+			}
 			file.getParentFile().mkdirs();
 			fstream = new FileWriter(file, true);
 			fileoutwrite = new BufferedWriter(fstream);
-		} catch(IOException e) { 
-			Logger.error("Failed to save log message ", e);
+		} catch (IOException e) {
+			MainLogger.error("Failed to save log message ", e);
 		}
 	}
 
@@ -30,9 +35,9 @@ public class LogWriter implements ILogListener{
 	}
 
 	@Override
-	public void onLog(String message, Level logLevel, Throwable t) {
+	public void onLog(String formattedMessage, String message, Level logLevel, Throwable t) {
 		try {
-			fileoutwrite.write(Logger.logToString(message, logLevel));
+			fileoutwrite.write(formattedMessage);
 			fileoutwrite.newLine();
 			if (t != null) {
 				PrintWriter printWriter = new PrintWriter(fileoutwrite);
@@ -40,7 +45,7 @@ public class LogWriter implements ILogListener{
 			}
 			fileoutwrite.flush();
 		} catch (IOException e) {
-			Logger.error("Failed to save log message ", e);
+			MainLogger.error("Failed to save log message ", e);
 		}
 	}
 

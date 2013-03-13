@@ -5,7 +5,7 @@ import java.util.logging.Level;
 public interface ILogListener {
 
 	public Level getLoglevel();
-	
-	public void onLog(String message, Level logLevel, Throwable t);
+
+	public void onLog(String formattedMessage, String message, Level logLevel, Throwable t);
 
 }
