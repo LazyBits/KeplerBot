@@ -13,12 +13,14 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import net.keplergaming.keplerbot.config.Configuration;
+import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class ConfigFieldPanel extends JPanel {
-	private JTextField configName;
 	private JTextField configValue;
 	private final String configKey;
-
+	private final JLabel configName;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -28,14 +30,9 @@ public class ConfigFieldPanel extends JPanel {
 		
 		setBackground(background);
 		
-		configName = new JTextField();
-		configName.setText(name);
+		configName = new JLabel(name);
 		configName.setFont(new Font("Dialog", Font.BOLD, 13));
-		configName.setEditable(false);
-		configName.setBackground(background);
-		configName.setBorder(null);
-		configName.setColumns(10);
-		
+
 		if (config.getString(configKey, defaultValue).isEmpty()) {
 			configName.setForeground(new Color(255, 0, 0));
 			MainFrame.getInstance().addError(configKey, "Please configure your " + name);
@@ -58,18 +55,19 @@ public class ConfigFieldPanel extends JPanel {
 		configValue.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(configName, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap()
+					.addComponent(configName, GroupLayout.PREFERRED_SIZE, 64, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(configValue, GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE))
+					.addComponent(configValue, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(configName, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
-						.addComponent(configValue, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(configValue, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(configName))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
