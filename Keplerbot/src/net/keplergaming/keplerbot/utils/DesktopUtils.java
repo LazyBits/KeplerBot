@@ -3,7 +3,7 @@ package net.keplergaming.keplerbot.utils;
 import java.awt.Desktop;
 import java.net.URI;
 
-import net.keplergaming.keplerbot.logger.Logger;
+import net.keplergaming.keplerbot.logger.MainLogger;
 
 public class DesktopUtils {
 
@@ -17,7 +17,7 @@ public class DesktopUtils {
 				Desktop.getDesktop().browse(new URI(url));
 			}
 		} catch (Exception e) {
-			Logger.error("Could not open link", e);
+			MainLogger.error("Could not open link", e);
 		}
 	}
 }
