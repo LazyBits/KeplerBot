@@ -13,11 +13,12 @@ import net.keplergaming.keplerbot.gui.StreamLogPannel;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 import net.keplergaming.keplerbot.version.Version;
 
-public class KeplerBotWrapper extends ListenerAdapter<KeplerBot>{
+public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 
 	public KeplerBotWrapper(StreamLogPannel pannel, Configuration config, String streamer, boolean joinMessage) {
 		this.streamer = streamer;
 		this.pannel = pannel;
+		this.config = config;
 		logger = new StreamLogger(streamer);
 		logger.getLogger().addListener(pannel);
 		bot = new KeplerBot(logger);
@@ -37,7 +38,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot>{
 			bot.connect(streamer + ".jtvirc.com", 6667, config.getString(Configuration.PASSWORD[0], Configuration.PASSWORD[1]));
 
 			bot.joinChannel("#" + streamer);
-			
+
 			if (joinMessage) {
 				bot.sendMessage(getChannel(), config.getString(Configuration.JOIN_MESSAGE[0], Configuration.JOIN_MESSAGE[1]));
 			}
@@ -48,6 +49,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot>{
 
 	private String streamer;
 	private KeplerBot bot;
+	private Configuration config;
 
 	public KeplerBot getBot() {
 		return bot;
@@ -66,13 +68,17 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot>{
 	}
 
 	private StreamLogPannel pannel;
-	
+
 	public StreamLogPannel getPannel() {
 		return pannel;
 	}
 
 	public Channel getChannel() {
 		return bot.getChannel("#" + streamer);
+	}
+
+	public Configuration getConfig() {
+		return config;
 	}
 
 	@Override
@@ -83,7 +89,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot>{
 	@Override
 	public void onPrivateMessage(PrivateMessageEvent<KeplerBot> event) {
 		logger.info(event.getUser().getNick() + " " + event.getMessage());
-		
+
 		if (event.getUser().getNick().equals("jtv") && event.getMessage().equalsIgnoreCase("Login failed.")) {
 			dispose(false);
 		}
@@ -97,10 +103,15 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot>{
 	public void dispose(boolean showMessage) {
 		try {
 			disconnectFlag = true;
-			
+
+			if (showMessage) {
+				bot.sendMessage(getChannel(), config.getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]));
+			}
+
 			bot.setAutoReconnect(false);
 			bot.disconnect();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
 
 	public void onDisconnect(DisconnectEvent<KeplerBot> event) throws Exception {
