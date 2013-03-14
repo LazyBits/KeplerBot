@@ -227,17 +227,20 @@ public class MainFrame {
 
 		JButton btnSend = new JButton("Send");
 		btnSend.setFocusable(false);
-		btnSend.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		GroupLayout gl_streamPanel = new GroupLayout(streamPanel);
 		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(lblPresets).addComponent(btnRemoveStream, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnResetStream, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnAddStream, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnAddPreset, GroupLayout.PREFERRED_SIZE, 155, Short.MAX_VALUE).addComponent(comboBoxPresets, 0, 155, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.PREFERRED_SIZE, 489, GroupLayout.PREFERRED_SIZE)).addGap(7)));
 		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(72).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnResetStream)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup().addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
 		streamPanel.setLayout(gl_streamPanel);
 
 		final JPanel configPanel = new JPanel();
+		streamPanel.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				if (errorPanel.hasErrors()) {
+					tabbedPane.setSelectedComponent(configPanel);
+				}
+			}
+		});
 		configPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		configPanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>Config</body></html>", null, configPanel, null);
@@ -342,14 +345,8 @@ public class MainFrame {
 		frmKeplerbot.setVisible(true);
 	}
 
-	public void addError(String key, String message) {
-		MainLogger.fine("Adding error to errorPanel");
-		errorPanel.addError(key, message);
-	}
-
-	public void removeError(String key) {
-		MainLogger.fine("removing error from errorPanel");
-		errorPanel.removeError(key);
+	public ErrorPanel getErrorPanel() {
+		return errorPanel;
 	}
 
 	public static MainFrame getInstance() {

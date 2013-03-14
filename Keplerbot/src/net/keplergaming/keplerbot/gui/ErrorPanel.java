@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import net.keplergaming.keplerbot.logger.MainLogger;
+
 @SuppressWarnings("serial")
 public class ErrorPanel extends JPanel {
 	private JTextField txtErrorsFound;
@@ -77,6 +79,7 @@ public class ErrorPanel extends JPanel {
 	}
 
 	public void addError(String key, String message) {
+		MainLogger.fine("Adding error to errorPanel");
 		errors.put(key, message);
 		txtErrorsFound.setText(errors.size() + " errors found!");
 		txtrTre.setText((String) errors.values().toArray()[0]);
@@ -84,6 +87,7 @@ public class ErrorPanel extends JPanel {
 	}
 
 	public void removeError(String key) {
+		MainLogger.fine("removing error from errorPanel");
 		errors.remove(key);
 		txtErrorsFound.setText(errors.size() + " errors found!");
 		if (errors.isEmpty()) {
@@ -96,5 +100,13 @@ public class ErrorPanel extends JPanel {
 	public void updateText() {
 		txtrTre.setText((String) errors.values().toArray()[index]);
 		txtErrorsFound.setText(errors.size() + " errors found!");
+	}
+
+	public boolean hasErrors() {
+		return !errors.isEmpty();
+	}
+
+	public boolean hasError(String key) {
+		return errors.containsKey(key);
 	}
 }

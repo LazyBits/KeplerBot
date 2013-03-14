@@ -35,7 +35,7 @@ public class ConfigFieldPanel extends JPanel {
 
 		if (config.getString(configKey, defaultValue).isEmpty()) {
 			configName.setForeground(new Color(255, 0, 0));
-			MainFrame.getInstance().addError(configKey, "Please configure your " + name);
+			MainFrame.getInstance().getErrorPanel().addError(configKey, "Please configure your " + name);
 		}
 
 		configValue = new JTextField();
@@ -44,10 +44,12 @@ public class ConfigFieldPanel extends JPanel {
 			public void keyReleased(KeyEvent arg0) {
 				if (configValue.getText().isEmpty()) {
 					configName.setForeground(new Color(255, 0, 0));
-					MainFrame.getInstance().addError(configKey, "Please configure your " + name);
+					MainFrame.getInstance().getErrorPanel().addError(configKey, "Please configure your " + name);
 				} else {
 					configName.setForeground(SystemColor.desktop);
-					MainFrame.getInstance().removeError(configKey);
+					if (MainFrame.getInstance().getErrorPanel().hasError(configKey)) {
+						MainFrame.getInstance().getErrorPanel().removeError(configKey);
+					}
 				}
 			}
 		});
