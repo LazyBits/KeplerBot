@@ -9,6 +9,7 @@ import net.keplergaming.keplerbot.logger.StreamLogger;
 
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 public class FilterManager extends ListenerAdapter<KeplerBot>{
 	
@@ -42,6 +43,17 @@ public class FilterManager extends ListenerAdapter<KeplerBot>{
 					if (filter.shouldRemoveMessage(event.getBot(), event.getUser(), event.getChannel(), event.getMessage())) {
 						removeMessage(event);
 					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onPrivateMessage(PrivateMessageEvent<KeplerBot> event) {
+		if (event.getUser().getNick().equals("jtv")) {
+			for (IFilter filter : filterMap.values()) {
+				if (!filter.isDisabled()) {
+					filter.onPrivateMessage(event.getBot(), event.getMessage());
 				}
 			}
 		}

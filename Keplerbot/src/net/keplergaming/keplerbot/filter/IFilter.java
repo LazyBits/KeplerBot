@@ -12,5 +12,7 @@ public interface IFilter {
 
 	public boolean shouldRemoveMessage(PircBotX bot, User sender, Channel channel, String message);
 
+	public void onPrivateMessage(PircBotX bot, String message);
+
 	public boolean isDisabled();
 }
