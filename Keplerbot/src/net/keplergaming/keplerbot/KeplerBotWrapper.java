@@ -9,6 +9,8 @@ import org.pircbotx.hooks.events.UnknownEvent;
 
 import net.keplergaming.keplerbot.commands.CommandManager;
 import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.filter.FilterManager;
+import net.keplergaming.keplerbot.filter.LinkFilter;
 import net.keplergaming.keplerbot.gui.StreamLogPannel;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 import net.keplergaming.keplerbot.version.Version;
@@ -30,8 +32,12 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 
-		commandManager = new CommandManager();
+		commandManager = new CommandManager(logger);
+		filterManager = new FilterManager(logger);
+		filterManager.registerFilter(new LinkFilter());
+
 		bot.getListenerManager().addListener(commandManager);
+		bot.getListenerManager().addListener(filterManager);
 		bot.getListenerManager().addListener(this);
 
 		try {
@@ -55,10 +61,15 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 		return bot;
 	}
 
+	private FilterManager filterManager;
 	private CommandManager commandManager;
 
 	public CommandManager getCommandManager() {
 		return commandManager;
+	}
+
+	public FilterManager getFilterManager() {
+		return filterManager;
 	}
 
 	private StreamLogger logger;
