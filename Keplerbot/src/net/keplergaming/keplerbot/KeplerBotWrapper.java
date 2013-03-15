@@ -36,6 +36,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 		commandManager = new CommandManager(logger);
 		filterManager = new FilterManager(logger);
 		filterManager.registerFilter(new LinkFilter());
+		filterManager.registerFilter(new ColorFilter());
 		filterManager.registerFilter(new CapsFilter());
 
 		bot.getListenerManager().addListener(commandManager);
