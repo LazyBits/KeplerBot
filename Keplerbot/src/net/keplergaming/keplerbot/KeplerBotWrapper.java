@@ -1,19 +1,20 @@
 package net.keplergaming.keplerbot;
 
+import net.keplergaming.keplerbot.commands.CommandManager;
+import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.filter.CapsFilter;
+import net.keplergaming.keplerbot.filter.FilterManager;
+import net.keplergaming.keplerbot.filter.LinkFilter;
+import net.keplergaming.keplerbot.gui.StreamLogPannel;
+import net.keplergaming.keplerbot.logger.StreamLogger;
+import net.keplergaming.keplerbot.version.Version;
+
 import org.pircbotx.Channel;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.DisconnectEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.UnknownEvent;
-
-import net.keplergaming.keplerbot.commands.CommandManager;
-import net.keplergaming.keplerbot.config.Configuration;
-import net.keplergaming.keplerbot.filter.FilterManager;
-import net.keplergaming.keplerbot.filter.LinkFilter;
-import net.keplergaming.keplerbot.gui.StreamLogPannel;
-import net.keplergaming.keplerbot.logger.StreamLogger;
-import net.keplergaming.keplerbot.version.Version;
 
 public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 
@@ -35,6 +36,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 		commandManager = new CommandManager(logger);
 		filterManager = new FilterManager(logger);
 		filterManager.registerFilter(new LinkFilter());
+		filterManager.registerFilter(new CapsFilter());
 
 		bot.getListenerManager().addListener(commandManager);
 		bot.getListenerManager().addListener(filterManager);
