@@ -36,7 +36,7 @@ public class StreamConfigDialog extends JDialog {
 	 */
 	public StreamConfigDialog(JFrame parent, Configuration config) {
 		super(parent, true);
-		setTitle("StreamConfig");
+		setTitle("Stream Config");
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 300);
