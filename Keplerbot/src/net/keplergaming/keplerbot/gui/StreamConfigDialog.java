@@ -43,6 +43,7 @@ public class StreamConfigDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		setLocationRelativeTo(parent);
 
 		panelColor = new JPanel();
 		panelColor.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,null, null));

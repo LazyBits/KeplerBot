@@ -33,6 +33,7 @@ public class CloseStreamDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		setLocationRelativeTo(parent);
 
 		chckbxJoinMsg = new JCheckBox("Display leave message");
 		chckbxJoinMsg.setFocusable(false);

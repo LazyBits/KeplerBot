@@ -37,6 +37,7 @@ public class AddStreamDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		setLocationRelativeTo(parent);
 
 		textField = new JTextField();
 		textField.setColumns(10);
