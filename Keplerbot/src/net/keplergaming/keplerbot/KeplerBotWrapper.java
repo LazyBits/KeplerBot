@@ -28,7 +28,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 	@Override
 	public void run() {
-		config = new Configuration("./configs/config_" + streamer + ".txt");
+		config = new Configuration("./configs/config_" + streamer + ".properties");
 		logger = new StreamLogger(streamer);
 		logger.getLogger().addListener(pannel);
 		bot = new KeplerBot(logger);

@@ -32,6 +32,7 @@ import javax.swing.event.HyperlinkListener;
 
 import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.logger.MainLogger;
+import net.keplergaming.keplerbot.preset.PresetHandler;
 import net.keplergaming.keplerbot.utils.DesktopUtils;
 import net.keplergaming.keplerbot.version.Version;
 import net.keplergaming.keplerbot.version.VersionChecker;
@@ -44,6 +45,8 @@ public class MainFrame {
 	private JFrame frmKeplerbot;
 
 	private Configuration config;
+
+	private PresetHandler presetHandler;
 
 	private ErrorPanel errorPanel = new ErrorPanel();
 	private JTextField chatBox;
@@ -189,17 +192,20 @@ public class MainFrame {
 		streamTabs.setFocusable(false);
 		streamTabs.setBackground(SystemColor.inactiveCaptionBorder);
 
-		final DefaultComboBoxModel model = new DefaultComboBoxModel();
-		model.addElement("Add Preset");
+		presetHandler = new PresetHandler();
+		presetHandler.load();
+		final DefaultComboBoxModel model = presetHandler.getPresets();
 
 		JComboBox comboBoxPresets = new JComboBox();
 		comboBoxPresets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (model.getSelectedItem().equals("Add Preset")) {
+				if (model.getSelectedItem().equals(PresetHandler.ADD_PRESET)) {
 					String stream = JOptionPane.showInputDialog(frmKeplerbot, "Stream name", "Add Preset", JOptionPane.PLAIN_MESSAGE);
 					if (stream != null && !stream.isEmpty()) {
 						model.addElement(stream);
 						model.setSelectedItem(stream);
+						presetHandler.setPresets(model);
+						presetHandler.save();
 					}
 				}
 			}
@@ -214,7 +220,7 @@ public class MainFrame {
 		JButton btnAddPreset = new JButton("Connect");
 		btnAddPreset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!model.getSelectedItem().equals("Add Preset")) {
+				if (!model.getSelectedItem().equals(PresetHandler.ADD_PRESET)) {
 					int joinMessage = JOptionPane.showConfirmDialog(frmKeplerbot, "Would you like to show the join message?");
 
 					if (joinMessage != 2) {
