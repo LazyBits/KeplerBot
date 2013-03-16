@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.logger.ILogListener;
 import net.keplergaming.keplerbot.logger.Logger;
 
@@ -17,10 +16,9 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 
 	private JTextArea textArea;
 	private KeplerBotWrapper wrapper;
-	private Configuration config;
 	private String streamer;
 
-	public StreamLogPannel(Configuration config, String streamer, boolean joinMessage) {
+	public StreamLogPannel(String streamer, boolean joinMessage) {
 		textArea = new JTextArea();
 		textArea.setFocusable(false);
 		textArea.setTabSize(6);
@@ -30,9 +28,8 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 		add(textArea);
 		setViewportView(textArea);
 
-		this.config = config;
 		this.streamer = streamer;
-		wrapper = new KeplerBotWrapper(this, config, streamer, joinMessage);
+		wrapper = new KeplerBotWrapper(this, streamer, joinMessage);
 	}
 
 	@Override
@@ -57,6 +54,6 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 	public void resetBot() {
 		wrapper.dispose(false);
 		
-		wrapper = new KeplerBotWrapper(this, config, streamer, false);
+		wrapper = new KeplerBotWrapper(this, streamer, false);
 	}
 }
