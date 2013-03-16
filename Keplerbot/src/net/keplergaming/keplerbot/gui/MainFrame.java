@@ -228,7 +228,7 @@ public class MainFrame {
 		JButton btnSend = new JButton("Send");
 		streamPanel.getRootPane().setDefaultButton(btnSend);
 		btnSend.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
 				
 				if (panel != null) {
@@ -238,9 +238,23 @@ public class MainFrame {
 			}
 		});
 		btnSend.setFocusable(false);
+
+		JButton btnStreamConfig = new JButton("Stream Config");
+		btnStreamConfig.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
+				
+				if (panel != null) {
+					StreamConfigDialog dialog = new StreamConfigDialog(frmKeplerbot, panel.getWrapper().getConfig());
+					dialog.setVisible(true);
+				}
+			}
+		});
+		btnStreamConfig.setFocusable(false);
+
 		GroupLayout gl_streamPanel = new GroupLayout(streamPanel);
-		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(lblPresets).addComponent(btnRemoveStream, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnResetStream, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnAddStream, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnAddPreset, GroupLayout.PREFERRED_SIZE, 155, Short.MAX_VALUE).addComponent(comboBoxPresets, 0, 155, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.PREFERRED_SIZE, 489, GroupLayout.PREFERRED_SIZE)).addGap(7)));
-		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(72).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnResetStream)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup().addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
+		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addComponent(lblPresets, Alignment.LEADING)	.addComponent(btnRemoveStream, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnResetStream, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnAddStream, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE).addComponent(btnAddPreset, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 155, Short.MAX_VALUE).addComponent(comboBoxPresets, Alignment.LEADING, 0, 155, Short.MAX_VALUE).addComponent(btnStreamConfig, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.RELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.PREFERRED_SIZE, 489, GroupLayout.PREFERRED_SIZE)).addGap(7)));
+		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(72).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnResetStream).addGap(18).addComponent(btnStreamConfig)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
 		streamPanel.setLayout(gl_streamPanel);
 
 		final JPanel configPanel = new JPanel();
@@ -369,7 +383,7 @@ public class MainFrame {
 	}
 
 	public void addStream(String streamer, boolean joinMessage) {
-		StreamLogPannel panel = new StreamLogPannel(config, streamer, joinMessage);
+		StreamLogPannel panel = new StreamLogPannel(streamer, joinMessage);
 		panel.setName(streamer);
 
 		streamTabs.add(panel);
