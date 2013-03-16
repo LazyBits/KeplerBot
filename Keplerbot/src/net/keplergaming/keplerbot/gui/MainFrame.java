@@ -338,6 +338,7 @@ public class MainFrame {
 				}
 			}
 		});
+		aboutTextPane.setFocusable(false);
 		aboutTextPane.setFont(new Font("Dialog", Font.BOLD, 13));
 		aboutTextPane.setBounds(9, 9, 639, 143);
 		aboutTextPane.setBackground(SystemColor.activeCaptionBorder);
