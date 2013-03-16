@@ -74,25 +74,28 @@ public class Configuration {
 
 	public void loadConfig() {
 		try {
-			MainLogger.info("Loading config file");
+			MainLogger.info("Loading config file " + fileName);
 			File configFile = new File(fileName);
 			if (configFile.exists()) {
 				InputStream in = new FileInputStream(configFile);
 				prop.load(in);
 			}
 		} catch (IOException e) {
-			MainLogger.error("Failed to load config file", e);
+			MainLogger.error("Failed to load config file "  + fileName, e);
 		}
 	}
 
 	public void saveConfig() {
 		try {
-			MainLogger.info("Saving config file");
+			MainLogger.info("Saving config file " + fileName);
 			File configFile = new File(fileName);
+			if (configFile.getParentFile() != null) {
+				configFile.getParentFile().mkdirs();
+			}
 			OutputStream out = new FileOutputStream(configFile);
 			prop.store(out, "KeplerBot");
 		} catch (IOException e) {
-			MainLogger.error("Failed to save config file", e);
+			MainLogger.error("Failed to save config file " + fileName, e);
 		}
 	}
 
