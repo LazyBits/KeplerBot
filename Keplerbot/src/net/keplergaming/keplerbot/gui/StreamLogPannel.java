@@ -30,6 +30,7 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 
 		this.streamer = streamer;
 		wrapper = new KeplerBotWrapper(this, streamer, joinMessage);
+		new Thread(wrapper).start();
 	}
 
 	@Override
@@ -55,5 +56,6 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 		wrapper.dispose(false);
 		
 		wrapper = new KeplerBotWrapper(this, streamer, false);
+		new Thread(wrapper).start();
 	}
 }

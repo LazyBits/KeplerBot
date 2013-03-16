@@ -18,11 +18,16 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.UnknownEvent;
 
-public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
+public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runnable{
 
 	public KeplerBotWrapper(StreamLogPannel pannel, String streamer, boolean joinMessage) {
 		this.streamer = streamer;
 		this.pannel = pannel;
+		this.displayJoinMessage = joinMessage;
+	}
+
+	@Override
+	public void run() {
 		config = new Configuration("./configs/config_" + streamer + ".txt");
 		logger = new StreamLogger(streamer);
 		logger.getLogger().addListener(pannel);
@@ -50,7 +55,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 
 			bot.joinChannel("#" + streamer);
 
-			if (joinMessage) {
+			if (displayJoinMessage) {
 				bot.sendMessage(getChannel(), MainFrame.getInstance().getConfig().getString(Configuration.JOIN_MESSAGE[0], Configuration.JOIN_MESSAGE[1]));
 			}
 		} catch (Exception e) {
@@ -58,6 +63,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> {
 		}
 	}
 
+	private boolean displayJoinMessage;
 	private String streamer;
 	private KeplerBot bot;
 	private Configuration config;
