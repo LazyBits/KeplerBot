@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 public interface ILogListener {
 
-	public Level getLoglevel();
+	public boolean shouldLog(Level lvl);
 
 	public void onLog(String formattedMessage, String message, Level logLevel, Throwable t);
 

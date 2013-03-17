@@ -34,7 +34,7 @@ public class Logger {
 		}
 
 		for (ILogListener listener : listeners) {
-			if (logLevel.intValue() <= listener.getLoglevel().intValue() || listener.getLoglevel().equals(Level.ALL)) {
+			if (listener.shouldLog(logLevel)) {
 				listener.onLog(logToString(message, logLevel), message, logLevel, t);
 			}
 		}

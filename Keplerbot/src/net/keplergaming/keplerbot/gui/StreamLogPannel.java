@@ -34,8 +34,8 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 	}
 
 	@Override
-	public Level getLoglevel() {
-		return Level.ALL;
+	public boolean shouldLog(Level lvl) {
+		return lvl.equals(Level.INFO) || lvl.equals(Level.WARNING) || lvl.equals(Level.SEVERE);
 	}
 
 	@Override

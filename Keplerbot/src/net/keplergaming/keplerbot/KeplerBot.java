@@ -12,7 +12,13 @@ public class KeplerBot extends PircBotX {
 
 	@Override
 	public void log(String line) {
-		logger.info(line);
+		if (line.startsWith("***")) {
+			logger.info(line);
+		} else if (line.startsWith(">>>PRIVMSG #")){
+			logger.info(line.replaceAll(">>>PRIVMSG #.* :", "<" + getName() + "> "));
+		}
+
+		logger.fine(line);
 	}
 
 	@Override

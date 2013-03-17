@@ -30,8 +30,8 @@ public class LogWriter implements ILogListener {
 	}
 
 	@Override
-	public Level getLoglevel() {
-		return Level.ALL;
+	public boolean shouldLog(Level lvl) {
+		return true;
 	}
 
 	@Override

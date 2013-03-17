@@ -118,12 +118,12 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 	@Override
 	public void onMessage(MessageEvent<KeplerBot> event) {
-		logger.info(event.getUser().getNick() + " " + event.getMessage());
+		logger.info("<" + event.getUser().getNick() + "> " + event.getMessage());
 	}
 
 	@Override
 	public void onPrivateMessage(PrivateMessageEvent<KeplerBot> event) {
-		logger.info(event.getUser().getNick() + " " + event.getMessage());
+		logger.info("<" + event.getUser().getNick() + "> " + event.getMessage());
 
 		if (event.getUser().getNick().equals("jtv") && event.getMessage().equalsIgnoreCase("Login failed.")) {
 			dispose(false);
