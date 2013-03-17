@@ -12,6 +12,7 @@ public class ColorFilter extends Filter{
 
 	public ColorFilter(Configuration config) {
 		setDisabled(config.getBoolean(Configuration.COLOR_FILTER[0], Boolean.parseBoolean(Configuration.COLOR_FILTER[1])));
+		this.config = config;
 		userMap = new HashMap<String, String>();
 	}
 
@@ -43,8 +44,9 @@ public class ColorFilter extends Filter{
 	}
 
 	public boolean isColorAllowed(String colorCode) {
-		return colorCode.equalsIgnoreCase("#00FF7F");
+		return config.getBoolean(colorCode, true);
 	}
 
 	private HashMap<String, String> userMap;
+	private Configuration config;
 }
