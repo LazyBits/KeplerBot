@@ -4,71 +4,59 @@ import java.util.ArrayList;
 
 public class StringUtils {
 
-    public static String joinString(ArrayList<String> array)
-    {
-        StringBuilder var1 = new StringBuilder();
+	public static String joinString(ArrayList<String> array) {
+		StringBuilder var1 = new StringBuilder();
 
-        for (int var2 = 0; var2 < array.size(); ++var2)
-        {
-            String var3 = array.get(var2).toString();
+		for (int var2 = 0; var2 < array.size(); ++var2) {
+			String var3 = array.get(var2).toString();
 
-            if (var2 > 0)
-            {
-                if (var2 == array.size() - 1)
-                {
-                    var1.append(" and ");
-                }
-                else
-                {
-                    var1.append(", ");
-                }
-            }
+			if (var2 > 0) {
+				if (var2 == array.size() - 1) {
+					var1.append(" and ");
+				} else {
+					var1.append(", ");
+				}
+			}
 
-            var1.append(var3);
-        }
+			var1.append(var3);
+		}
 
-        return var1.toString();
-    }
-    
-    public static String[] dropFirstString(String[] array) {
-        String[] newArray = new String[array.length - 1];
+		return var1.toString();
+	}
 
-        for (int i = 1; i < array.length; ++i)
-        {
-        	newArray[i - 1] = array[i];
-        }
+	public static String[] dropFirstString(String[] array) {
+		String[] newArray = new String[array.length - 1];
 
-        return newArray;
-    }
-    
-    public static String[] dropStrings(String[] array, int amount) {
-        String[] newArray = new String[array.length - amount];
+		for (int i = 1; i < array.length; ++i) {
+			newArray[i - 1] = array[i];
+		}
 
-        for (int i = amount; i < array.length; ++i)
-        {
-        	newArray[i - amount] = array[i];
-        }
+		return newArray;
+	}
 
-        return newArray;
-    }
-    
-    public static String joinString(String[] array)
-    {
-        StringBuilder var1 = new StringBuilder();
+	public static String[] dropStrings(String[] array, int amount) {
+		String[] newArray = new String[array.length - amount];
 
-        for (int var2 = 0; var2 < array.length; ++var2)
-        {
-            String var3 = array[var2];
+		for (int i = amount; i < array.length; ++i) {
+			newArray[i - amount] = array[i];
+		}
 
-            if (var2 > 0)
-            {
-            	var1.append(" ");
-            }
+		return newArray;
+	}
 
-            var1.append(var3);
-        }
+	public static String joinString(String[] array) {
+		StringBuilder var1 = new StringBuilder();
 
-        return var1.toString();
-    }
-    
+		for (int var2 = 0; var2 < array.length; ++var2) {
+			String var3 = array[var2];
+
+			if (var2 > 0) {
+				var1.append(" ");
+			}
+
+			var1.append(var3);
+		}
+
+		return var1.toString();
+	}
 }
