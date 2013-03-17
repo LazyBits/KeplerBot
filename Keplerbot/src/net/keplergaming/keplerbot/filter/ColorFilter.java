@@ -2,13 +2,16 @@ package net.keplergaming.keplerbot.filter;
 
 import java.util.HashMap;
 
+import net.keplergaming.keplerbot.config.Configuration;
+
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class ColorFilter extends Filter{
 
-	public ColorFilter() {
+	public ColorFilter(Configuration config) {
+		setDisabled(config.getBoolean(Configuration.COLOR_FILTER[0], Boolean.parseBoolean(Configuration.COLOR_FILTER[1])));
 		userMap = new HashMap<String, String>();
 	}
 

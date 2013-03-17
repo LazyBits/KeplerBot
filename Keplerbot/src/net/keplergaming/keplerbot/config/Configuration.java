@@ -105,4 +105,9 @@ public class Configuration {
 	public static String[] BOT_NAME = new String[] { "bot_name", "KeplerBot" };
 	public static String[] JOIN_MESSAGE = new String[] { "join_message", "%s has joined your stream" };
 	public static String[] LEAVE_MESSAGE = new String[] { "leave_message", "%s has left your stream" };
+
+	public static String[] CAPS_FILTER = new String[] { "caps_filter", "true" };
+	public static String[] COLOR_FILTER = new String[] { "color_filter", "true" };
+	public static String[] LINK_FILTER = new String[] { "link_filter", "true" };
+	public static String[] CENSOR_FILTER = new String[] { "censor_filter", "true" };
 }

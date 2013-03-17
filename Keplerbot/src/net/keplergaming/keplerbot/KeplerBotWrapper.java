@@ -29,6 +29,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 	@Override
 	public void run() {
 		config = new Configuration("./configs/config_" + streamer + ".properties");
+		config.loadConfig();
 		logger = new StreamLogger(streamer);
 		logger.getLogger().addListener(pannel);
 		bot = new KeplerBot(logger);
@@ -42,9 +43,9 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 		commandManager = new CommandManager(logger);
 		filterManager = new FilterManager(logger);
-		filterManager.registerFilter(new LinkFilter());
-		filterManager.registerFilter(new ColorFilter());
-		filterManager.registerFilter(new CapsFilter());
+		filterManager.registerFilter(new LinkFilter(config));
+		filterManager.registerFilter(new ColorFilter(config));
+		filterManager.registerFilter(new CapsFilter(config));
 
 		bot.getListenerManager().addListener(commandManager);
 		bot.getListenerManager().addListener(filterManager);

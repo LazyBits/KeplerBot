@@ -251,7 +251,7 @@ public class MainFrame {
 				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
 				
 				if (panel != null) {
-					StreamConfigDialog dialog = new StreamConfigDialog(frmKeplerbot, panel.getWrapper().getConfig());
+					StreamConfigDialog dialog = new StreamConfigDialog(frmKeplerbot, panel.getWrapper());
 					dialog.setVisible(true);
 				}
 			}
