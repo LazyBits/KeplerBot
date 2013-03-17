@@ -38,6 +38,7 @@ import net.keplergaming.keplerbot.version.Version;
 import net.keplergaming.keplerbot.version.VersionChecker;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
 
 public class MainFrame {
 
@@ -336,27 +337,35 @@ public class MainFrame {
 		aboutPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		aboutPanel.setBackground(SystemColor.activeCaptionBorder);
 		tabbedPane.addTab("<html><body leftmargin=15 topmargin=8 marginwidth=15 marginheight=5>About</body></html>", null, aboutPanel, null);
-		aboutPanel.setLayout(null);
+		aboutPanel.setLayout(new GridLayout(0, 2, 0, 0));
 
 		JTextPane aboutTextPane = new JTextPane();
 		aboutTextPane.addHyperlinkListener(new HyperlinkListener() {
-			public void hyperlinkUpdate(HyperlinkEvent arg0) {
-				if (HyperlinkEvent.EventType.ACTIVATED.equals(arg0.getEventType())) {
-					DesktopUtils.openUrl(arg0.getURL().toString());
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
+					DesktopUtils.openUrl(e.getURL().toString());
 				}
 			}
 		});
 		aboutTextPane.setFocusable(false);
-		aboutTextPane.setFont(new Font("Dialog", Font.BOLD, 13));
-		aboutTextPane.setBounds(9, 9, 639, 143);
-		aboutTextPane.setBackground(SystemColor.activeCaptionBorder);
+		aboutTextPane.setBackground(aboutPanel.getBackground());
 		aboutTextPane.setEditable(false);
 		aboutTextPane.setContentType("text/html");
-		aboutTextPane.setText("<center><a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a><br /><span xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://purl.org/dc/dcmitype/Dataset\" property=\"dct:title\" rel=\"dct:type\">KeplerBot</span> by <a xmlns:cc=\"http://creativecommons.org/ns#\" href=\"http://keplergaming.com/\" property=\"cc:attributionName\" rel=\"cc:attributionURL\">Crazyputje and Logomaster256</a> is licensed under a <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br /><br />Based on a work at <a xmlns:dct=\"http://purl.org/dc/terms/\" href=\"https://code.google.com/p/pircbotx\" rel=\"dct:source\">https://code.google.com/p/pircbotx</a>.</center>");
+		aboutTextPane.setText("<center><a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a><br /><span xmlns:dct=\"http://purl.org/dc/terms/\" href=\"http://purl.org/dc/dcmitype/Dataset\" property=\"dct:title\" rel=\"dct:type\">KeplerBot</span> by <a xmlns:cc=\"http://creativecommons.org/ns#\" href=\"http://keplergaming.com/\" property=\"cc:attributionName\" rel=\"cc:attributionURL\">KeplerGaming</a> is licensed under a <br /><a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/\">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br /><br />Based on a work at <a xmlns:dct=\"http://purl.org/dc/terms/\" href=\"https://code.google.com/p/pircbotx\" rel=\"dct:source\">https://code.google.com/p/pircbotx</a>.</center>");
 		aboutPanel.add(aboutTextPane);
 
+		JTextPane creditTextPane = new JTextPane();
+		creditTextPane.setFocusable(false);
+		creditTextPane.setEditable(false);
+		creditTextPane.setContentType("text/html");
+		creditTextPane.setText("<p>Credits:</p><ul><li>Crazyputje</li><li>Logomaster256</li><li>Spacerules</li></ul>");
+		creditTextPane.setBackground(aboutPanel.getBackground());
+		aboutPanel.add(creditTextPane);
+
+		ImagePanel githubImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/github.png")));
+		aboutPanel.add(githubImage);
+
 		ImagePanel keplerImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/logo.png")));
-		keplerImage.setBounds(297, 228, 351, 292);
 		aboutPanel.add(keplerImage);
 		keplerImage.addMouseListener(new MouseAdapter() {
 			@Override
@@ -364,10 +373,6 @@ public class MainFrame {
 				DesktopUtils.openUrl("www.keplergaming.com");
 			}
 		});
-
-		ImagePanel githubImage = new ImagePanel(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/net/keplergaming/keplerbot/resources/github.png")));
-		githubImage.setBounds(9, 291, 269, 125);
-		aboutPanel.add(githubImage);
 		githubImage.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
