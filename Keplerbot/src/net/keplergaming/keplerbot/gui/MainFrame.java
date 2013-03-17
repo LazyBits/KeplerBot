@@ -171,7 +171,7 @@ public class MainFrame {
 		JButton btnRemoveStream = new JButton("Close Stream");
 		btnRemoveStream.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (streamTabs.getSelectedComponent() != null) {
+				if (streamTabs.getSelectedComponent() != null && streamTabs.getSelectedIndex() != 0) {
 					CloseStreamDialog dialog = new CloseStreamDialog(frmKeplerbot);
 					dialog.setVisible(true);
 				}
