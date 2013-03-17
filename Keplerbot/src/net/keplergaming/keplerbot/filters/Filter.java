@@ -1,4 +1,4 @@
-package net.keplergaming.keplerbot.filter;
+package net.keplergaming.keplerbot.filters;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;

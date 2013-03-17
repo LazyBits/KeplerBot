@@ -1,4 +1,4 @@
-package net.keplergaming.keplerbot.filter;
+package net.keplergaming.keplerbot.filters;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

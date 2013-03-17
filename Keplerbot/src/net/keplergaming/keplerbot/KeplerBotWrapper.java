@@ -2,10 +2,10 @@ package net.keplergaming.keplerbot;
 
 import net.keplergaming.keplerbot.commands.CommandManager;
 import net.keplergaming.keplerbot.config.Configuration;
-import net.keplergaming.keplerbot.filter.CapsFilter;
-import net.keplergaming.keplerbot.filter.ColorFilter;
-import net.keplergaming.keplerbot.filter.FilterManager;
-import net.keplergaming.keplerbot.filter.LinkFilter;
+import net.keplergaming.keplerbot.filters.CapsFilter;
+import net.keplergaming.keplerbot.filters.ColorFilter;
+import net.keplergaming.keplerbot.filters.FilterManager;
+import net.keplergaming.keplerbot.filters.LinkFilter;
 import net.keplergaming.keplerbot.gui.MainFrame;
 import net.keplergaming.keplerbot.gui.StreamLogPannel;
 import net.keplergaming.keplerbot.logger.StreamLogger;
