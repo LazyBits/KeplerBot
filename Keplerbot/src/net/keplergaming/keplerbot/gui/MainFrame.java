@@ -269,6 +269,8 @@ public class MainFrame {
 			public void componentShown(ComponentEvent e) {
 				if (errorPanel.hasErrors()) {
 					tabbedPane.setSelectedComponent(configPanel);
+				} else if (streamTabs.getSelectedComponent() == null) {
+					MainFrame.getInstance().addStream(config.getString(Configuration.USERNAME[0], Configuration.USERNAME[1]), false);
 				}
 			}
 		});
