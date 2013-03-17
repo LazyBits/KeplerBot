@@ -98,6 +98,7 @@ public class StreamConfigDialog extends JDialog {
 		panel.add(lblFilters, "2, 2, 23, 1");
 
 		JLabel lblCapsFilter = new JLabel("Caps Filter");
+		lblCapsFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		panel.add(lblCapsFilter, "2, 4");
 
 		final JCheckBox chckbxCapsFilter = new JCheckBox();
@@ -116,6 +117,7 @@ public class StreamConfigDialog extends JDialog {
 		panel.add(chckbxCapsFilter, "4, 4");
 
 		JLabel lblLinkFilter = new JLabel("Link Filter");
+		lblLinkFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		panel.add(lblLinkFilter, "8, 4");
 
 		final JCheckBox chckbxLinkFilter = new JCheckBox();
@@ -134,6 +136,7 @@ public class StreamConfigDialog extends JDialog {
 		panel.add(chckbxLinkFilter, "10, 4");
 
 		JLabel lblColorFilter = new JLabel("Color Filter");
+		lblColorFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		panel.add(lblColorFilter, "14, 4");
 
 		final JCheckBox chckbxColorFilter = new JCheckBox();
@@ -152,6 +155,7 @@ public class StreamConfigDialog extends JDialog {
 		panel.add(chckbxColorFilter, "16, 4");
 
 		JLabel lblCensorFilter = new JLabel("Censor Filter");
+		lblCensorFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		panel.add(lblCensorFilter, "20, 4");
 
 		final JCheckBox chckbxCensorFilter = new JCheckBox();
