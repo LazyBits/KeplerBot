@@ -3,11 +3,17 @@ package net.keplergaming.keplerbot.filter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.keplergaming.keplerbot.config.Configuration;
+
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class LinkFilter extends Filter{
+
+	public LinkFilter(Configuration config) {
+		setDisabled(config.getBoolean(Configuration.LINK_FILTER[0], Boolean.parseBoolean(Configuration.LINK_FILTER[1])));
+	}
 
 	@Override
 	public String getFilterName() {

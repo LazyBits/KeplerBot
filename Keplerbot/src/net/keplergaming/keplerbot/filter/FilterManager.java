@@ -13,31 +13,31 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 public class FilterManager extends ListenerAdapter<KeplerBot>{
 	
-	private Map<String, IFilter> filterMap;
+	private Map<String, Filter> filterMap;
 	private StreamLogger logger;
 	
 	public FilterManager(StreamLogger logger) {
 		this.logger = logger;
-		filterMap = new HashMap<String, IFilter>();
+		filterMap = new HashMap<String, Filter>();
 	}
 	
-	public void registerFilter(IFilter filter) {
+	public void registerFilter(Filter filter) {
 		if (filterMap.containsKey(filter)) {
 			logger.warning("Filter already registered");
 		}
 		filterMap.put(filter.getFilterName(), filter);
 	}
 
-	public IFilter getFilter(String filter) throws BotException {
+	public Filter getFilter(String filter) throws BotException {
 		if (!filterMap.containsKey(filter)) {
 			throw new BotException("Filter " + filter + " not found");
 		}
-		return filterMap.get(filter);
+		return (Filter) filterMap.get(filter);
 	}
 
 	@Override
 	public void onMessage(MessageEvent<KeplerBot> event) {
-		for (IFilter filter : filterMap.values()) {
+		for (Filter filter : filterMap.values()) {
 			if (!filter.isDisabled()) {
 				if (filter.shouldUserBeFiltered(event.getBot(), event.getUser(), event.getChannel())) {
 					if (filter.shouldRemoveMessage(event.getBot(), event.getUser(), event.getChannel(), event.getMessage())) {
@@ -51,27 +51,11 @@ public class FilterManager extends ListenerAdapter<KeplerBot>{
 	@Override
 	public void onPrivateMessage(PrivateMessageEvent<KeplerBot> event) {
 		if (event.getUser().getNick().equals("jtv")) {
-			for (IFilter filter : filterMap.values()) {
+			for (Filter filter : filterMap.values()) {
 				if (!filter.isDisabled()) {
 					filter.onPrivateMessage(event.getBot(), event.getMessage());
 				}
 			}
-		}
-	}
-
-	public void disableFilter(String filter) throws BotException {
-		if (getFilter(filter).isDisabled()) {
-			((Filter)getFilter(filter)).setDisabled(true);
-		} else {
-			throw new BotException("Filter " + filter + " already disabled");
-		}
-	}
-
-	public void enableFilter(String filter) throws BotException {
-		if (!getFilter(filter).isDisabled()) {
-			((Filter)getFilter(filter)).setDisabled(false);
-		} else {
-			throw new BotException("Filter " + filter + " already enabled");
 		}
 	}
 
