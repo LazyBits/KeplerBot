@@ -124,7 +124,7 @@ public class StreamConfigDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				wrapper.getConfig().setBoolean(Configuration.LINK_FILTER[0], chckbxLinkFilter.isSelected());
 				try {
-					wrapper.getFilterManager().getFilter("link").setDisabled(chckbxLinkFilter.isSelected());
+					wrapper.getFilterManager().getFilter("links").setDisabled(chckbxLinkFilter.isSelected());
 				} catch (BotException ex) {
 					wrapper.getStreamLogger().error("Can't change filter state", ex);
 				}
