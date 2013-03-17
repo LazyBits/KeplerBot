@@ -238,7 +238,9 @@ public class MainFrame {
 				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
 				
 				if (panel != null) {
-					panel.getWrapper().getBot().sendMessage(panel.getWrapper().getChannel(), chatBox.getText());
+					if (!chatBox.getText().isEmpty()) {
+						panel.getWrapper().getBot().sendMessage(panel.getWrapper().getChannel(), chatBox.getText());
+					}
 					chatBox.setText("");
 				}
 			}
