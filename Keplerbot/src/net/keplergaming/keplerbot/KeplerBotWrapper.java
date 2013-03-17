@@ -42,7 +42,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		bot.setAutoReconnectChannels(true);
 
 		commandManager = new CommandManager(logger);
-		filterManager = new FilterManager(logger);
+		filterManager = new FilterManager(this);
 		filterManager.registerFilter(new LinkFilter(config));
 		filterManager.registerFilter(new ColorFilter(config));
 		filterManager.registerFilter(new CapsFilter(config));

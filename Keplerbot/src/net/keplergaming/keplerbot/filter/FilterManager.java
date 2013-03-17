@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.keplergaming.keplerbot.KeplerBot;
+import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 
@@ -15,9 +16,11 @@ public class FilterManager extends ListenerAdapter<KeplerBot>{
 	
 	private Map<String, Filter> filterMap;
 	private StreamLogger logger;
+	private KeplerBotWrapper wrapper;
 	
-	public FilterManager(StreamLogger logger) {
-		this.logger = logger;
+	public FilterManager(KeplerBotWrapper wrapper) {
+		this.logger = wrapper.getStreamLogger();
+		this.wrapper = wrapper;
 		filterMap = new HashMap<String, Filter>();
 	}
 	
@@ -60,7 +63,7 @@ public class FilterManager extends ListenerAdapter<KeplerBot>{
 	}
 
 	public void removeMessage(MessageEvent<KeplerBot> event) {
-		logger.fine("test");
+		wrapper.getBot().sendMessage(wrapper.getChannel(), "/timeout " + event.getUser().getNick() + " 5");
 	}
 
 }
