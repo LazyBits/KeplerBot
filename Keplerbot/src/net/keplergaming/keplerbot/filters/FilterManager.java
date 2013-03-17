@@ -42,8 +42,8 @@ public class FilterManager extends ListenerAdapter<KeplerBot>{
 	public void onMessage(MessageEvent<KeplerBot> event) {
 		for (Filter filter : filterMap.values()) {
 			if (!filter.isDisabled()) {
-				if (filter.shouldUserBeFiltered(event.getBot(), event.getUser(), event.getChannel())) {
-					if (filter.shouldRemoveMessage(event.getBot(), event.getUser(), event.getChannel(), event.getMessage())) {
+				if (filter.shouldUserBeFiltered(wrapper.getPermissionsManager(), event.getUser())) {
+					if (filter.shouldRemoveMessage(wrapper, event.getBot(), event.getUser(), event.getChannel(), event.getMessage())) {
 						removeMessage(event);
 					}
 				}

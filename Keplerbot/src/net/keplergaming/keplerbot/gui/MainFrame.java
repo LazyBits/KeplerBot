@@ -1,9 +1,11 @@
 package net.keplergaming.keplerbot.gui;
 
 import java.awt.EventQueue;
-import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -36,9 +38,6 @@ import net.keplergaming.keplerbot.preset.PresetHandler;
 import net.keplergaming.keplerbot.utils.DesktopUtils;
 import net.keplergaming.keplerbot.version.Version;
 import net.keplergaming.keplerbot.version.VersionChecker;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
 
 public class MainFrame {
 

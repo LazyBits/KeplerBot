@@ -3,10 +3,12 @@ package net.keplergaming.keplerbot.filters;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.keplergaming.keplerbot.KeplerBot;
+import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class LinkFilter extends Filter{
@@ -21,12 +23,13 @@ public class LinkFilter extends Filter{
 	}
 
 	@Override
-	public boolean shouldUserBeFiltered(PircBotX bot, User sender, Channel channel) {
-		return true;
+	public boolean shouldUserBeFiltered(PermissionsManager permissionsManager, User sender) {
+		
+		return super.shouldUserBeFiltered(permissionsManager, sender);
 	}
 
 	@Override
-	public boolean shouldRemoveMessage(PircBotX bot, User sender, Channel channel, String message) {
+	public boolean shouldRemoveMessage(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String message) {
 		Matcher matches = URL_PATTERN.matcher(message);
 		if (matches.find()) {
 			return true;

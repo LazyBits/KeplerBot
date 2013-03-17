@@ -9,6 +9,7 @@ import net.keplergaming.keplerbot.filters.LinkFilter;
 import net.keplergaming.keplerbot.gui.MainFrame;
 import net.keplergaming.keplerbot.gui.StreamLogPannel;
 import net.keplergaming.keplerbot.logger.StreamLogger;
+import net.keplergaming.keplerbot.permissions.PermissionsManager;
 import net.keplergaming.keplerbot.version.Version;
 
 import org.pircbotx.Channel;
@@ -41,12 +42,14 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 
-		commandManager = new CommandManager(logger);
+		permissionsManager = new PermissionsManager(this);
+		commandManager = new CommandManager(this);
 		filterManager = new FilterManager(this);
 		filterManager.registerFilter(new LinkFilter(config));
 		filterManager.registerFilter(new ColorFilter(config));
 		filterManager.registerFilter(new CapsFilter(config));
 
+		bot.getListenerManager().addListener(permissionsManager);
 		bot.getListenerManager().addListener(commandManager);
 		bot.getListenerManager().addListener(filterManager);
 		bot.getListenerManager().addListener(this);
@@ -73,6 +76,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		return bot;
 	}
 
+	private PermissionsManager permissionsManager;
 	private FilterManager filterManager;
 	private CommandManager commandManager;
 
@@ -82,6 +86,10 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 	public FilterManager getFilterManager() {
 		return filterManager;
+	}
+
+	public PermissionsManager getPermissionsManager() {
+		return permissionsManager;
 	}
 
 	private StreamLogger logger;
@@ -102,6 +110,10 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 	public Configuration getConfig() {
 		return config;
+	}
+
+	public String getStreamer() {
+		return streamer;
 	}
 
 	@Override
@@ -126,6 +138,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 	public void dispose(boolean showMessage) {
 		try {
 			disconnectFlag = true;
+			permissionsManager.stopThread();
 
 			if (showMessage) {
 				bot.sendMessage(getChannel(), MainFrame.getInstance().getConfig().getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]));

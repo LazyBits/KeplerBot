@@ -1,7 +1,10 @@
 package net.keplergaming.keplerbot.filters;
 
+import net.keplergaming.keplerbot.KeplerBot;
+import net.keplergaming.keplerbot.KeplerBotWrapper;
+import net.keplergaming.keplerbot.permissions.PermissionsManager;
+
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class Filter{
@@ -20,14 +23,21 @@ public class Filter{
 		return null;
 	}
 
-	public boolean shouldUserBeFiltered(PircBotX bot, User sender, Channel channel) {
+	public boolean shouldUserBeFiltered(PermissionsManager permissionsManager, User sender) {
+		if (permissionsManager.isDeveloper(sender.getNick())) {
+			return false;
+		} else if (permissionsManager.isModerator(sender.getNick())) {
+			return false;
+		} else if (permissionsManager.isStreamer(sender.getNick())) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean shouldRemoveMessage(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String message) {
 		return false;
 	}
 
-	public boolean shouldRemoveMessage(PircBotX bot, User sender, Channel channel, String message) {
-		return false;
-	}
-
-	public void onPrivateMessage(PircBotX bot, String message) {
+	public void onPrivateMessage(KeplerBot bot, String message) {
 	}
 }

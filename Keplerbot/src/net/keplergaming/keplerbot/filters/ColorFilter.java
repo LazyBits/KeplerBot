@@ -2,10 +2,11 @@ package net.keplergaming.keplerbot.filters;
 
 import java.util.HashMap;
 
+import net.keplergaming.keplerbot.KeplerBot;
+import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.config.Configuration;
 
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class ColorFilter extends Filter{
@@ -22,12 +23,7 @@ public class ColorFilter extends Filter{
 	}
 
 	@Override
-	public boolean shouldUserBeFiltered(PircBotX bot, User sender, Channel channel) {
-		return true;
-	}
-
-	@Override
-	public boolean shouldRemoveMessage(PircBotX bot, User sender, Channel channel, String message) {
+	public boolean shouldRemoveMessage(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String message) {
 		if (userMap.containsKey(sender.getNick().toLowerCase()) && !isColorAllowed(userMap.get(sender.getNick().toLowerCase()))) {
 			return true;
 		}
@@ -35,7 +31,7 @@ public class ColorFilter extends Filter{
 	}
 
 	@Override
-	public void onPrivateMessage(PircBotX bot, String message) {
+	public void onPrivateMessage(KeplerBot bot, String message) {
 		String args[] = message.split(" ");
 
 		if (args[0].equalsIgnoreCase("USERCOLOR")) {
