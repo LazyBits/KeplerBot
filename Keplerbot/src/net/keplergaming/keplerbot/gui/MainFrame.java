@@ -64,15 +64,15 @@ public class MainFrame {
 				try {
 					MainLogger.info("Starting KeplerBot "+ Version.getVersion());
 
-					MainLogger.info("Starting up KeplerBot MainFrame");
-					MainLogger.info("Java version: " + System.getProperty("java.version"));
-					MainLogger.info("Java vendor: " + System.getProperty("java.vendor"));
-					MainLogger.info("Java home: " + System.getProperty("java.home"));
-					MainLogger.info("Java specification: " + System.getProperty("java.vm.specification.name") + " version: " + System.getProperty("java.vm.specification.version") + " by " + System.getProperty("java.vm.specification.vendor"));
-					MainLogger.info("Java vm: " + System.getProperty("java.vm.name") + " version: " + System.getProperty("java.vm.version") + " by " + System.getProperty("java.vm.vendor"));
-					MainLogger.info("OS: " + System.getProperty("os.arch") + " " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
-					MainLogger.info("Working directory: " + System.getProperty("user.dir"));
-					MainLogger.info("Max Memory: " + Runtime.getRuntime().maxMemory() / 1024L / 1024L + " MB");
+					MainLogger.fine("Starting up KeplerBot MainFrame");
+					MainLogger.fine("Java version: " + System.getProperty("java.version"));
+					MainLogger.fine("Java vendor: " + System.getProperty("java.vendor"));
+					MainLogger.fine("Java home: " + System.getProperty("java.home"));
+					MainLogger.fine("Java specification: " + System.getProperty("java.vm.specification.name") + " version: " + System.getProperty("java.vm.specification.version") + " by " + System.getProperty("java.vm.specification.vendor"));
+					MainLogger.fine("Java vm: " + System.getProperty("java.vm.name") + " version: " + System.getProperty("java.vm.version") + " by " + System.getProperty("java.vm.vendor"));
+					MainLogger.fine("OS: " + System.getProperty("os.arch") + " " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+					MainLogger.fine("Working directory: " + System.getProperty("user.dir"));
+					MainLogger.fine("Max Memory: " + Runtime.getRuntime().maxMemory() / 1024L / 1024L + " MB");
 
 					MainLogger.fine("Setting look and feel of the gui");
 					UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");

@@ -132,22 +132,20 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 	@Override
 	public void onUnknown(UnknownEvent<KeplerBot> event) {
-		logger.info(event.getLine());
+		logger.fine(event.getLine());
 	}
 
 	public void dispose(boolean showMessage) {
-		try {
-			disconnectFlag = true;
-			permissionsManager.stopThread();
+		disconnectFlag = true;
+		permissionsManager.stopThread();
 
-			if (showMessage) {
-				bot.sendMessage(getChannel(), MainFrame.getInstance().getConfig().getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]));
-			}
-
-			bot.setAutoReconnect(false);
-			bot.disconnect();
-		} catch (Exception e) {
+		if (showMessage) {
+			bot.sendMessage(getChannel(), MainFrame.getInstance().getConfig().getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]));
 		}
+
+		bot.setAutoReconnect(false);
+		bot.disconnect();
+		logger.info("Disconnected.");
 	}
 
 	public void onDisconnect(DisconnectEvent<KeplerBot> event) throws Exception {

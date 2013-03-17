@@ -74,7 +74,7 @@ public class Configuration {
 
 	public void loadConfig() {
 		try {
-			MainLogger.info("Loading config file " + fileName);
+			MainLogger.fine("Loading config file " + fileName);
 			File configFile = new File(fileName);
 			if (configFile.exists()) {
 				InputStream in = new FileInputStream(configFile);
@@ -87,7 +87,7 @@ public class Configuration {
 
 	public void saveConfig() {
 		try {
-			MainLogger.info("Saving config file " + fileName);
+			MainLogger.fine("Saving config file " + fileName);
 			File configFile = new File(fileName);
 			if (configFile.getParentFile() != null) {
 				configFile.getParentFile().mkdirs();

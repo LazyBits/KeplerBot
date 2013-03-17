@@ -42,7 +42,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			}
 		}
 
-		logger.info("Succesfully registered command " + command.getCommandName());
+		logger.info("Succesfully registered command " + command.getCommandName() + ".");
 	}
 
 	public ICommand getCommand(String command) throws BotException {

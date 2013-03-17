@@ -26,11 +26,11 @@ public class VersionChecker {
 
 			File file = new File("./updater.jar");
 			if (file.exists()) {
-				MainLogger.info("Detected updater.jar, Attempting to delete it");
+				MainLogger.fine("Detected updater.jar, Attempting to delete it");
 				if (!file.delete()) {
 					MainLogger.warning("Failed to delete updater.jar");
 				} else {
-					MainLogger.info("Deleted updater.jar");
+					MainLogger.fine("Deleted updater.jar");
 				}
 			}
 		} catch (Exception e) {
@@ -44,7 +44,7 @@ public class VersionChecker {
 
 	private void checkVersion() {
 		try {
-			MainLogger.info("Fetching remote version file");
+			MainLogger.fine("Fetching remote version file");
 			URL url = new URL("https://dl.dropbox.com/u/36116005/keplerbot/version.xml");
 			InputStream input = url.openStream();
 			Scanner in = new Scanner(input);
@@ -56,7 +56,7 @@ public class VersionChecker {
 					Pattern p = Pattern.compile("\\<latest\\>(.*?)\\</latest\\>");
 					Matcher m = p.matcher(s);
 					m.find();
-					MainLogger.info("Latest is " + m.group(1));
+					MainLogger.fine("Latest is " + m.group(1));
 					latest = m.group(1);
 				}
 

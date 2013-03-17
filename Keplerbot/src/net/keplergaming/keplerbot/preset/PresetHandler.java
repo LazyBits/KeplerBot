@@ -13,7 +13,7 @@ import net.keplergaming.keplerbot.logger.MainLogger;
 public class PresetHandler {
 
 	public void load() {
-		MainLogger.info("Loading presets");
+		MainLogger.fine("Loading presets");
 		presets = new DefaultComboBoxModel();
 		presets.addElement(PresetHandler.ADD_PRESET);
 
@@ -34,7 +34,7 @@ public class PresetHandler {
 
 	public void save() {
 		try {
-			MainLogger.info("Saving presets");
+			MainLogger.fine("Saving presets");
 			PrintStream out = new PrintStream(presetsFile);
 
 			int size = presets.getSize();
