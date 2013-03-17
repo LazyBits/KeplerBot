@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 
 public class LogWriter implements ILogListener {
@@ -17,7 +19,7 @@ public class LogWriter implements ILogListener {
 		try {
 			File file;
 			if (fileName != null) {
-				file = new File("./logs/log_" + fileName + ".txt");
+				file = new File("./logs/" + getDate() + "_" + fileName + ".txt");
 			} else {
 				file = new File("./log.txt");
 			}
@@ -49,4 +51,9 @@ public class LogWriter implements ILogListener {
 		}
 	}
 
+	public String getDate() {
+		return format.format(new Date());
+	}
+
+	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy");
 }

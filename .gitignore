@@ -5,3 +5,5 @@ Keplerbot/bin/
 Keplerbot/log.txt
 Keplerbot/presets.txt
 Keplerbot/keplerbot.properties
+Keplerbot/logs/*
+Keplerbot/configs/*
