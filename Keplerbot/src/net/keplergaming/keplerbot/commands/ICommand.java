@@ -1,7 +1,10 @@
 package net.keplergaming.keplerbot.commands;
 
+import net.keplergaming.keplerbot.KeplerBot;
+import net.keplergaming.keplerbot.KeplerBotWrapper;
+import net.keplergaming.keplerbot.permissions.PermissionsManager;
+
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public interface ICommand{
@@ -10,7 +13,9 @@ public interface ICommand{
 
 	public String[] getCommandAliases();
 
-	public boolean canSenderUseCommand(PircBotX bot, User sender, Channel channel);
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user);
 
-	public void handleCommand(PircBotX bot, User sender, Channel channel, String[] args);
+	public void handleCommand(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String[] args);
+
+	public String getCommandUsage();
 }
