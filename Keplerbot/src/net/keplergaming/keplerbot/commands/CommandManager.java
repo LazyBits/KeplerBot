@@ -135,6 +135,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 						}
 					}
 				}
+				jarFile.close();
 			} catch (IOException e) {
 				logger.error(pkgname + " (" + directory + ") does not appear to be a valid package", e);
 			}

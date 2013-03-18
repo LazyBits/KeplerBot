@@ -194,9 +194,9 @@ public class MainFrame {
 
 		presetHandler = new PresetHandler();
 		presetHandler.load();
-		final DefaultComboBoxModel model = presetHandler.getPresets();
+		final DefaultComboBoxModel<String> model = presetHandler.getPresets();
 
-		JComboBox comboBoxPresets = new JComboBox();
+		JComboBox<String> comboBoxPresets = new JComboBox<String>();
 		comboBoxPresets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (model.getSelectedItem().equals(PresetHandler.ADD_PRESET)) {

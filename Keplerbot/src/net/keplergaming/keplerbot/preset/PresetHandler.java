@@ -14,7 +14,7 @@ public class PresetHandler {
 
 	public void load() {
 		MainLogger.fine("Loading presets");
-		presets = new DefaultComboBoxModel();
+		presets = new DefaultComboBoxModel<String>();
 		presets.addElement(PresetHandler.ADD_PRESET);
 
 		if (presetsFile.exists()) {
@@ -51,15 +51,15 @@ public class PresetHandler {
 		}
 	}
 
-	public DefaultComboBoxModel getPresets() {
+	public DefaultComboBoxModel<String> getPresets() {
 		return presets;
 	}
 
-	public void setPresets(DefaultComboBoxModel presets) {
+	public void setPresets(DefaultComboBoxModel<String> presets) {
 		this.presets = presets;
 	}
 
-	private DefaultComboBoxModel presets;
+	private DefaultComboBoxModel<String> presets;
 	private File presetsFile = new File("./presets.txt");
 	public static String ADD_PRESET = "Add Preset";
 }

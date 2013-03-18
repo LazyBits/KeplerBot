@@ -67,6 +67,7 @@ public class VersionChecker {
 					link = m.group(1);
 				}
 			}
+			in.close();
 			input.close();
 		} catch (IOException e) {
 			MainLogger.warning("Failed to connect to remote version.xml", e);
