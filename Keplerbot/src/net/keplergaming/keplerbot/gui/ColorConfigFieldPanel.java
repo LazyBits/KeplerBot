@@ -39,9 +39,8 @@ public class ColorConfigFieldPanel extends JPanel {
 		lblColor.setHorizontalAlignment(SwingConstants.CENTER);
 		lblColor.setForeground(Color.decode(color));
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(lblColor, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE).addComponent(chckbx).addContainerGap()));
-		groupLayout.setVerticalGroup(
-		groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblColor, GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE).addComponent(chckbx)).addContainerGap()));
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(lblColor).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbx, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE).addContainerGap()));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblColor).addComponent(chckbx, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		setLayout(groupLayout);
 
 	}
