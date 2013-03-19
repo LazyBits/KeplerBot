@@ -64,7 +64,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 				ICommand command = getCommand(splitMessage[0].substring(1));
 				
 				if (command.canSenderUseCommand(wrapper.getPermissionsManager(), event.getUser())) {
-					command.handleCommand(wrapper, event.getBot(), event.getUser(), event.getChannel(), StringUtils.dropFirstString(splitMessage));
+					command.handleCommand(wrapper, event.getUser(), event.getChannel(), StringUtils.dropFirstString(splitMessage));
 				} else {
 					throw new BotException(event.getUser().getNick() + " doesn't have permission for " + splitMessage[0]);
 				}

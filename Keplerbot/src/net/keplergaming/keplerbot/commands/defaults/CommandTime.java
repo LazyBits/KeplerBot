@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
@@ -30,18 +29,18 @@ public class CommandTime implements ICommand {
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
 		if (args.length == 1) {
 			try {
 				format.setTimeZone(TimeZone.getTimeZone(args[0]));
-				bot.sendMessage(channel, args[0] + ": " + format.format(new Date()));
+				wrapper.sendMessage(channel, args[0] + ": " + format.format(new Date()));
 			} catch (IllegalArgumentException e) {
-				bot.sendMessage(channel, e.getMessage());
+				wrapper.sendError(channel, e.getMessage());
 				wrapper.getStreamLogger().warning(e.getMessage());
 			}
 		} else {
 			format.setTimeZone(TimeZone.getDefault());
-			bot.sendMessage(channel, "Bot time is: " + format.format(new Date()));
+			wrapper.sendMessage(channel, "Bot time is: " + format.format(new Date()));
 		}
 	}
 

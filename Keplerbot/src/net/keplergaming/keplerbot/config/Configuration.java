@@ -110,4 +110,8 @@ public class Configuration {
 	public static String[] COLOR_FILTER = new String[] { "color_filter", "true" };
 	public static String[] LINK_FILTER = new String[] { "link_filter", "true" };
 	public static String[] CENSOR_FILTER = new String[] { "censor_filter", "true" };
+
+	public static String[] MUTE_ALL = new String[] {"mute_all", "false"};
+	public static String[] MUTE_WARNINGS = new String[] {"mute_warnings", "false"};
+	public static String[] MUTE_ERRORS =  new String[] {"mute_errors", "false"};
 }

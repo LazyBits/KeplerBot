@@ -19,7 +19,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.UnknownEvent;
 
-public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runnable{
+public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runnable {
 
 	public KeplerBotWrapper(StreamLogPannel pannel, String streamer, boolean joinMessage) {
 		this.streamer = streamer;
@@ -31,6 +31,11 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 	public void run() {
 		config = new Configuration("./configs/config_" + streamer + ".properties");
 		config.loadConfig();
+
+		muteAll = config.getBoolean(Configuration.MUTE_ALL[0], Boolean.parseBoolean(Configuration.MUTE_ALL[1]));
+		muteErrors = config.getBoolean(Configuration.MUTE_WARNINGS[0], Boolean.parseBoolean(Configuration.MUTE_WARNINGS[1]));
+		muteWarnings = config.getBoolean(Configuration.MUTE_ERRORS[0], Boolean.parseBoolean(Configuration.MUTE_ERRORS[1]));
+
 		logger = new StreamLogger(streamer);
 		logger.getLogger().addListener(pannel);
 		bot = new KeplerBot(logger);
@@ -114,6 +119,43 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 	public String getStreamer() {
 		return streamer;
+	}
+
+	public void sendMessage(Channel target, String message) {
+		if (!muteAll) {
+			bot.sendMessage(target, message);
+		}
+	}
+
+	public void sendError(Channel target, String message) {
+		if (!(muteAll || muteErrors)) {
+			bot.sendMessage(target, message);
+		}
+	}
+
+	public void sendWarning(Channel target, String message) {
+		if (!(muteAll || muteWarnings)) {
+			bot.sendMessage(target, message);
+		}
+	}
+
+	private boolean muteAll;
+	private boolean muteErrors;
+	private boolean muteWarnings;
+
+	public void muteAll(boolean muted) {
+		muteAll = muted;
+		logger.fine("Mute All set to " + muted);
+	}
+
+	public void muteErrors(boolean muted) {
+		muteErrors = muted;
+		logger.fine("Mute Errors set to " + muted);
+	}
+
+	public void muteWarnings(boolean muted) {
+		muteWarnings = muted;
+		logger.fine("Mute Errors set to " + muted);
 	}
 
 	@Override

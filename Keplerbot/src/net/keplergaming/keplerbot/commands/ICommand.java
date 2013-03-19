@@ -1,6 +1,5 @@
 package net.keplergaming.keplerbot.commands;
 
-import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
@@ -15,7 +14,7 @@ public interface ICommand{
 
 	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user);
 
-	public void handleCommand(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String[] args);
+	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args);
 
 	public String getCommandUsage();
 }
