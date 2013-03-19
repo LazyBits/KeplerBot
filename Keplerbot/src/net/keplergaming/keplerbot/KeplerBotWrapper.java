@@ -65,7 +65,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 			bot.joinChannel("#" + streamer);
 
 			if (displayJoinMessage) {
-				bot.sendMessage(getChannel(), MainFrame.getInstance().getConfig().getString(Configuration.JOIN_MESSAGE[0], Configuration.JOIN_MESSAGE[1]));
+				bot.sendMessage(getChannel(), String.format(MainFrame.getInstance().getConfig().getString(Configuration.JOIN_MESSAGE[0], Configuration.JOIN_MESSAGE[1]), MainFrame.getInstance().getConfig().getString(Configuration.BOT_NAME[0], Configuration.BOT_NAME[1])));
 			}
 		} catch (Exception e) {
 			logger.error("Could not connect to server", e);
@@ -182,14 +182,14 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		permissionsManager.stopThread();
 
 		if (showMessage) {
-			bot.sendMessage(getChannel(), MainFrame.getInstance().getConfig().getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]));
+			bot.sendMessage(getChannel(), String.format(MainFrame.getInstance().getConfig().getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]), MainFrame.getInstance().getConfig().getString(Configuration.BOT_NAME[0], Configuration.BOT_NAME[1])));
 		}
 
 		bot.setAutoReconnect(false);
 		bot.disconnect();
-		logger.info("Disconnected.");
 	}
 
+	@Override
 	public void onDisconnect(DisconnectEvent<KeplerBot> event) throws Exception {
 		if (disconnectFlag) {
 			disconnectFlag = false;

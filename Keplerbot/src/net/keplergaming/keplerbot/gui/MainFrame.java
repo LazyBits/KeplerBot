@@ -1,5 +1,6 @@
 package net.keplergaming.keplerbot.gui;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -107,7 +108,7 @@ public class MainFrame {
 		frmKeplerbot.setResizable(false);
 		frmKeplerbot.setTitle("Keplerbot");
 		frmKeplerbot.setBounds(100, 100, 800, 500);
-		frmKeplerbot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmKeplerbot.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		MainLogger.fine("Creating threaded version checker");
 		checkerThread = new Thread(new Runnable() {
@@ -290,9 +291,9 @@ public class MainFrame {
 
 		final ConfigFieldPanel botNameConfig = new ConfigFieldPanel("Bot name", Configuration.BOT_NAME[0], Configuration.BOT_NAME[1], generalPanel.getBackground());
 
-		final ConfigFieldPanel joinMessageConfig = new ConfigFieldPanel("Join Message", Configuration.JOIN_MESSAGE[0], String.format(Configuration.JOIN_MESSAGE[1], botNameConfig.getValue()), generalPanel.getBackground());
+		final ConfigFieldPanel joinMessageConfig = new ConfigFieldPanel("Join Message", Configuration.JOIN_MESSAGE[0], Configuration.JOIN_MESSAGE[1], generalPanel.getBackground());
 
-		final ConfigFieldPanel leaveConfig = new ConfigFieldPanel("Leave Message", Configuration.LEAVE_MESSAGE[0], String.format(Configuration.LEAVE_MESSAGE[1], botNameConfig.getValue()), generalPanel.getBackground());
+		final ConfigFieldPanel leaveConfig = new ConfigFieldPanel("Leave Message", Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1], generalPanel.getBackground());
 
 		GroupLayout gl_generalPanel = new GroupLayout(generalPanel);
 		gl_generalPanel.setHorizontalGroup(gl_generalPanel.createParallelGroup(Alignment.LEADING).addGroup( gl_generalPanel.createSequentialGroup().addContainerGap().addGroup(gl_generalPanel.createParallelGroup(Alignment.LEADING).addComponent(botNameConfig, GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE).addComponent(joinMessageConfig, GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE).addComponent(leaveConfig, GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)).addContainerGap()));gl_generalPanel.setVerticalGroup(gl_generalPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_generalPanel.createSequentialGroup().addContainerGap().addComponent(botNameConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(joinMessageConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(leaveConfig, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
@@ -323,7 +324,9 @@ public class MainFrame {
 
 		frmKeplerbot.addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent arg0) {
+			public void windowClosing(WindowEvent ev) {
+				frmKeplerbot.setVisible(false);
+
 				config.setString(botNameConfig.getConfigKey(), botNameConfig.getValue());
 				config.setString(joinMessageConfig.getConfigKey(), joinMessageConfig.getValue());
 				config.setString(leaveConfig.getConfigKey(), leaveConfig.getValue());
@@ -331,6 +334,13 @@ public class MainFrame {
 				config.setString(passwordConfig.getConfigKey(), passwordConfig.getValue());
 
 				config.saveConfig();
+
+				for(Component component : streamTabs.getComponents()) {
+					((StreamLogPannel)component).getWrapper().dispose(false);
+					streamTabs.remove(component);
+				}
+
+				System.exit(0);
 			}
 		});
 
@@ -410,6 +420,7 @@ public class MainFrame {
 		if (panel != null) {
 			panel.getWrapper().dispose(showMessage);
 			streamTabs.remove(panel);
+			System.gc();
 		}
 	}
 }

@@ -54,7 +54,7 @@ public class StreamLogPannel extends JScrollPane implements ILogListener {
 
 	public void resetBot() {
 		wrapper.dispose(false);
-		
+		System.gc();
 		wrapper = new KeplerBotWrapper(this, streamer, false);
 		new Thread(wrapper).start();
 	}
