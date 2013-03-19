@@ -33,9 +33,11 @@ public class Logger {
 			System.out.println(logToString(message, logLevel) + throwableToString(t));
 		}
 
-		for (ILogListener listener : listeners) {
-			if (listener.shouldLog(logLevel)) {
-				listener.onLog(logToString(message, logLevel), message, logLevel, t);
+		if (!listeners.isEmpty()) {
+			for (ILogListener listener : listeners) {
+				if (listener.shouldLog(logLevel)) {
+					listener.onLog(logToString(message, logLevel), message, logLevel, t);
+				}
 			}
 		}
 	}
