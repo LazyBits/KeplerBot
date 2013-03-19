@@ -10,12 +10,14 @@ public class PermissionsManager extends ListenerAdapter<KeplerBot> implements Ru
 
 	public PermissionsManager(KeplerBotWrapper wrapper) {
 		this.wrapper = wrapper;
-		new Thread(this).start();
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	private KeplerBotWrapper wrapper;
 	private String[] moderators;
 	private boolean stop = false;
+	private Thread thread;
 
 	@Override
 	public void onPrivateMessage(PrivateMessageEvent<KeplerBot> event) {
@@ -62,5 +64,6 @@ public class PermissionsManager extends ListenerAdapter<KeplerBot> implements Ru
 
 	public void stopThread() {
 		stop = true;
+		thread = null;
 	}
 }

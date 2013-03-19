@@ -25,6 +25,9 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		this.streamer = streamer;
 		this.pannel = pannel;
 		this.displayJoinMessage = joinMessage;
+
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	@Override
@@ -76,6 +79,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 	private String streamer;
 	private KeplerBot bot;
 	private Configuration config;
+	private Thread thread;
 
 	public KeplerBot getBot() {
 		return bot;
@@ -187,6 +191,8 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 
 		bot.setAutoReconnect(false);
 		bot.disconnect();
+
+		thread = null;
 	}
 
 	@Override

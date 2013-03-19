@@ -340,6 +340,7 @@ public class MainFrame {
 					streamTabs.remove(component);
 				}
 
+				checkerThread = null;
 				System.exit(0);
 			}
 		});
