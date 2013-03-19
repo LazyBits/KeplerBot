@@ -8,6 +8,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/JTattoo-1.6.7.jar" sourcepath="lib/JTattoo-1.6.7-sources.zip"/>
-	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
