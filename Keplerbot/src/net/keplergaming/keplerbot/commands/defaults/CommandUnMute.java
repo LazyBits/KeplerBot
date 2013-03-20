@@ -6,7 +6,7 @@ import net.keplergaming.keplerbot.config.Configuration;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-public class CommandUnMute extends CommandMute{
+public class CommandUnMute extends CommandMute {
 
 	@Override
 	public String getCommandName() {

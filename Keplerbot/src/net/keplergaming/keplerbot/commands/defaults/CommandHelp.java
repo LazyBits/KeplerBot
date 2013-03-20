@@ -12,7 +12,7 @@ import net.keplergaming.keplerbot.utils.StringUtils;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-public class CommandHelp implements ICommand{
+public class CommandHelp implements ICommand {
 
 	@Override
 	public String getCommandName() {
@@ -46,16 +46,15 @@ public class CommandHelp implements ICommand{
 			wrapper.sendMessage(channel, "Your commands: " + StringUtils.joinString(commandNames));
 		} else if (args.length == 1) {
 			try {
-				ICommand command = wrapper.getCommandManager().getCommand(args[0]);
+				String commandName = args[0];
+				if (commandName.startsWith("!")) {
+					commandName = commandName.substring(1);
+				}
+				ICommand command = wrapper.getCommandManager().getCommand(commandName);
 				wrapper.sendMessage(channel, command.getCommandUsage());
 			} catch (BotException e) {
-				try {
-					ICommand command = wrapper.getCommandManager().getCommand(args[0].substring(1));
-					wrapper.sendMessage(channel, command.getCommandUsage());
-				} catch (BotException e2) {
-					wrapper.sendError(channel, e.getMessage());
-					wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
-				}
+				wrapper.sendError(channel, e.getMessage());
+				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
 			}
 		}
 	}

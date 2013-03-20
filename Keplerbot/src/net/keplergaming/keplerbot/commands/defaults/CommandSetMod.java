@@ -1,0 +1,40 @@
+package net.keplergaming.keplerbot.commands.defaults;
+
+import org.pircbotx.Channel;
+import org.pircbotx.User;
+
+import net.keplergaming.keplerbot.KeplerBotWrapper;
+import net.keplergaming.keplerbot.exception.BotException;
+import net.keplergaming.keplerbot.utils.StringUtils;
+
+public class CommandSetMod extends CommandSet {
+
+	@Override
+	public String getCommandName() {
+		return "setmod";
+	}
+
+	@Override
+	public String[] getCommandAliases() {
+		return new String[]{"newmod"};
+	}
+
+	@Override
+	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+		if (args.length >= 2) {
+			try {
+				String commandName = args[0];
+				if (commandName.startsWith("!")) {
+					commandName = commandName.substring(1);
+				}
+				wrapper.getCommandManager().registerCommand(new CommandBasic(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true));
+				wrapper.sendMessage(channel, "Command !" + commandName + " set");
+			} catch (BotException e) {
+				wrapper.sendWarning(channel, e.getMessage());
+				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+			}
+		} else {
+			wrapper.sendMessage(channel, getCommandUsage());
+		}
+	}
+}

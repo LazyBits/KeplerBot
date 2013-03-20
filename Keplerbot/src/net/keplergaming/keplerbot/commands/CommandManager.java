@@ -34,9 +34,9 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 		registerDefaultCommands();
 	}
 	
-	public void registerCommand(ICommand command) {
+	public void registerCommand(ICommand command) throws BotException {
 		if (commandMap.containsKey(command.getCommandName())) {
-			logger.warning("Command " + command.getCommandName() + " already registered");
+			throw new BotException("Command " + command.getCommandName() + " already exists");
 		}
 		commandMap.put(command.getCommandName(), command);
 
@@ -47,6 +47,14 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 		}
 
 		logger.info("Succesfully registered command " + command.getCommandName() + ".");
+	}
+
+	public void unRegisterCommand(String command) throws BotException {
+		if (!commandMap.containsKey(command)) {
+			throw new BotException("Command " + command + " not found");
+		}
+		commandMap.remove(commandMap.get(command));
+		logger.info("Succesfully unregistered command " + command + ".");
 	}
 
 	public ICommand getCommand(String command) throws BotException {
@@ -106,7 +114,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 					String className = pkgname + '.' + files[i].substring(0, files[i].length() - 6);
 					logger.fine("ClassDiscovery: className = " + className);
 					try {
-						if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+						if (ICommand.class.isAssignableFrom(Class.forName(className)) && !Class.forName(className).isMemberClass()) {
 							registerCommand((ICommand) Class.forName(className).newInstance());
 						}
 					} catch (Exception e) {
@@ -127,7 +135,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 						String className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
 						logger.fine("ClassDiscovery: className = " + className);
 						try {
-							if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+							if (ICommand.class.isAssignableFrom(Class.forName(className)) && !Class.forName(className).isMemberClass()) {
 								registerCommand((ICommand) Class.forName(className).newInstance());
 							}
 						} catch (Exception e) {
