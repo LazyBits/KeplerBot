@@ -33,10 +33,10 @@ public class CommandFilter implements ICommand{
 				Filter filter = wrapper.getFilterManager().getFilter(args[0]);
 				if (args[1].equalsIgnoreCase("on")) {
 					wrapper.sendMessage(channel, "Filter enabled");
-					filter.setDisabled(false);
+					filter.setEnabled(wrapper.getConfig(), true);
 				} else if (args[1].equalsIgnoreCase("off")) {
 					wrapper.sendMessage(channel, "Filter disabled");
-					filter.setDisabled(true);
+					filter.setEnabled(wrapper.getConfig(), false);
 				} else {
 					throw new BotException("Argument doesn't equal 'on' or 'off'");
 				}

@@ -53,9 +53,9 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		permissionsManager = new PermissionsManager(this);
 		commandManager = new CommandManager(this);
 		filterManager = new FilterManager(this);
-		filterManager.registerFilter(new LinkFilter(config));
+		filterManager.registerFilter(new LinkFilter());
 		filterManager.registerFilter(new ColorFilter(config));
-		filterManager.registerFilter(new CapsFilter(config));
+		filterManager.registerFilter(new CapsFilter());
 
 		bot.getListenerManager().addListener(permissionsManager);
 		bot.getListenerManager().addListener(commandManager);

@@ -5,17 +5,12 @@ import java.util.regex.Pattern;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 public class LinkFilter extends Filter{
-
-	public LinkFilter(Configuration config) {
-		setDisabled(config.getBoolean(Configuration.LINK_FILTER[0], Boolean.parseBoolean(Configuration.LINK_FILTER[1])));
-	}
 
 	@Override
 	public String getFilterName() {
@@ -35,6 +30,11 @@ public class LinkFilter extends Filter{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String getDefaultWarning() {
+		return "%s, Don't post links!";
 	}
 
 	public static Pattern URL_PATTERN = Pattern.compile("^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);

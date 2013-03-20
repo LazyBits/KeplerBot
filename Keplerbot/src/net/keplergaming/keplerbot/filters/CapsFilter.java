@@ -2,16 +2,11 @@ package net.keplergaming.keplerbot.filters;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.config.Configuration;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 public class CapsFilter extends Filter{
-
-	public CapsFilter(Configuration config) {
-		setDisabled(config.getBoolean(Configuration.CAPS_FILTER[0], Boolean.parseBoolean(Configuration.CAPS_FILTER[1])));
-	}
 
 	@Override
 	public String getFilterName() {
@@ -31,5 +26,10 @@ public class CapsFilter extends Filter{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String getDefaultWarning() {
+		return "%s, Don't shout!";
 	}
 }

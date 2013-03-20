@@ -1,20 +1,19 @@
 package net.keplergaming.keplerbot.gui;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-import javax.swing.JCheckBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
 import net.keplergaming.keplerbot.config.Configuration;
-
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class ColorConfigFieldPanel extends JPanel {
@@ -29,7 +28,6 @@ public class ColorConfigFieldPanel extends JPanel {
 		chckbx.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				config.setBoolean(color, chckbx.isSelected());
-				config.saveConfig();
 			}
 		});
 		chckbx.setSelected(config.getBoolean(color, defaultValue));
