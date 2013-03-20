@@ -53,5 +53,4 @@ public class CommandFilter implements ICommand{
 	public String getCommandUsage() {
 		return "!" + getCommandName() + " [caps|color|links|censor] [on|off]";
 	}
-
 }

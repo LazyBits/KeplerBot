@@ -57,5 +57,4 @@ public class CommandMute implements ICommand {
 	public String getCommandUsage() {
 		return "!" + getCommandName() + "[errors|warnings|all]";
 	}
-
 }

@@ -34,10 +34,16 @@ public class CommandHelp implements ICommand{
 		if (args.length == 0) {
 			ArrayList<String> commandNames = new ArrayList<String>();
 			for (String command : wrapper.getCommandManager().getCommands()) {
-				commandNames.add(command);
+				try {
+					if (wrapper.getCommandManager().getCommand(command).canSenderUseCommand(wrapper.getPermissionsManager(), sender)) {
+						commandNames.add(command);
+					}
+				} catch (BotException e) {
+					wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+				}
 			}
 			Collections.sort(commandNames);
-			wrapper.sendMessage(channel, StringUtils.joinString(commandNames));
+			wrapper.sendMessage(channel, "Your commands: " + StringUtils.joinString(commandNames));
 		} else if (args.length == 1) {
 			try {
 				ICommand command = wrapper.getCommandManager().getCommand(args[0]);
@@ -58,5 +64,4 @@ public class CommandHelp implements ICommand{
 	public String getCommandUsage() {
 		return "!" + getCommandName() + " [command]";
 	}
-
 }

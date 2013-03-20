@@ -48,5 +48,4 @@ public class CommandCalculate implements ICommand {
 	public String getCommandUsage() {
 		return "!" + getCommandName() + " [Formula]";
 	}
-
 }
