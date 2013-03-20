@@ -20,6 +20,10 @@ public class Configuration {
 	private String fileName;
 	private Properties prop;
 
+	public Properties getProperties() {
+		return prop;
+	}
+
 	public int getInteger(String key, int defaultValue) {
 		String value = Integer.toString(defaultValue);
 		if (!prop.containsKey(key)) {

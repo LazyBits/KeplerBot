@@ -33,7 +33,7 @@ public class CommandUnset implements ICommand {
 				if (commandName.startsWith("!")) {
 					commandName = commandName.substring(1);
 				}
-				wrapper.getCommandManager().unRegisterCommand(args[0]);
+				wrapper.getCommandManager().unRegisterCommand(commandName);
 				wrapper.sendMessage(channel, "Command !" + commandName + " removed");
 			} catch (BotException e) {
 				wrapper.sendWarning(channel, e.getMessage());

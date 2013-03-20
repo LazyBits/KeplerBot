@@ -13,6 +13,8 @@ import java.util.jar.JarFile;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
+import net.keplergaming.keplerbot.commands.defaults.CommandBasic;
+import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 import net.keplergaming.keplerbot.utils.StringUtils;
@@ -23,17 +25,33 @@ import org.pircbotx.hooks.events.MessageEvent;
 public class CommandManager extends ListenerAdapter<KeplerBot>{
 	
 	private Map<String, ICommand> commandMap;
+	private Map<String, ICommand> aliasMap;
 	private StreamLogger logger;
 	private KeplerBotWrapper wrapper;
-	
+	private Configuration userCommands;
+
 	public CommandManager(KeplerBotWrapper wrapper) {
 		this.logger = wrapper.getStreamLogger();
 		this.wrapper = wrapper;
 		commandMap = new HashMap<String, ICommand>();
+		aliasMap = new HashMap<String, ICommand>();
+		userCommands = new Configuration("./commands/commands_" + wrapper.getStreamer() + ".properties");
+		userCommands.loadConfig();
 
 		registerDefaultCommands();
+		registerUserCommands();
 	}
-	
+
+	public void saveCommand(ICommand command) {
+		if (command instanceof CommandBasic) {
+			userCommands.setString("command_" + command.getCommandName(), ((CommandBasic)command).getCommandName());
+			userCommands.setString("message_" + command.getCommandName(), ((CommandBasic)command).getMessage());
+			userCommands.setBoolean("modonly_" + command.getCommandName(), ((CommandBasic)command).isModOnly());
+			userCommands.saveConfig();
+			logger.info("Saved command " + command.getCommandName() + " to file.");
+		}
+	}
+
 	public void registerCommand(ICommand command) throws BotException {
 		if (commandMap.containsKey(command.getCommandName())) {
 			throw new BotException("Command " + command.getCommandName() + " already exists");
@@ -42,26 +60,48 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 
 		if (command.getCommandAliases() != null) {
 			for (String alias : command.getCommandAliases()) {
-				commandMap.put(alias, command);
+				if (aliasMap.containsKey(alias)) {
+					throw new BotException("Command Alias " + alias + " already exists");
+				}
+				aliasMap.put(alias, command);
 			}
 		}
 
-		logger.info("Succesfully registered command " + command.getCommandName() + ".");
+		logger.info("Registered command " + command.getCommandName() + ".");
 	}
 
 	public void unRegisterCommand(String command) throws BotException {
 		if (!commandMap.containsKey(command)) {
 			throw new BotException("Command " + command + " not found");
 		}
-		commandMap.remove(commandMap.get(command));
-		logger.info("Succesfully unregistered command " + command + ".");
+
+		if (commandMap.get(command) instanceof CommandBasic) {
+			userCommands.getProperties().remove("command_" + command);
+			userCommands.getProperties().remove("message_" + command);
+			userCommands.getProperties().remove("modonly_" + command);
+			userCommands.saveConfig();
+			logger.info("Removed command " + command + " from file.");
+		}
+
+		if (commandMap.get(command).getCommandAliases() != null) {
+			for (String alias : commandMap.get(command).getCommandAliases()) {
+				aliasMap.remove(alias);
+			}
+		}
+
+		commandMap.remove(command);
+
+		logger.info("Unregistered command " + command + ".");
 	}
 
 	public ICommand getCommand(String command) throws BotException {
-		if (!commandMap.containsKey(command)) {
+		if (commandMap.containsKey(command)) {
+			return commandMap.get(command);
+		} else if (aliasMap.containsKey(command)) {
+			return aliasMap.get(command);
+		} else {
 			throw new BotException("Command " + command + " not found");
 		}
-		return commandMap.get(command);
 	}
 
 	@Override
@@ -114,11 +154,15 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 					String className = pkgname + '.' + files[i].substring(0, files[i].length() - 6);
 					logger.fine("ClassDiscovery: className = " + className);
 					try {
-						if (ICommand.class.isAssignableFrom(Class.forName(className)) && !Class.forName(className).isMemberClass()) {
-							registerCommand((ICommand) Class.forName(className).newInstance());
+						try {
+							if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+								registerCommand((ICommand) Class.forName(className).newInstance());
+							}
+						} catch (InstantiationException e) {
+							logger.warning("Skipping " + className);
 						}
-					} catch (Exception e) {
-						logger.error("Error when registering default commands", e);
+					} catch (Exception ex) {
+						logger.error("Error when registering default commands", ex);
 					}
 				}
 			}
@@ -135,17 +179,35 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 						String className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
 						logger.fine("ClassDiscovery: className = " + className);
 						try {
-							if (ICommand.class.isAssignableFrom(Class.forName(className)) && !Class.forName(className).isMemberClass()) {
-								registerCommand((ICommand) Class.forName(className).newInstance());
+							try {
+								if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+									registerCommand((ICommand) Class.forName(className).newInstance());
+								}
+							} catch (InstantiationException e) {
+								logger.warning("Skipping " + className);
 							}
-						} catch (Exception e) {
-							logger.error("Error when registering default commands", e);
+						} catch (Exception ex) {
+							logger.error("Error when registering default commands", ex);
 						}
 					}
 				}
 				jarFile.close();
 			} catch (IOException e) {
 				logger.error(pkgname + " (" + directory + ") does not appear to be a valid package", e);
+			}
+		}
+	}
+
+	private void registerUserCommands() {
+		for(Object key : userCommands.getProperties().keySet()) {
+			System.out.println(key);
+			if (((String)key).startsWith("command_")) {
+				String commandName = ((String)key).substring(8);
+				try {
+					registerCommand(new CommandBasic(commandName, userCommands.getString("message_" + commandName, "This is the default message"), userCommands.getBoolean("modonly_" + commandName, false)));
+				} catch (BotException e) {
+					logger.error("Could not register user command " + commandName, e);
+				}
 			}
 		}
 	}

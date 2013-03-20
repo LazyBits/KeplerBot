@@ -4,6 +4,7 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import net.keplergaming.keplerbot.KeplerBotWrapper;
+import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.utils.StringUtils;
 
@@ -27,7 +28,9 @@ public class CommandSetMod extends CommandSet {
 				if (commandName.startsWith("!")) {
 					commandName = commandName.substring(1);
 				}
-				wrapper.getCommandManager().registerCommand(new CommandBasic(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true));
+				ICommand newCommand = new CommandBasic(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true);
+				wrapper.getCommandManager().registerCommand(newCommand);
+				wrapper.getCommandManager().saveCommand(newCommand);
 				wrapper.sendMessage(channel, "Command !" + commandName + " set");
 			} catch (BotException e) {
 				wrapper.sendWarning(channel, e.getMessage());
