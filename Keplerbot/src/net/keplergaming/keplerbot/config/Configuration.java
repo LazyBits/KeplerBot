@@ -79,6 +79,7 @@ public class Configuration {
 			if (configFile.exists()) {
 				InputStream in = new FileInputStream(configFile);
 				prop.load(in);
+				in.close();
 			}
 		} catch (IOException e) {
 			MainLogger.error("Failed to load config file "  + fileName, e);
@@ -94,6 +95,7 @@ public class Configuration {
 			}
 			OutputStream out = new FileOutputStream(configFile);
 			prop.store(out, "KeplerBot");
+			out.close();
 		} catch (IOException e) {
 			MainLogger.error("Failed to save config file " + fileName, e);
 		}
@@ -105,11 +107,6 @@ public class Configuration {
 	public static String[] BOT_NAME = new String[] { "bot_name", "KeplerBot" };
 	public static String[] JOIN_MESSAGE = new String[] { "join_message", "%s has joined your stream" };
 	public static String[] LEAVE_MESSAGE = new String[] { "leave_message", "%s has left your stream" };
-
-	public static String[] CAPS_FILTER = new String[] { "caps_filter", "true" };
-	public static String[] COLOR_FILTER = new String[] { "color_filter", "true" };
-	public static String[] LINK_FILTER = new String[] { "link_filter", "true" };
-	public static String[] CENSOR_FILTER = new String[] { "censor_filter", "true" };
 
 	public static String[] MUTE_ALL = new String[] {"mute_all", "false"};
 	public static String[] MUTE_WARNINGS = new String[] {"mute_warnings", "false"};
