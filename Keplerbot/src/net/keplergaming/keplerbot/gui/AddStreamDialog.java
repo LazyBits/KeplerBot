@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -29,7 +30,7 @@ public class AddStreamDialog extends JDialog {
 	 */
 	public AddStreamDialog(Frame parent) {
 		super(parent, true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setTitle("Connect to Stream");
 		setResizable(false);
@@ -58,6 +59,7 @@ public class AddStreamDialog extends JDialog {
 
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!textField.getText().isEmpty()) {
 					MainFrame.getInstance().addStream(textField.getText(), chckbxJoinMsg.isSelected());
@@ -72,6 +74,7 @@ public class AddStreamDialog extends JDialog {
 
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();

@@ -29,6 +29,7 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -61,6 +62,7 @@ public class MainFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					MainLogger.info("Starting KeplerBot "+ Version.getVersion());
@@ -108,7 +110,7 @@ public class MainFrame {
 		frmKeplerbot.setResizable(false);
 		frmKeplerbot.setTitle("Keplerbot");
 		frmKeplerbot.setBounds(100, 100, 800, 500);
-		frmKeplerbot.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmKeplerbot.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		MainLogger.fine("Creating threaded version checker");
 		checkerThread = new Thread(new Runnable() {
@@ -131,7 +133,7 @@ public class MainFrame {
 		});
 		checkerThread.start();
 
-		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
 		tabbedPane.setFocusable(false);
 
 		JLabel lblVersion = new JLabel(Version.getVersion());
@@ -161,6 +163,7 @@ public class MainFrame {
 
 		JButton btnResetStream = new JButton("Reset Connection");
 		btnResetStream.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (streamTabs.getSelectedComponent() != null) {
 					((StreamLogPannel)streamTabs.getSelectedComponent()).resetBot();
@@ -171,6 +174,7 @@ public class MainFrame {
 
 		JButton btnRemoveStream = new JButton("Close Stream");
 		btnRemoveStream.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (streamTabs.getSelectedComponent() != null && streamTabs.getSelectedIndex() != 0) {
 					CloseStreamDialog dialog = new CloseStreamDialog(frmKeplerbot);
@@ -183,13 +187,14 @@ public class MainFrame {
 		JButton btnAddStream = new JButton("Connect to Stream");
 		btnAddStream.setFocusable(false);
 		btnAddStream.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final AddStreamDialog dialog = new AddStreamDialog(frmKeplerbot);
 				dialog.setVisible(true);
 			}
 		});
 
-		streamTabs = new JTabbedPane(JTabbedPane.TOP);
+		streamTabs = new JTabbedPane(SwingConstants.TOP);
 		streamTabs.setFocusable(false);
 		streamTabs.setBackground(SystemColor.inactiveCaptionBorder);
 
@@ -199,6 +204,7 @@ public class MainFrame {
 
 		JComboBox<String> comboBoxPresets = new JComboBox<String>();
 		comboBoxPresets.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (model.getSelectedItem().equals(PresetHandler.ADD_PRESET)) {
 					String stream = JOptionPane.showInputDialog(frmKeplerbot, "Stream name", "Add Preset", JOptionPane.PLAIN_MESSAGE);
@@ -220,6 +226,7 @@ public class MainFrame {
 
 		JButton btnAddPreset = new JButton("Connect");
 		btnAddPreset.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!model.getSelectedItem().equals(PresetHandler.ADD_PRESET)) {
 					int joinMessage = JOptionPane.showConfirmDialog(frmKeplerbot, "Would you like to show the join message?");
@@ -235,6 +242,7 @@ public class MainFrame {
 		JButton btnSend = new JButton("Send");
 		streamPanel.getRootPane().setDefaultButton(btnSend);
 		btnSend.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
 				
@@ -250,6 +258,7 @@ public class MainFrame {
 
 		JButton btnStreamConfig = new JButton("Stream Config");
 		btnStreamConfig.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
 				
@@ -353,6 +362,7 @@ public class MainFrame {
 
 		JTextPane aboutTextPane = new JTextPane();
 		aboutTextPane.addHyperlinkListener(new HyperlinkListener() {
+			@Override
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
 					DesktopUtils.openUrl(e.getURL().toString());

@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import net.keplergaming.keplerbot.logger.MainLogger;
 
@@ -57,7 +58,7 @@ public class ErrorPanel extends JPanel {
 		setLayout(null);
 
 		txtErrorsFound = new JTextField();
-		txtErrorsFound.setHorizontalAlignment(JTextField.CENTER);
+		txtErrorsFound.setHorizontalAlignment(SwingConstants.CENTER);
 		txtErrorsFound.setBounds(256, 0, 120, 13);
 		txtErrorsFound.setFont(new Font("Dialog", Font.BOLD, 15));
 		txtErrorsFound.setBorder(null);

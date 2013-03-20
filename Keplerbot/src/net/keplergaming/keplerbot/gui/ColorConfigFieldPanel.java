@@ -26,6 +26,7 @@ public class ColorConfigFieldPanel extends JPanel {
 		
 		final JCheckBox chckbx = new JCheckBox();
 		chckbx.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				config.setBoolean(color, chckbx.isSelected());
 			}

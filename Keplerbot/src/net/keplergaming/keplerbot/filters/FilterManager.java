@@ -38,7 +38,7 @@ public class FilterManager extends ListenerAdapter<KeplerBot>{
 		if (!filterMap.containsKey(filter)) {
 			throw new BotException("Filter " + filter + " not found");
 		}
-		return (Filter) filterMap.get(filter);
+		return filterMap.get(filter);
 	}
 
 	@Override

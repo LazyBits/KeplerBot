@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,7 +26,7 @@ public class CloseStreamDialog extends JDialog {
 	 */
 	public CloseStreamDialog(Frame parent) {
 		super(parent, true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setTitle("Close Stream");
 		setResizable(false);
@@ -48,6 +49,7 @@ public class CloseStreamDialog extends JDialog {
 
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainFrame.getInstance().closeVisibleStream(chckbxJoinMsg.isSelected());
 				setVisible(false);
@@ -60,6 +62,7 @@ public class CloseStreamDialog extends JDialog {
 
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();

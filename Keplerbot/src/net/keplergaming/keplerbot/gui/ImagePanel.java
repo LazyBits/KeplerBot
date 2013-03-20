@@ -21,6 +21,7 @@ public class ImagePanel extends JPanel {
 		setLayout(null);
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(img, 0, 0, null);
 	}

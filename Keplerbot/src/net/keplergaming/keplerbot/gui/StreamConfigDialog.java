@@ -27,6 +27,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -55,7 +56,7 @@ public class StreamConfigDialog extends JDialog {
 		setType(Type.POPUP);
 		setTitle("Stream Config");
 		setAlwaysOnTop(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 440);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -207,6 +208,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JRadioButton rdbtnTimeOut1 = new JRadioButton("Time Out");
 		rdbtnTimeOut1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Warning1.setEnabled(!rdbtnTimeOut1.isSelected());
 				txtValue1.setEnabled(rdbtnTimeOut1.isSelected());
@@ -218,6 +220,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JRadioButton rdbtnTimeOut2 = new JRadioButton("Time Out");
 		rdbtnTimeOut2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Warning2.setEnabled(!rdbtnTimeOut2.isSelected());
 				txtValue2.setEnabled(rdbtnTimeOut2.isSelected());
@@ -229,6 +232,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JRadioButton rdbtnTimeOut3 = new JRadioButton("Time Out");
 		rdbtnTimeOut3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Warning3.setEnabled(!rdbtnTimeOut3.isSelected());
 				txtValue3.setEnabled(rdbtnTimeOut3.isSelected());
@@ -240,6 +244,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JRadioButton rdbtnWarning1 = new JRadioButton("Warning");
 		rdbtnWarning1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Warning1.setEnabled(rdbtnWarning1.isSelected());
 				txtValue1.setEnabled(!rdbtnWarning1.isSelected());
@@ -251,6 +256,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JRadioButton rdbtnWarning2 = new JRadioButton("Warning");
 		rdbtnWarning2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Warning2.setEnabled(rdbtnWarning2.isSelected());
 				txtValue2.setEnabled(!rdbtnWarning2.isSelected());
@@ -262,6 +268,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JRadioButton rdbtnWarning3 = new JRadioButton("Warning");
 		rdbtnWarning3.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Warning3.setEnabled(rdbtnWarning3.isSelected());
 				txtValue3.setEnabled(!rdbtnWarning3.isSelected());
@@ -293,6 +300,7 @@ public class StreamConfigDialog extends JDialog {
 
 		final JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.DESELECTED) {
 					try {
@@ -372,6 +380,7 @@ public class StreamConfigDialog extends JDialog {
 		chckbxErrors.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxErrors.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxErrors.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				wrapper.getConfig().setBoolean(Configuration.MUTE_ERRORS[0], chckbxErrors.isSelected());
 				wrapper.muteAll(chckbxErrors.isSelected());
@@ -383,6 +392,7 @@ public class StreamConfigDialog extends JDialog {
 		chckbxWarnings.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxWarnings.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxWarnings.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				wrapper.getConfig().setBoolean(Configuration.MUTE_WARNINGS[0], chckbxWarnings.isSelected());
 				wrapper.muteAll(chckbxWarnings.isSelected());
@@ -394,6 +404,7 @@ public class StreamConfigDialog extends JDialog {
 		chckbxAll.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxAll.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxAll.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				wrapper.getConfig().setBoolean(Configuration.MUTE_ALL[0], chckbxAll.isSelected());
 				wrapper.muteAll(chckbxAll.isSelected());
@@ -417,6 +428,7 @@ public class StreamConfigDialog extends JDialog {
 		final JCheckBox chckbxCapsFilter = new JCheckBox("Caps Filter");
 		chckbxCapsFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxCapsFilter.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					wrapper.getFilterManager().getFilter("caps").setEnabled(wrapper.getConfig(), chckbxCapsFilter.isSelected());
@@ -441,6 +453,7 @@ public class StreamConfigDialog extends JDialog {
 		final JCheckBox chckbxLinkFilter = new JCheckBox("Link Filter");
 		chckbxLinkFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxLinkFilter.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					wrapper.getFilterManager().getFilter("links").setEnabled(wrapper.getConfig(), chckbxCapsFilter.isSelected());
@@ -464,6 +477,7 @@ public class StreamConfigDialog extends JDialog {
 		final JCheckBox chckbxColorFilter = new JCheckBox("Color Filter");
 		chckbxColorFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxColorFilter.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					wrapper.getFilterManager().getFilter("color").setEnabled(wrapper.getConfig(), chckbxCapsFilter.isSelected());
@@ -487,6 +501,7 @@ public class StreamConfigDialog extends JDialog {
 		final JCheckBox chckbxCensorFilter = new JCheckBox("Censor Filter");
 		chckbxCensorFilter.setFont(new Font("Dialog", Font.PLAIN, 13));
 		chckbxCensorFilter.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					wrapper.getFilterManager().getFilter("censor").setEnabled(wrapper.getConfig(), chckbxCapsFilter.isSelected());
@@ -558,6 +573,7 @@ public class StreamConfigDialog extends JDialog {
 
 		JButton btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
