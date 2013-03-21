@@ -1,12 +1,12 @@
 package net.keplergaming.keplerbot.commands.defaults;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
+
+import org.pircbotx.Channel;
+import org.pircbotx.User;
 
 public class CommandCounter implements ICommand {
 
@@ -34,7 +34,7 @@ public class CommandCounter implements ICommand {
 					if (commandName.startsWith("!")) {
 						commandName = commandName.substring(1);
 					}
-					ICommand newCommand = new CalculaterCommand(commandName);
+					ICommand newCommand = new CounterCommand(commandName);
 					wrapper.getCommandManager().registerCommand(newCommand);
 					wrapper.sendMessage(channel, "Counter !" + commandName + " set");
 				} catch (BotException e) {

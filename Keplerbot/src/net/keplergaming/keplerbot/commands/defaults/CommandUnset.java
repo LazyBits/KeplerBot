@@ -1,12 +1,12 @@
 package net.keplergaming.keplerbot.commands.defaults;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
+
+import org.pircbotx.Channel;
+import org.pircbotx.User;
 
 public class CommandUnset implements ICommand {
 

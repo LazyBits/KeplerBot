@@ -13,7 +13,7 @@ import java.util.jar.JarFile;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.commands.defaults.CommandBasic;
+import net.keplergaming.keplerbot.commands.defaults.BasicCommand;
 import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.logger.StreamLogger;
@@ -75,7 +75,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			throw new BotException("Command !" + command + " not found");
 		}
 
-		if (commandMap.get(command) instanceof CommandBasic) {
+		if (commandMap.get(command) instanceof BasicCommand) {
 			userCommands.getProperties().remove("command_" + command);
 			userCommands.getProperties().remove("message_" + command);
 			userCommands.getProperties().remove("modonly_" + command);
@@ -204,7 +204,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			if (((String)key).startsWith("command_")) {
 				String commandName = ((String)key).substring(8);
 				try {
-					registerCommand(new CommandBasic(commandName, userCommands.getString("message_" + commandName, "This is the default message"), userCommands.getBoolean("modonly_" + commandName, false)));
+					registerCommand(new BasicCommand(commandName, userCommands.getString("message_" + commandName, "This is the default message"), userCommands.getBoolean("modonly_" + commandName, false)));
 				} catch (BotException e) {
 					logger.error("Could not register user command " + commandName, e);
 				}

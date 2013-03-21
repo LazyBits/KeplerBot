@@ -1,15 +1,15 @@
 package net.keplergaming.keplerbot.commands.defaults;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-public class CalculaterCommand implements ICommand {
+import org.pircbotx.Channel;
+import org.pircbotx.User;
 
-	public CalculaterCommand(String name) {
+public class CounterCommand implements ICommand {
+
+	public CounterCommand(String name) {
 		this.name = name;
 	}
 
