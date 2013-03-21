@@ -43,25 +43,25 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 	}
 
 	public void saveCommand(ICommand command) {
-		if (command instanceof CommandBasic) {
-			userCommands.setString("command_" + command.getCommandName(), ((CommandBasic)command).getCommandName());
-			userCommands.setString("message_" + command.getCommandName(), ((CommandBasic)command).getMessage());
-			userCommands.setBoolean("modonly_" + command.getCommandName(), ((CommandBasic)command).isModOnly());
+		if (command instanceof BasicCommand) {
+			userCommands.setString("command_" + command.getCommandName(), ((BasicCommand)command).getCommandName());
+			userCommands.setString("message_" + command.getCommandName(), ((BasicCommand)command).getMessage());
+			userCommands.setBoolean("modonly_" + command.getCommandName(), ((BasicCommand)command).isModOnly());
 			userCommands.saveConfig();
-			logger.info("Saved command " + command.getCommandName() + " to file.");
+			logger.info("Saved command !" + command.getCommandName() + " to file.");
 		}
 	}
 
 	public void registerCommand(ICommand command) throws BotException {
 		if (commandMap.containsKey(command.getCommandName())) {
-			throw new BotException("Command " + command.getCommandName() + " already exists");
+			throw new BotException("Command !" + command.getCommandName() + " already exists");
 		}
 		commandMap.put(command.getCommandName(), command);
 
 		if (command.getCommandAliases() != null) {
 			for (String alias : command.getCommandAliases()) {
 				if (aliasMap.containsKey(alias)) {
-					throw new BotException("Command Alias " + alias + " already exists");
+					throw new BotException("Command Alias !" + alias + " already exists");
 				}
 				aliasMap.put(alias, command);
 			}
@@ -72,7 +72,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 
 	public void unRegisterCommand(String command) throws BotException {
 		if (!commandMap.containsKey(command)) {
-			throw new BotException("Command " + command + " not found");
+			throw new BotException("Command !" + command + " not found");
 		}
 
 		if (commandMap.get(command) instanceof CommandBasic) {
@@ -80,7 +80,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			userCommands.getProperties().remove("message_" + command);
 			userCommands.getProperties().remove("modonly_" + command);
 			userCommands.saveConfig();
-			logger.info("Removed command " + command + " from file.");
+			logger.info("Removed command !" + command + " from file.");
 		}
 
 		if (commandMap.get(command).getCommandAliases() != null) {
@@ -91,7 +91,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 
 		commandMap.remove(command);
 
-		logger.info("Unregistered command " + command + ".");
+		logger.info("Unregistered command !" + command + ".");
 	}
 
 	public ICommand getCommand(String command) throws BotException {
@@ -100,7 +100,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 		} else if (aliasMap.containsKey(command)) {
 			return aliasMap.get(command);
 		} else {
-			throw new BotException("Command " + command + " not found");
+			throw new BotException("Command !" + command + " not found");
 		}
 	}
 

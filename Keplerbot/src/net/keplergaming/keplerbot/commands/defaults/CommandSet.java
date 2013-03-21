@@ -34,7 +34,7 @@ public class CommandSet implements ICommand {
 				if (commandName.startsWith("!")) {
 					commandName = commandName.substring(1);
 				}
-				ICommand newCommand = new CommandBasic(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), false);
+				ICommand newCommand = new BasicCommand(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), false);
 				wrapper.getCommandManager().registerCommand(newCommand);
 				wrapper.getCommandManager().saveCommand(newCommand);
 				wrapper.sendMessage(channel, "Command !" + commandName + " set");

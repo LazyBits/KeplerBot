@@ -7,9 +7,9 @@ import net.keplergaming.keplerbot.permissions.PermissionsManager;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-public class CommandBasic implements ICommand {
+public class BasicCommand implements ICommand {
 
-	public CommandBasic(String name, String message, boolean modOnly) {
+	public BasicCommand(String name, String message, boolean modOnly) {
 		this.name = name;
 		this.message = message;
 		this.modOnly = modOnly;
@@ -40,7 +40,7 @@ public class CommandBasic implements ICommand {
 
 	@Override
 	public String getCommandUsage() {
-		return null;
+		return "!" + getCommandName();
 	}
 
 	private String name;

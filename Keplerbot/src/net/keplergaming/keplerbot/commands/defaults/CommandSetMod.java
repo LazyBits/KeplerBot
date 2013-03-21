@@ -28,7 +28,7 @@ public class CommandSetMod extends CommandSet {
 				if (commandName.startsWith("!")) {
 					commandName = commandName.substring(1);
 				}
-				ICommand newCommand = new CommandBasic(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true);
+				ICommand newCommand = new BasicCommand(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true);
 				wrapper.getCommandManager().registerCommand(newCommand);
 				wrapper.getCommandManager().saveCommand(newCommand);
 				wrapper.sendMessage(channel, "Command !" + commandName + " set");
