@@ -40,6 +40,9 @@ public class CounterCommand implements ICommand {
 				} else if (args[0].equalsIgnoreCase("extract")  || args[0].equalsIgnoreCase("-")) {
 					count = count - Integer.parseInt(args[1]);
 					wrapper.sendMessage(channel, getCommandName() + ": " + count);
+				} else if (args[0].equalsIgnoreCase("equals") || args[0].equalsIgnoreCase("=")) {
+					count = Integer.parseInt(args[1]);
+					wrapper.sendMessage(channel, getCommandName() + ": " + count);
 				} else {
 					wrapper.sendMessage(channel, getCommandUsage());
 				}
@@ -54,7 +57,7 @@ public class CounterCommand implements ICommand {
 
 	@Override
 	public String getCommandUsage() {
-		return "!" + getCommandName() + " [add|extract] [count]";
+		return "!" + getCommandName() + " [add|extract|equals] [count]";
 	}
 
 	private String name;
