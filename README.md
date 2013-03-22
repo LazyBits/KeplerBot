@@ -42,7 +42,7 @@ We started this project because we saw that all other bots on the internet were 
 * <code>!setmod [command] [message]</code> Creates a new command that displays a message when the command is triggered by a moderator or the streamer.
 
 ### !unset
-* <code>!set [command]</code> Removes the given command. You can only remove user-created commands.
+* <code>!unset [command]</code> Removes the given command. You can only remove user-created commands.
 
 ### !counter
 * <code>!counter set [command]</code> Creates a new counter.
