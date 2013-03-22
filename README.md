@@ -62,7 +62,7 @@ We started this project because we saw that all other bots on the internet were 
 # Credits
 * Crazyputje
 * Logomaster256
-* Spacerulesz
+* Spacerules
 
 # License
 KeplerBot by [KeplerGaming](http://keplergaming.com/) is licensed under a [Attribution-NonCommercial-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-nc-sa/3.0/).  Based on a work at https://code.google.com/p/pircbotx
