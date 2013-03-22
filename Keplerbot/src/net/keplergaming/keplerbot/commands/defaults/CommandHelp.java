@@ -56,6 +56,8 @@ public class CommandHelp implements ICommand {
 				wrapper.sendError(channel, e.getMessage());
 				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
 			}
+		} else {
+			wrapper.sendMessage(channel, getCommandUsage());
 		}
 	}
 
