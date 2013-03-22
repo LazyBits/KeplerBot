@@ -13,7 +13,6 @@ import java.util.jar.JarFile;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.commands.defaults.BasicCommand;
 import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.logger.StreamLogger;

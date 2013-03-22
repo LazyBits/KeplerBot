@@ -1,10 +1,11 @@
-package net.keplergaming.keplerbot.filters;
+package net.keplergaming.keplerbot.filters.defaults;
 
 import java.util.HashMap;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.filters.Filter;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;

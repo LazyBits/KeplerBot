@@ -1,10 +1,11 @@
-package net.keplergaming.keplerbot.filters;
+package net.keplergaming.keplerbot.filters.defaults;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
+import net.keplergaming.keplerbot.filters.Filter;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
 import org.pircbotx.Channel;

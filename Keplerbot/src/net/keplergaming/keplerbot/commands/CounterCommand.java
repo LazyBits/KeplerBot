@@ -1,7 +1,6 @@
-package net.keplergaming.keplerbot.commands.defaults;
+package net.keplergaming.keplerbot.commands;
 
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
 import org.pircbotx.Channel;
