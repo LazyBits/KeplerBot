@@ -2,6 +2,7 @@ package net.keplergaming.keplerbot.commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -153,16 +154,17 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 					String className = pkgname + '.' + files[i].substring(0, files[i].length() - 6);
 					logger.fine("ClassDiscovery: className = " + className);
 					try {
-						try {
-							if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+						if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+							Constructor<?> classConstructor = Class.forName(className).getDeclaredConstructors()[0];
+							if (classConstructor != null && classConstructor.getGenericParameterTypes().length != 0 && classConstructor.getGenericParameterTypes()[0] == KeplerBotWrapper.class) {
+								registerCommand((ICommand) classConstructor.newInstance((wrapper)));
+							} else {
 								registerCommand((ICommand) Class.forName(className).newInstance());
 							}
-						} catch (InstantiationException e) {
-							logger.warning("Skipping " + className);
 						}
 					} catch (Exception ex) {
 						logger.error("Error when registering default commands", ex);
-					}
+					} 
 				}
 			}
 		} else {
@@ -178,12 +180,13 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 						String className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "");
 						logger.fine("ClassDiscovery: className = " + className);
 						try {
-							try {
-								if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+							if (ICommand.class.isAssignableFrom(Class.forName(className))) {
+								Constructor<?> classConstructor = Class.forName(className).getDeclaredConstructors()[0];
+								if (classConstructor != null && classConstructor.getGenericParameterTypes().length != 0 && classConstructor.getGenericParameterTypes()[0] == KeplerBotWrapper.class) {
+									registerCommand((ICommand) classConstructor.newInstance((wrapper)));
+								} else {
 									registerCommand((ICommand) Class.forName(className).newInstance());
 								}
-							} catch (InstantiationException e) {
-								logger.warning("Skipping " + className);
 							}
 						} catch (Exception ex) {
 							logger.error("Error when registering default commands", ex);
@@ -199,7 +202,6 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 
 	private void registerUserCommands() {
 		for(Object key : userCommands.getProperties().keySet()) {
-			System.out.println(key);
 			if (((String)key).startsWith("command_")) {
 				String commandName = ((String)key).substring(8);
 				try {
