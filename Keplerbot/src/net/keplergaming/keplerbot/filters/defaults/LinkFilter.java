@@ -27,10 +27,7 @@ public class LinkFilter extends Filter{
 	@Override
 	public boolean shouldRemoveMessage(KeplerBotWrapper wrapper, KeplerBot bot, User sender, Channel channel, String message) {
 		Matcher matches = URL_PATTERN.matcher(message);
-		if (matches.find()) {
-			return true;
-		}
-		return false;
+		return matches.find();
 	}
 
 	@Override
