@@ -8,5 +8,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/JTattoo-1.6.7.jar" sourcepath="lib/JTattoo-1.6.7-sources.zip"/>
+	<classpathentry kind="lib" path="lib/txtmark-0.8.jar" sourcepath="lib/txtmark-0.8-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Keplerbot/lib/txtmark-0.8-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

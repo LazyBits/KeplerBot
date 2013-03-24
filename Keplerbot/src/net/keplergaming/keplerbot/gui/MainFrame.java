@@ -13,7 +13,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -25,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -33,6 +41,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -43,6 +52,8 @@ import net.keplergaming.keplerbot.preset.PresetHandler;
 import net.keplergaming.keplerbot.utils.DesktopUtils;
 import net.keplergaming.keplerbot.version.Version;
 import net.keplergaming.keplerbot.version.VersionChecker;
+
+import com.github.rjeschke.txtmark.Processor;
 
 public class MainFrame {
 
@@ -158,9 +169,47 @@ public class MainFrame {
 		errorPanel = new ErrorPanel();
 		errorPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 
+		JTextPane dtrpnReadMe = new JTextPane();
+		dtrpnReadMe.addHyperlinkListener(new HyperlinkListener() {
+			@Override
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
+					DesktopUtils.openUrl(e.getURL().toString());
+				}
+			}
+		});
+		dtrpnReadMe.setFont(new Font("Dialog", Font.PLAIN, 13));
+		dtrpnReadMe.setBorder(new EmptyBorder(0, 10, 0, 0));
+		dtrpnReadMe.setBackground(homePanel.getBackground());
+		dtrpnReadMe.setEditable(false);
+		dtrpnReadMe.setFocusable(false);
+		dtrpnReadMe.setContentType("text/html");
+		try {
+			URL url = new URL("https://raw.github.com/KeplerGaming/KeplerBot/master/README.md");
+			URLConnection con = url.openConnection();
+			Pattern p = Pattern.compile("text/html;\\s+charset=([^\\s]+)\\s*");
+			Matcher m = p.matcher(con.getContentType());
+			String charset = m.matches() ? m.group(1) : "ISO-8859-1";
+			Reader r = new InputStreamReader(con.getInputStream(), charset);
+			StringBuilder buf = new StringBuilder();
+			while (true) {
+				int ch = r.read();
+				if (ch < 0)
+					break;
+				buf.append((char) ch);
+			}
+			String markdownSource = buf.toString();
+			dtrpnReadMe.setText(Processor.process(markdownSource));
+			dtrpnReadMe.setCaretPosition(0);
+		} catch (IOException e) {
+			dtrpnReadMe.setText("<html>Could not load</html>");
+		}
+		JScrollPane scrollPane = new JScrollPane(dtrpnReadMe);
+		scrollPane.setBorder(null);
+
 		GroupLayout gl_homePanel = new GroupLayout(homePanel);
-		gl_homePanel.setHorizontalGroup(gl_homePanel.createParallelGroup(Alignment.LEADING).addGroup(gl_homePanel.createSequentialGroup().addContainerGap().addComponent(errorPanel, GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE).addContainerGap()));
-		gl_homePanel.setVerticalGroup(gl_homePanel.createParallelGroup(Alignment.LEADING).addGroup(gl_homePanel.createSequentialGroup().addContainerGap().addComponent(errorPanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE).addContainerGap(382, Short.MAX_VALUE)));
+		gl_homePanel.setHorizontalGroup(gl_homePanel.createParallelGroup(Alignment.LEADING).addGroup(gl_homePanel.createSequentialGroup().addGap(12).addComponent(errorPanel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE).addContainerGap()).addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE));
+		gl_homePanel.setVerticalGroup(gl_homePanel.createParallelGroup(Alignment.LEADING).addGroup(gl_homePanel.createSequentialGroup().addContainerGap().addComponent(errorPanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE).addGap(5).addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)));
 		homePanel.setLayout(gl_homePanel);
 
 		final JPanel streamPanel = new JPanel();
@@ -280,8 +329,8 @@ public class MainFrame {
 		btnStreamConfig.setFocusable(false);
 
 		GroupLayout gl_streamPanel = new GroupLayout(streamPanel);
-		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING, false).addComponent(lblPresets, Alignment.LEADING).addComponent(btnRemoveStream, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnResetStream, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnAddStream, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnAddPreset, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(comboBoxPresets, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE).addComponent(btnStreamConfig, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)).addGap(7)));
-		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(72).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnResetStream).addGap(18).addComponent(btnStreamConfig)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
+		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(lblPresets).addComponent(btnRemoveStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnResetStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnAddStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnAddPreset, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE).addComponent(btnStreamConfig, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)).addGap(7)));
+		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING, gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(72).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnResetStream).addPreferredGap(ComponentPlacement.RELATED, 99, Short.MAX_VALUE).addComponent(btnStreamConfig)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
 		streamPanel.setLayout(gl_streamPanel);
 
 		final JPanel configPanel = new JPanel();
