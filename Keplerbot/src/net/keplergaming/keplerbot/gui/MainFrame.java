@@ -254,8 +254,10 @@ public class MainFrame {
 				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
 				
 				if (panel != null) {
-					if (!chatBox.getText().isEmpty()) {
+					if (!chatBox.getText().isEmpty() && !chatBox.getText().startsWith("!")) {
 						panel.getWrapper().getBot().sendMessage(panel.getWrapper().getChannel(), chatBox.getText());
+					} else if (chatBox.getText().startsWith("!")){
+						panel.getWrapper().getCommandManager().processMessage("Console", chatBox.getText());
 					}
 					chatBox.setText("");
 				}
@@ -305,11 +307,11 @@ public class MainFrame {
 		generalPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		generalPanel.setBackground(SystemColor.activeCaptionBorder);
 
-		final ConfigFieldPanel botNameConfig = new ConfigFieldPanel("Bot name", ConfigConstants.BOT_NAME.getKey(), (String) ConfigConstants.BOT_NAME.getDefaultValue(), generalPanel.getBackground());
+		final ConfigFieldPanel botNameConfig = new ConfigFieldPanel("Bot name", ConfigConstants.BOT_NAME.getKey(), (String) ConfigConstants.BOT_NAME.getDefaultValue(), true, generalPanel.getBackground());
 
-		final ConfigFieldPanel joinMessageConfig = new ConfigFieldPanel("Join Message", ConfigConstants.JOIN_MESSAGE.getKey(), (String) ConfigConstants.JOIN_MESSAGE.getDefaultValue(), generalPanel.getBackground());
+		final ConfigFieldPanel joinMessageConfig = new ConfigFieldPanel("Join Message", ConfigConstants.JOIN_MESSAGE.getKey(), (String) ConfigConstants.JOIN_MESSAGE.getDefaultValue(), true, generalPanel.getBackground());
 
-		final ConfigFieldPanel leaveConfig = new ConfigFieldPanel("Leave Message", ConfigConstants.LEAVE_MESSAGE.getKey(), (String) ConfigConstants.LEAVE_MESSAGE.getDefaultValue(), generalPanel.getBackground());
+		final ConfigFieldPanel leaveConfig = new ConfigFieldPanel("Leave Message", ConfigConstants.LEAVE_MESSAGE.getKey(), (String) ConfigConstants.LEAVE_MESSAGE.getDefaultValue(), true, generalPanel.getBackground());
 		
 		JLabel labelGeneral = new JLabel("General Bot Settings");
 		labelGeneral.setHorizontalAlignment(SwingConstants.CENTER);
@@ -324,7 +326,7 @@ public class MainFrame {
 		panelProxy.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panelProxy.setBackground(SystemColor.activeCaptionBorder);
 
-		final ConfigFieldPanel proxyConfig = new ConfigFieldPanel("Socks Proxy Server", ConfigConstants.PROXYSERVER.getKey(), (String) ConfigConstants.PROXYSERVER.getDefaultValue(), panelProxy.getBackground());
+		final ConfigFieldPanel proxyConfig = new ConfigFieldPanel("Socks Proxy Server", ConfigConstants.PROXYSERVER.getKey(), (String) ConfigConstants.PROXYSERVER.getDefaultValue(), false, panelProxy.getBackground());
 
 		JLabel lblProxy = new JLabel("Proxy Settings");
 		lblProxy.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -349,8 +351,8 @@ public class MainFrame {
 		gl_configPanel.setHorizontalGroup(gl_configPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_configPanel.createSequentialGroup().addContainerGap().addGroup(gl_configPanel.createParallelGroup(Alignment.LEADING).addComponent(loginPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(generalPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(panelProxy, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addContainerGap()));
 		gl_configPanel.setVerticalGroup(gl_configPanel.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING, gl_configPanel.createSequentialGroup().addContainerGap().addComponent(loginPanel, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE).addGap(18).addComponent(generalPanel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE).addGap(18).addComponent(panelProxy, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE).addContainerGap(14, Short.MAX_VALUE)));
 
-		final ConfigFieldPanel usernameConfig = new ConfigFieldPanel("Twitch username", ConfigConstants.USERNAME.getKey(), (String) ConfigConstants.USERNAME.getDefaultValue(), loginPanel.getBackground());
-		final ConfigFieldPanel passwordConfig = new ConfigFieldPanel("Password", ConfigConstants.PASSWORD.getKey(), (String) ConfigConstants.PASSWORD.getDefaultValue(), loginPanel.getBackground());
+		final ConfigFieldPanel usernameConfig = new ConfigFieldPanel("Twitch username", ConfigConstants.USERNAME.getKey(), (String) ConfigConstants.USERNAME.getDefaultValue(), true, loginPanel.getBackground());
+		final ConfigFieldPanel passwordConfig = new ConfigFieldPanel("Password", ConfigConstants.PASSWORD.getKey(), (String) ConfigConstants.PASSWORD.getDefaultValue(), true, loginPanel.getBackground());
 		
 		JLabel labelLogin = new JLabel("Login Details");
 		labelLogin.setHorizontalAlignment(SwingConstants.CENTER);

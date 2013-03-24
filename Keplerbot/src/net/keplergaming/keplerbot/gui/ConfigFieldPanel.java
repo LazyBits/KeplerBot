@@ -26,7 +26,7 @@ public class ConfigFieldPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ConfigFieldPanel(final String name, final String key, final String defaultValue, Color background) {
+	public ConfigFieldPanel(final String name, final String key, final String defaultValue, final boolean throwsError, Color background) {
 		configKey = key;
 		Configuration config = MainFrame.getInstance().getConfig();
 
@@ -35,7 +35,7 @@ public class ConfigFieldPanel extends JPanel {
 		configName = new JLabel(name);
 		configName.setFont(new Font("Dialog", Font.BOLD, 13));
 
-		if (config.getString(configKey, defaultValue).isEmpty()) {
+		if (config.getString(configKey, defaultValue).isEmpty() && throwsError) {
 			configName.setForeground(new Color(255, 0, 0));
 			MainFrame.getInstance().getErrorPanel().addError(configKey, "Please configure your " + name);
 		}
@@ -45,10 +45,10 @@ public class ConfigFieldPanel extends JPanel {
 		configValue.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				if (configValue.getText().isEmpty()) {
+				if (configValue.getText().isEmpty() && throwsError) {
 					configName.setForeground(new Color(255, 0, 0));
 					MainFrame.getInstance().getErrorPanel().addError(configKey, "Please configure your " + name);
-				} else {
+				} else if (throwsError) {
 					configName.setForeground(SystemColor.desktop);
 					if (MainFrame.getInstance().getErrorPanel().hasError(configKey)) {
 						MainFrame.getInstance().getErrorPanel().removeError(configKey);
