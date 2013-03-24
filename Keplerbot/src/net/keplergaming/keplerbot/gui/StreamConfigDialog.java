@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -35,12 +37,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.config.ConfigConstants;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.filters.Filter;
 import net.keplergaming.keplerbot.utils.ColorCodes;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 @SuppressWarnings("serial")
 public class StreamConfigDialog extends JDialog {
@@ -382,11 +382,11 @@ public class StreamConfigDialog extends JDialog {
 		chckbxErrors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wrapper.getConfig().setBoolean(Configuration.MUTE_ERRORS[0], chckbxErrors.isSelected());
+				wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ERRORS.getKey(), chckbxErrors.isSelected());
 				wrapper.muteAll(chckbxErrors.isSelected());
 			}
 		});
-		chckbxErrors.setSelected(wrapper.getConfig().getBoolean(Configuration.MUTE_ERRORS[0], Boolean.parseBoolean(Configuration.MUTE_ERRORS[1])));
+		chckbxErrors.setSelected(wrapper.getConfig().getBoolean(ConfigConstants.MUTE_ERRORS.getKey(), (boolean) ConfigConstants.MUTE_ERRORS.getDefaultValue()));
 
 		final JCheckBox chckbxWarnings = new JCheckBox("Warnings");
 		chckbxWarnings.setHorizontalAlignment(SwingConstants.LEFT);
@@ -394,11 +394,11 @@ public class StreamConfigDialog extends JDialog {
 		chckbxWarnings.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wrapper.getConfig().setBoolean(Configuration.MUTE_WARNINGS[0], chckbxWarnings.isSelected());
+				wrapper.getConfig().setBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), chckbxWarnings.isSelected());
 				wrapper.muteAll(chckbxWarnings.isSelected());
 			}
 		});
-		chckbxWarnings.setSelected(wrapper.getConfig().getBoolean(Configuration.MUTE_WARNINGS[0], Boolean.parseBoolean(Configuration.MUTE_WARNINGS[1])));
+		chckbxWarnings.setSelected(wrapper.getConfig().getBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), (boolean) ConfigConstants.MUTE_WARNINGS.getDefaultValue()));
 
 		final JCheckBox chckbxAll = new JCheckBox("All");
 		chckbxAll.setHorizontalAlignment(SwingConstants.LEFT);
@@ -406,11 +406,11 @@ public class StreamConfigDialog extends JDialog {
 		chckbxAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wrapper.getConfig().setBoolean(Configuration.MUTE_ALL[0], chckbxAll.isSelected());
+				wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ALL.getKey(), chckbxAll.isSelected());
 				wrapper.muteAll(chckbxAll.isSelected());
 			}
 		});
-		chckbxAll.setSelected(wrapper.getConfig().getBoolean(Configuration.MUTE_ALL[0], Boolean.parseBoolean(Configuration.MUTE_ALL[1])));
+		chckbxAll.setSelected(wrapper.getConfig().getBoolean(ConfigConstants.MUTE_ALL.getKey(), (boolean) ConfigConstants.MUTE_ALL.getDefaultValue()));
 
 		JLabel lblMute = new JLabel("Mute Response");
 		lblMute.setHorizontalAlignment(SwingConstants.CENTER);

@@ -104,15 +104,4 @@ public class Configuration {
 			MainLogger.error("Failed to save config file " + fileName, e);
 		}
 	}
-
-	public static String[] USERNAME = new String[] { "twitch_name", "" };
-	public static String[] PASSWORD = new String[] { "twitch_password", "" };
-
-	public static String[] BOT_NAME = new String[] { "bot_name", "KeplerBot" };
-	public static String[] JOIN_MESSAGE = new String[] { "join_message", "%s has joined your stream" };
-	public static String[] LEAVE_MESSAGE = new String[] { "leave_message", "%s has left your stream" };
-
-	public static String[] MUTE_ALL = new String[] {"mute_all", "false"};
-	public static String[] MUTE_WARNINGS = new String[] {"mute_warnings", "false"};
-	public static String[] MUTE_ERRORS =  new String[] {"mute_errors", "false"};
 }

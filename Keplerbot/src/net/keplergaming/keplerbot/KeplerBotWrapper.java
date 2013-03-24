@@ -1,6 +1,7 @@
 package net.keplergaming.keplerbot;
 
 import net.keplergaming.keplerbot.commands.CommandManager;
+import net.keplergaming.keplerbot.config.ConfigConstants;
 import net.keplergaming.keplerbot.config.Configuration;
 import net.keplergaming.keplerbot.filters.FilterManager;
 import net.keplergaming.keplerbot.filters.defaults.CapsFilter;
@@ -10,6 +11,7 @@ import net.keplergaming.keplerbot.gui.MainFrame;
 import net.keplergaming.keplerbot.gui.StreamLogPannel;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
+import net.keplergaming.keplerbot.proxy.SocksSocketFactory;
 import net.keplergaming.keplerbot.version.Version;
 
 import org.pircbotx.Channel;
@@ -36,17 +38,17 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		config = new Configuration("./configs/config_" + streamer + ".properties");
 		config.loadConfig();
 
-		muteAll = config.getBoolean(Configuration.MUTE_ALL[0], Boolean.parseBoolean(Configuration.MUTE_ALL[1]));
-		muteErrors = config.getBoolean(Configuration.MUTE_WARNINGS[0], Boolean.parseBoolean(Configuration.MUTE_WARNINGS[1]));
-		muteWarnings = config.getBoolean(Configuration.MUTE_ERRORS[0], Boolean.parseBoolean(Configuration.MUTE_ERRORS[1]));
+		muteAll = config.getBoolean(ConfigConstants.MUTE_ALL.getKey(), (boolean) ConfigConstants.MUTE_ALL.getDefaultValue());
+		muteErrors = config.getBoolean(ConfigConstants.MUTE_ERRORS.getKey(), (boolean) ConfigConstants.MUTE_ERRORS.getDefaultValue());
+		muteWarnings = config.getBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), (boolean) ConfigConstants.MUTE_WARNINGS.getDefaultValue());
 
 		logger = new StreamLogger(streamer);
 		logger.getLogger().addListener(pannel);
 		bot = new KeplerBot(logger);
 
 		bot.setVerbose(true);
-		bot.setName(MainFrame.getInstance().getConfig().getString(Configuration.USERNAME[0], Configuration.USERNAME[1]));
-		bot.setLogin(MainFrame.getInstance().getConfig().getString(Configuration.USERNAME[0], Configuration.USERNAME[1]));
+		bot.setName(MainFrame.getInstance().getConfig().getString(ConfigConstants.USERNAME.getKey(), (String) ConfigConstants.USERNAME.getDefaultValue()));
+		bot.setLogin(MainFrame.getInstance().getConfig().getString(ConfigConstants.USERNAME.getKey(), (String) ConfigConstants.USERNAME.getDefaultValue()));
 		bot.setVersion("KeplerBot " + Version.getVersion());
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
@@ -64,12 +66,17 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		bot.getListenerManager().addListener(this);
 
 		try {
-			bot.connect(streamer + ".jtvirc.com", 6667, MainFrame.getInstance().getConfig().getString(Configuration.PASSWORD[0], Configuration.PASSWORD[1]));
+			if(MainFrame.getInstance().getConfig().getBoolean(ConfigConstants.PROXY.getKey(), (boolean) ConfigConstants.PROXY.getDefaultValue())) {
+				logger.info("Using proxy: " + MainFrame.getInstance().getConfig().getString(ConfigConstants.PROXYSERVER.getKey(), (String) ConfigConstants.PROXYSERVER.getDefaultValue()));
+				bot.connect(streamer + ".jtvirc.com", 6667, MainFrame.getInstance().getConfig().getString(ConfigConstants.PASSWORD.getKey(), (String) ConfigConstants.PASSWORD.getDefaultValue()), new SocksSocketFactory(MainFrame.getInstance().getConfig().getString(ConfigConstants.PROXYSERVER.getKey(), (String) ConfigConstants.PROXYSERVER.getDefaultValue())));
+			} else {
+				bot.connect(streamer + ".jtvirc.com", 6667, MainFrame.getInstance().getConfig().getString(ConfigConstants.PASSWORD.getKey(), (String) ConfigConstants.PASSWORD.getDefaultValue()));
+			}
 
 			bot.joinChannel("#" + streamer);
 
 			if (displayJoinMessage) {
-				bot.sendMessage(getChannel(), String.format(MainFrame.getInstance().getConfig().getString(Configuration.JOIN_MESSAGE[0], Configuration.JOIN_MESSAGE[1]), MainFrame.getInstance().getConfig().getString(Configuration.BOT_NAME[0], Configuration.BOT_NAME[1])));
+				bot.sendMessage(getChannel(), String.format(MainFrame.getInstance().getConfig().getString(ConfigConstants.JOIN_MESSAGE.getKey(), (String) ConfigConstants.JOIN_MESSAGE.getDefaultValue()), MainFrame.getInstance().getConfig().getString(ConfigConstants.BOT_NAME.getKey(), (String) ConfigConstants.BOT_NAME.getDefaultValue())));
 			}
 		} catch (Exception e) {
 			logger.error("Could not connect to server", e);
@@ -186,12 +193,14 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		disconnectFlag = true;
 		permissionsManager.stopThread();
 
-		if (showMessage) {
-			bot.sendMessage(getChannel(), String.format(MainFrame.getInstance().getConfig().getString(Configuration.LEAVE_MESSAGE[0], Configuration.LEAVE_MESSAGE[1]), MainFrame.getInstance().getConfig().getString(Configuration.BOT_NAME[0], Configuration.BOT_NAME[1])));
-		}
+		if (bot.isConnected()) {
+			if (showMessage) {
+				bot.sendMessage(getChannel(), String.format(MainFrame.getInstance().getConfig().getString(ConfigConstants.LEAVE_MESSAGE.getKey(), (String) ConfigConstants.LEAVE_MESSAGE.getDefaultValue()), MainFrame.getInstance().getConfig().getString(ConfigConstants.BOT_NAME.getKey(), (String) ConfigConstants.BOT_NAME.getDefaultValue())));
+			}
 
-		bot.setAutoReconnect(false);
-		bot.disconnect();
+			bot.setAutoReconnect(false);
+			bot.disconnect();
+		}
 
 		thread = null;
 	}

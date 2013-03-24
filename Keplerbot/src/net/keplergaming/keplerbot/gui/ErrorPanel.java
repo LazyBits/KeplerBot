@@ -8,8 +8,9 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -18,7 +19,7 @@ import net.keplergaming.keplerbot.logger.MainLogger;
 @SuppressWarnings("serial")
 public class ErrorPanel extends JPanel {
 	private JTextField txtErrorsFound;
-	private JTextArea txtrTre;
+	private JTextField txtrTre;
 	private Map<String, String> errors;
 	private int index;
 
@@ -27,21 +28,7 @@ public class ErrorPanel extends JPanel {
 	 */
 	public ErrorPanel() {
 		errors = new HashMap<String, String>();
-
 		setBackground(new Color(255, 0, 0));
-
-		ImagePanel leftPanel = new ImagePanel(Toolkit.getDefaultToolkit().getImage(ErrorPanel.class.getResource("/net/keplergaming/keplerbot/resources/left.png")));
-		leftPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				index--;
-				if (index < 0) {
-					index = errors.size() - 1;
-				}
-				updateText();
-			}
-		});
-		leftPanel.setBounds(571, 0, 32, 40);
 
 		ImagePanel rightPanel = new ImagePanel(Toolkit.getDefaultToolkit().getImage(ErrorPanel.class.getResource("/net/keplergaming/keplerbot/resources/right.png")));
 		rightPanel.addMouseListener(new MouseAdapter() {
@@ -54,43 +41,49 @@ public class ErrorPanel extends JPanel {
 				updateText();
 			}
 		});
-		rightPanel.setBounds(605, 0, 25, 40);
-		setLayout(null);
 
 		txtErrorsFound = new JTextField();
 		txtErrorsFound.setHorizontalAlignment(SwingConstants.CENTER);
-		txtErrorsFound.setBounds(256, 0, 120, 13);
 		txtErrorsFound.setFont(new Font("Dialog", Font.BOLD, 15));
 		txtErrorsFound.setBorder(null);
 		txtErrorsFound.setBackground(new Color(255, 0, 0));
 		txtErrorsFound.setEditable(false);
 		txtErrorsFound.setColumns(10);
-		add(txtErrorsFound);
-		add(leftPanel);
-		add(rightPanel);
 
-		txtrTre = new JTextArea();
+		txtrTre = new JTextField();
 		txtrTre.setEditable(false);
+		txtrTre.setBorder(null);
 		txtrTre.setFont(new Font("Dialog", Font.BOLD, 13));
 		txtrTre.setBackground(new Color(255, 0, 0));
 		txtrTre.setText("Error \r\n");
-		txtrTre.setBounds(10, 11, 540, 18);
-		add(txtrTre);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(txtErrorsFound, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(5).addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(12).addComponent(txtrTre, GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE).addGap(41)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false).addComponent(rightPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(txtErrorsFound).addComponent(txtrTre)).addContainerGap(28, Short.MAX_VALUE)));
+		setLayout(groupLayout);
 		setVisible(false);
 	}
 
 	public void addError(String key, String message) {
 		MainLogger.fine("Adding error to errorPanel");
 		errors.put(key, message);
-		txtErrorsFound.setText(errors.size() + " errors found!");
+		if (errors.size() == 1) {
+			txtErrorsFound.setText(errors.size() + " error found!");
+		} else {
+			txtErrorsFound.setText(errors.size() + " errors found!");
+		}
 		txtrTre.setText((String) errors.values().toArray()[0]);
 		setVisible(true);
 	}
 
 	public void removeError(String key) {
-		MainLogger.fine("removing error from errorPanel");
+		MainLogger.fine("Removing error from errorPanel");
 		errors.remove(key);
-		txtErrorsFound.setText(errors.size() + " errors found!");
+		if (errors.size() == 1) {
+			txtErrorsFound.setText(errors.size() + " error found!");
+		} else {
+			txtErrorsFound.setText(errors.size() + " errors found!");
+		}
+
 		if (errors.isEmpty()) {
 			setVisible(false);
 		} else {
@@ -100,7 +93,11 @@ public class ErrorPanel extends JPanel {
 
 	public void updateText() {
 		txtrTre.setText((String) errors.values().toArray()[index]);
-		txtErrorsFound.setText(errors.size() + " errors found!");
+		if (errors.size() == 1) {
+			txtErrorsFound.setText(errors.size() + " error found!");
+		} else {
+			txtErrorsFound.setText(errors.size() + " errors found!");
+		}
 	}
 
 	public boolean hasErrors() {

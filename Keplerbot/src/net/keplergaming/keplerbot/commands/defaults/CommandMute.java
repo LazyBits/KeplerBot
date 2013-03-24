@@ -2,7 +2,7 @@ package net.keplergaming.keplerbot.commands.defaults;
 
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
-import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.config.ConfigConstants;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
 import org.pircbotx.Channel;
@@ -31,17 +31,17 @@ public class CommandMute implements ICommand {
 			switch (args[0]) {
 				case "errors": 
 					wrapper.muteErrors(true);
-					wrapper.getConfig().setBoolean(Configuration.MUTE_ERRORS[0], true);
+					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ERRORS.getKey(), true);
 					wrapper.sendMessage(channel, args[0] + " muted");
 					break;
 				case "warnings": 
 					wrapper.muteWarnings(true);
-					wrapper.getConfig().setBoolean(Configuration.MUTE_WARNINGS[0], true);
+					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), true);
 					wrapper.sendMessage(channel, args[0] + " muted");
 					break;
 				case "all": 
 					wrapper.muteAll(true);
-					wrapper.getConfig().setBoolean(Configuration.MUTE_ALL[0], true);
+					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ALL.getKey(), true);
 					wrapper.sendMessage(channel, args[0] + " muted");
 					break;
 				default : 

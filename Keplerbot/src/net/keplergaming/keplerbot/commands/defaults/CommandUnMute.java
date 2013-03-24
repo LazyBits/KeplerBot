@@ -1,7 +1,7 @@
 package net.keplergaming.keplerbot.commands.defaults;
 
 import net.keplergaming.keplerbot.KeplerBotWrapper;
-import net.keplergaming.keplerbot.config.Configuration;
+import net.keplergaming.keplerbot.config.ConfigConstants;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;
@@ -19,17 +19,17 @@ public class CommandUnMute extends CommandMute {
 			switch (args[0]) {
 				case "errors": 
 					wrapper.muteErrors(false);
-					wrapper.getConfig().setBoolean(Configuration.MUTE_ERRORS[0], false);
+					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ERRORS.getKey(), false);
 					wrapper.sendMessage(channel, args[0] + " unmuted");
 					break;
 				case "warnings": 
 					wrapper.muteWarnings(false);
-					wrapper.getConfig().setBoolean(Configuration.MUTE_WARNINGS[0], false);
+					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), false);
 					wrapper.sendMessage(channel, args[0] + " unmuted");
 					break;
 				case "all": 
 					wrapper.muteAll(false);
-					wrapper.getConfig().setBoolean(Configuration.MUTE_ALL[0], false);
+					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ALL.getKey(), false);
 					wrapper.sendMessage(channel, args[0] + " unmuted");
 					break;
 				default : 

@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -39,6 +41,7 @@ public class ConfigFieldPanel extends JPanel {
 		}
 
 		configValue = new JTextField();
+		configValue.setEditable(isEnabled());
 		configValue.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -56,9 +59,15 @@ public class ConfigFieldPanel extends JPanel {
 		configValue.setText(config.getString(configKey, defaultValue));
 		configValue.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(configName, GroupLayout.PREFERRED_SIZE, 64, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(configValue, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE)));
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(configName, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(configValue, GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(configValue, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(configName)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		setLayout(groupLayout);
+
+		addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				configValue.setEnabled(isEnabled());
+			}
+		});
 	}
 
 	public String getValue() {
