@@ -48,7 +48,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			userCommands.setString("message_" + command.getCommandName(), ((BasicCommand)command).getMessage());
 			userCommands.setBoolean("modonly_" + command.getCommandName(), ((BasicCommand)command).isModOnly());
 			userCommands.saveConfig();
-			logger.info("Saved command !" + command.getCommandName() + " to file.");
+			logger.fine("Saved command !" + command.getCommandName() + " to file.");
 		}
 	}
 
@@ -67,7 +67,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			}
 		}
 
-		logger.info("Registered command " + command.getCommandName() + ".");
+		logger.fine("Registered command " + command.getCommandName() + ".");
 	}
 
 	public void unRegisterCommand(String command) throws BotException {
@@ -80,7 +80,7 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 			userCommands.getProperties().remove("message_" + command);
 			userCommands.getProperties().remove("modonly_" + command);
 			userCommands.saveConfig();
-			logger.info("Removed command !" + command + " from file.");
+			logger.fine("Removed command !" + command + " from file.");
 		}
 
 		if (commandMap.get(command).getCommandAliases() != null) {
