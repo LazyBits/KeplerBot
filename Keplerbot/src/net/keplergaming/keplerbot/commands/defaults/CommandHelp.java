@@ -9,9 +9,6 @@ import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 import net.keplergaming.keplerbot.utils.StringUtils;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandHelp implements ICommand {
 
 	@Override
@@ -25,39 +22,30 @@ public class CommandHelp implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
 		return true;
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) throws BotException {
 		if (args.length == 0) {
 			ArrayList<String> commandNames = new ArrayList<String>();
 			for (String command : wrapper.getCommandManager().getCommands()) {
-				try {
-					if (wrapper.getCommandManager().getCommand(command).canSenderUseCommand(wrapper.getPermissionsManager(), sender)) {
-						commandNames.add(command);
-					}
-				} catch (BotException e) {
-					wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+				if (wrapper.getCommandManager().getCommand(command).canSenderUseCommand(wrapper.getPermissionsManager(), sender)) {
+					commandNames.add(command);
 				}
 			}
 			Collections.sort(commandNames);
-			wrapper.sendMessage(channel, "Your commands: " + StringUtils.joinString(commandNames));
+			wrapper.sendMessage("Your commands: " + StringUtils.joinString(commandNames));
 		} else if (args.length == 1) {
-			try {
-				String commandName = args[0];
-				if (commandName.startsWith("!")) {
-					commandName = commandName.substring(1);
-				}
-				ICommand command = wrapper.getCommandManager().getCommand(commandName);
-				wrapper.sendMessage(channel, command.getCommandUsage());
-			} catch (BotException e) {
-				wrapper.sendError(channel, e.getMessage());
-				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+			String commandName = args[0];
+			if (commandName.startsWith("!")) {
+				commandName = commandName.substring(1);
 			}
+			ICommand command = wrapper.getCommandManager().getCommand(commandName);
+			wrapper.sendMessage(command.getCommandUsage());
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 

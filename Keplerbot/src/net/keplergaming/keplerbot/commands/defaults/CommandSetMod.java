@@ -6,9 +6,6 @@ import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.utils.StringUtils;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandSetMod extends CommandSet {
 
 	@Override
@@ -22,23 +19,18 @@ public class CommandSetMod extends CommandSet {
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) throws BotException {
 		if (args.length >= 2) {
-			try {
-				String commandName = args[0];
-				if (commandName.startsWith("!")) {
-					commandName = commandName.substring(1);
-				}
-				ICommand newCommand = new BasicCommand(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true);
-				wrapper.getCommandManager().registerCommand(newCommand);
-				wrapper.getCommandManager().saveCommand(newCommand);
-				wrapper.sendMessage(channel, "Command !" + commandName + " set");
-			} catch (BotException e) {
-				wrapper.sendWarning(channel, e.getMessage());
-				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+			String commandName = args[0];
+			if (commandName.startsWith("!")) {
+				commandName = commandName.substring(1);
 			}
+			ICommand newCommand = new BasicCommand(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), true);
+			wrapper.getCommandManager().registerCommand(newCommand);
+			wrapper.getCommandManager().saveCommand(newCommand);
+			wrapper.sendMessage("Command !" + commandName + " set");
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 }

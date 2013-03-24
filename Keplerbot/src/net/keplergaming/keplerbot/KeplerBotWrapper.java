@@ -133,21 +133,21 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		return streamer;
 	}
 
-	public void sendMessage(Channel target, String message) {
+	public void sendMessage(String message) {
 		if (!muteAll) {
-			bot.sendMessage(target, message);
+			bot.sendMessage(getChannel(), message);
 		}
 	}
 
-	public void sendError(Channel target, String message) {
+	public void sendError(String message) {
 		if (!(muteAll || muteErrors)) {
-			bot.sendMessage(target, message);
+			bot.sendMessage(getChannel(), message);
 		}
 	}
 
-	public void sendWarning(Channel target, String message) {
+	public void sendWarning(String message) {
 		if (!(muteAll || muteWarnings)) {
-			bot.sendMessage(target, message);
+			bot.sendMessage(getChannel(), message);
 		}
 	}
 

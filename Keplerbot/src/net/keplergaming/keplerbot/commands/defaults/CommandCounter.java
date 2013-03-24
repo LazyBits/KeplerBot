@@ -6,9 +6,6 @@ import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandCounter implements ICommand {
 
 	@Override
@@ -22,41 +19,31 @@ public class CommandCounter implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender,Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) throws BotException {
 		if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("set")) {
-				try {
-					String commandName = args[1];
-					if (commandName.startsWith("!")) {
-						commandName = commandName.substring(1);
-					}
-					ICommand newCommand = new CounterCommand(commandName);
-					wrapper.getCommandManager().registerCommand(newCommand);
-					wrapper.sendMessage(channel, "Counter !" + commandName + " set");
-				} catch (BotException e) {
-					wrapper.sendWarning(channel, e.getMessage());
-					wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+				String commandName = args[1];
+				if (commandName.startsWith("!")) {
+					commandName = commandName.substring(1);
 				}
+				ICommand newCommand = new CounterCommand(commandName);
+				wrapper.getCommandManager().registerCommand(newCommand);
+				wrapper.sendMessage("Counter !" + commandName + " set");
 			} else {
-				try {
-					String commandName = args[1];
-					if (commandName.startsWith("!")) {
-						commandName = commandName.substring(1);
-					}
-					wrapper.getCommandManager().unRegisterCommand(commandName);
-					wrapper.sendMessage(channel, "Counter !" + commandName + " removed");
-				} catch (BotException e) {
-					wrapper.sendWarning(channel, e.getMessage());
-					wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+				String commandName = args[1];
+				if (commandName.startsWith("!")) {
+					commandName = commandName.substring(1);
 				}
+				wrapper.getCommandManager().unRegisterCommand(commandName);
+				wrapper.sendMessage("Counter !" + commandName + " removed");
 			}
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 

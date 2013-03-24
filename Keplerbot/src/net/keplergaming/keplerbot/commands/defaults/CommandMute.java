@@ -5,9 +5,6 @@ import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.config.ConfigConstants;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandMute implements ICommand {
 
 	@Override
@@ -21,40 +18,40 @@ public class CommandMute implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager,User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) {
 		if (args.length == 1) {
 			switch (args[0]) {
 				case "errors": 
 					wrapper.muteErrors(true);
 					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ERRORS.getKey(), true);
-					wrapper.sendMessage(channel, args[0] + " muted");
+					wrapper.sendMessage(args[0] + " muted");
 					break;
 				case "warnings": 
 					wrapper.muteWarnings(true);
 					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), true);
-					wrapper.sendMessage(channel, args[0] + " muted");
+					wrapper.sendMessage(args[0] + " muted");
 					break;
 				case "all": 
 					wrapper.muteAll(true);
 					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ALL.getKey(), true);
-					wrapper.sendMessage(channel, args[0] + " muted");
+					wrapper.sendMessage(args[0] + " muted");
 					break;
 				default : 
-					wrapper.sendError(channel, "Argument is not valid");
+					wrapper.sendError("Argument is not valid");
 					break;
 			}
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 
 	@Override
 	public String getCommandUsage() {
-		return "!" + getCommandName() + "[errors|warnings|all]";
+		return "!" + getCommandName() + " [errors|warnings|all]";
 	}
 }

@@ -106,19 +106,23 @@ public class CommandManager extends ListenerAdapter<KeplerBot>{
 
 	@Override
 	public void onMessage(MessageEvent<KeplerBot> event) {
+		processMessage(event.getUser().getNick(), event.getMessage());
+	}
+
+	public void processMessage(String sender, String message) {
 		try {
-			if (event.getMessage().startsWith("!")) {
-				String[] splitMessage = event.getMessage().split(" ");
+			if (message.startsWith("!")) {
+				String[] splitMessage = message.split(" ");
 				ICommand command = getCommand(splitMessage[0].substring(1));
 				
-				if (command.canSenderUseCommand(wrapper.getPermissionsManager(), event.getUser())) {
-					command.handleCommand(wrapper, event.getUser(), event.getChannel(), StringUtils.dropFirstString(splitMessage));
+				if (command.canSenderUseCommand(wrapper.getPermissionsManager(), sender)) {
+					command.handleCommand(wrapper, sender, StringUtils.dropFirstString(splitMessage));
 				} else {
-					throw new BotException(event.getUser().getNick() + " doesn't have permission for " + splitMessage[0]);
+					throw new BotException(sender + " doesn't have permission for " + splitMessage[0]);
 				}
 			}
 		} catch (BotException e) {
-			event.getBot().sendMessage(event.getChannel(), e.getMessage());
+			wrapper.sendError(e.getMessage());
 		}
 	}
 

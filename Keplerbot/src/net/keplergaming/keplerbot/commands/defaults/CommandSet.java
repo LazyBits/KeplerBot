@@ -7,9 +7,6 @@ import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 import net.keplergaming.keplerbot.utils.StringUtils;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandSet implements ICommand {
 
 	@Override
@@ -23,28 +20,23 @@ public class CommandSet implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) throws BotException {
 		if (args.length >= 2) {
-			try {
-				String commandName = args[0];
-				if (commandName.startsWith("!")) {
-					commandName = commandName.substring(1);
-				}
-				ICommand newCommand = new BasicCommand(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), false);
-				wrapper.getCommandManager().registerCommand(newCommand);
-				wrapper.getCommandManager().saveCommand(newCommand);
-				wrapper.sendMessage(channel, "Command !" + commandName + " set");
-			} catch (BotException e) {
-				wrapper.sendWarning(channel, e.getMessage());
-				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+			String commandName = args[0];
+			if (commandName.startsWith("!")) {
+				commandName = commandName.substring(1);
 			}
+			ICommand newCommand = new BasicCommand(commandName, StringUtils.joinString(StringUtils.dropFirstString(args)), false);
+			wrapper.getCommandManager().registerCommand(newCommand);
+			wrapper.getCommandManager().saveCommand(newCommand);
+			wrapper.sendMessage("Command !" + commandName + " set");
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 

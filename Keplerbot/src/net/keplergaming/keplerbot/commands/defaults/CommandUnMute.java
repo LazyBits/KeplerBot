@@ -3,9 +3,6 @@ package net.keplergaming.keplerbot.commands.defaults;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.config.ConfigConstants;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandUnMute extends CommandMute {
 
 	@Override
@@ -14,30 +11,30 @@ public class CommandUnMute extends CommandMute {
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) {
 		if (args.length == 1) {
 			switch (args[0]) {
 				case "errors": 
 					wrapper.muteErrors(false);
 					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ERRORS.getKey(), false);
-					wrapper.sendMessage(channel, args[0] + " unmuted");
+					wrapper.sendMessage(args[0] + " unmuted");
 					break;
 				case "warnings": 
 					wrapper.muteWarnings(false);
 					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_WARNINGS.getKey(), false);
-					wrapper.sendMessage(channel, args[0] + " unmuted");
+					wrapper.sendMessage(args[0] + " unmuted");
 					break;
 				case "all": 
 					wrapper.muteAll(false);
 					wrapper.getConfig().setBoolean(ConfigConstants.MUTE_ALL.getKey(), false);
-					wrapper.sendMessage(channel, args[0] + " unmuted");
+					wrapper.sendMessage(args[0] + " unmuted");
 					break;
 				default : 
-					wrapper.sendError(channel, "Argument is not valid");
+					wrapper.sendError("Argument is not valid");
 					break;
 			}
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 }

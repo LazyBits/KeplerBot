@@ -3,9 +3,6 @@ package net.keplergaming.keplerbot.commands;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class BasicCommand implements ICommand {
 
 	public BasicCommand(String name, String message, boolean modOnly) {
@@ -25,16 +22,16 @@ public class BasicCommand implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
 		if (modOnly) {
-			return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+			return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 		}
 		return true;
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
-		wrapper.sendMessage(channel, message);
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) {
+		wrapper.sendMessage(message);
 	}
 
 	@Override

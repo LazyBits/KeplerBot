@@ -11,7 +11,9 @@ public enum ConfigConstants {
 	MUTE_WARNINGS("mute_warnings", false),
 	MUTE_ERRORS("mute_errors", false),
 	PROXY("proxy", false),
-	PROXYSERVER("proxy_server", "0.0.0.0:1080");
+	PROXYSERVER("proxy_server", "0.0.0.0:1080"),
+	NEWS_ON("news_on", true),
+	NEWS_DELAY("news_delay", 300);
 
 	private ConfigConstants(String key, Object defaultValue) {
 		this.key = key;

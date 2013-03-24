@@ -4,9 +4,6 @@ import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandCountdown implements ICommand, Runnable {
 
 	public CommandCountdown(KeplerBotWrapper wrapper) {
@@ -24,29 +21,29 @@ public class CommandCountdown implements ICommand, Runnable {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) {
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("stop")) {
 				if (sec != 0) {
 					sec = 0;
 					countDownThread = null;
-					wrapper.sendMessage(channel, "Countdown stopped");
+					wrapper.sendMessage("Countdown stopped");
 				} else {
-					wrapper.sendMessage(channel, "Countdown not running");
+					wrapper.sendError("Countdown not running");
 				}
 			} else {
 				try {
 					sec = Integer.parseInt(args[0]);
 					countDownThread = new Thread(this);
 					countDownThread.start();
-					wrapper.sendMessage(channel, "Countdown started");
+					wrapper.sendMessage("Countdown started");
 				} catch (Exception e) {
-					wrapper.sendWarning(channel, e.getMessage());
+					wrapper.sendError(e.getMessage());
 					wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
 				}
 			}
@@ -55,16 +52,16 @@ public class CommandCountdown implements ICommand, Runnable {
 				sec = Integer.parseInt(args[1]);
 				countDownThread = new Thread(this);
 				countDownThread.start();
-				wrapper.sendMessage(channel, "Countdown started");
+				wrapper.sendMessage("Countdown started");
 			} catch (Exception e) {
-				wrapper.sendWarning(channel, e.getMessage());
+				wrapper.sendError(e.getMessage());
 				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
 			}
 		} else {
 			if (sec != 0) {
-				wrapper.sendMessage(channel, "Time left, " + String.format("%d:%02d:%02d", sec / 3600, (sec % 3600) / 60, (sec % 60)));
+				wrapper.sendMessage("Time left, " + String.format("%d:%02d:%02d", sec / 3600, (sec % 3600) / 60, (sec % 60)));
 			} else {
-				wrapper.sendMessage(channel, "Countdown not running");
+				wrapper.sendError("Countdown not running");
 			}
 		}
 	}
@@ -81,9 +78,9 @@ public class CommandCountdown implements ICommand, Runnable {
 				Thread.sleep(1000);
 				sec--;
 				if (sec == 0) {
-					wrapper.sendMessage(wrapper.getChannel(), "Countdown stopped");
+					wrapper.sendMessage("Countdown stopped");
 				} else if (sec <= 5) {
-					wrapper.sendMessage(wrapper.getChannel(), "Countdown " + sec);
+					wrapper.sendMessage("Countdown " + sec);
 				}
 			} catch (InterruptedException e) {
 			}

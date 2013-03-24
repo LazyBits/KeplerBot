@@ -1,8 +1,5 @@
 package net.keplergaming.keplerbot.commands.defaults;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
@@ -20,37 +17,37 @@ public class CommandTimer implements ICommand, Runnable {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) {
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("stop")) {
 				if (!stopped) {
 					stopped = true;
 					sec = 0;
 					timerThread = null;
-					wrapper.sendMessage(channel, "Timer stopped");
+					wrapper.sendMessage("Timer stopped");
 				} else {
-					wrapper.sendMessage(channel, "Timer not running");
+					wrapper.sendMessage("Timer not running");
 				}
 			} else if (args[0].equalsIgnoreCase("start")) {
 				if (stopped) {
 					stopped = false;
 					timerThread = new Thread(this);
 					timerThread.start();
-					wrapper.sendMessage(channel, "Timer started");
+					wrapper.sendMessage("Timer started");
 				}
 			} else {
-				wrapper.sendMessage(channel, getCommandUsage());
+				wrapper.sendMessage(getCommandUsage());
 			}
 		} else {
 			if (sec != 0) {
-				wrapper.sendMessage(channel, "Time running, " + String.format("%d:%02d:%02d", sec / 3600, (sec % 3600) / 60, (sec % 60)));
+				wrapper.sendMessage("Time running, " + String.format("%d:%02d:%02d", sec / 3600, (sec % 3600) / 60, (sec % 60)));
 			} else {
-				wrapper.sendMessage(channel, "Timer not running");
+				wrapper.sendMessage("Timer not running");
 			}
 		}
 	}

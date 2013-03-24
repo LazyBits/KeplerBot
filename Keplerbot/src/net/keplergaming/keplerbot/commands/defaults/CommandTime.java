@@ -8,9 +8,6 @@ import net.keplergaming.keplerbot.KeplerBotWrapper;
 import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandTime implements ICommand {
 
 	@Override
@@ -24,23 +21,23 @@ public class CommandTime implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
 		return true;
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) {
 		if (args.length == 1) {
 			try {
 				format.setTimeZone(TimeZone.getTimeZone(args[0]));
-				wrapper.sendMessage(channel, args[0] + ": " + format.format(new Date()));
+				wrapper.sendMessage(args[0] + ": " + format.format(new Date()));
 			} catch (IllegalArgumentException e) {
-				wrapper.sendError(channel, e.getMessage());
+				wrapper.sendError(e.getMessage());
 				wrapper.getStreamLogger().warning(e.getMessage());
 			}
 		} else {
 			format.setTimeZone(TimeZone.getDefault());
-			wrapper.sendMessage(channel, "Bot time is: " + format.format(new Date()));
+			wrapper.sendMessage("Bot time is: " + format.format(new Date()));
 		}
 	}
 
@@ -49,5 +46,5 @@ public class CommandTime implements ICommand {
 		return "!" + getCommandName() + " [TimeZone]";
 	}
 
-	private static SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 }

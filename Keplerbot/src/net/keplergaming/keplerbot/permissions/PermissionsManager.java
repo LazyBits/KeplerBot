@@ -51,7 +51,7 @@ public class PermissionsManager extends ListenerAdapter<KeplerBot> implements Ru
 				}
 			}
 		}
-		return false;
+		return wrapper.getBot().getUser(nick).isIrcop();
 	}
 
 	public boolean isDeveloper(String nick) {
@@ -60,6 +60,10 @@ public class PermissionsManager extends ListenerAdapter<KeplerBot> implements Ru
 
 	public boolean isStreamer(String nick) {
 		return nick.equalsIgnoreCase(wrapper.getStreamer());
+	}
+
+	public boolean isConsole(String nick) {
+		return nick.equals("Console");
 	}
 
 	public void stopThread() {

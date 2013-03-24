@@ -5,9 +5,6 @@ import net.keplergaming.keplerbot.commands.ICommand;
 import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandUnset implements ICommand {
 
 	@Override
@@ -21,26 +18,21 @@ public class CommandUnset implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) throws BotException {
 		if (args.length == 1) {
-			try {
-				String commandName = args[0];
-				if (commandName.startsWith("!")) {
-					commandName = commandName.substring(1);
-				}
-				wrapper.getCommandManager().unRegisterCommand(commandName);
-				wrapper.sendMessage(channel, "Command !" + commandName + " removed");
-			} catch (BotException e) {
-				wrapper.sendWarning(channel, e.getMessage());
-				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+			String commandName = args[0];
+			if (commandName.startsWith("!")) {
+				commandName = commandName.substring(1);
 			}
+			wrapper.getCommandManager().unRegisterCommand(commandName);
+			wrapper.sendMessage("Command !" + commandName + " removed");
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 

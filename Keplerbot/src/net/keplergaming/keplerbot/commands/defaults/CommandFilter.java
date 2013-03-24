@@ -6,9 +6,6 @@ import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.filters.Filter;
 import net.keplergaming.keplerbot.permissions.PermissionsManager;
 
-import org.pircbotx.Channel;
-import org.pircbotx.User;
-
 public class CommandFilter implements ICommand {
 
 	@Override
@@ -22,30 +19,25 @@ public class CommandFilter implements ICommand {
 	}
 
 	@Override
-	public boolean canSenderUseCommand(PermissionsManager permissionsManager, User user) {
-		return permissionsManager.isDeveloper(user.getNick()) || permissionsManager.isModerator(user.getNick()) || permissionsManager.isStreamer(user.getNick());
+	public boolean canSenderUseCommand(PermissionsManager permissionsManager, String user) {
+		return permissionsManager.isDeveloper(user) || permissionsManager.isModerator(user) || permissionsManager.isStreamer(user) || permissionsManager.isConsole(user);
 	}
 
 	@Override
-	public void handleCommand(KeplerBotWrapper wrapper, User sender, Channel channel, String[] args) {
+	public void handleCommand(KeplerBotWrapper wrapper, String sender, String[] args) throws BotException {
 		if (args.length == 2) {
-			try {
-				Filter filter = wrapper.getFilterManager().getFilter(args[0]);
-				if (args[1].equalsIgnoreCase("on")) {
-					wrapper.sendMessage(channel, "Filter enabled");
-					filter.setEnabled(wrapper.getConfig(), true);
-				} else if (args[1].equalsIgnoreCase("off")) {
-					wrapper.sendMessage(channel, "Filter disabled");
-					filter.setEnabled(wrapper.getConfig(), false);
-				} else {
-					throw new BotException("Argument doesn't equal 'on' or 'off'");
-				}
-			} catch (BotException e) {
-				wrapper.sendError(channel, e.getMessage());
-				wrapper.getStreamLogger().warning("Failed to execute command " + getCommandName(), e);
+			Filter filter = wrapper.getFilterManager().getFilter(args[0]);
+			if (args[1].equalsIgnoreCase("on")) {
+				wrapper.sendMessage("Filter enabled");
+				filter.setEnabled(wrapper.getConfig(), true);
+			} else if (args[1].equalsIgnoreCase("off")) {
+				wrapper.sendMessage("Filter disabled");
+				filter.setEnabled(wrapper.getConfig(), false);
+			} else {
+				throw new BotException("Argument doesn't equal 'on' or 'off'");
 			}
 		} else {
-			wrapper.sendMessage(channel, getCommandUsage());
+			wrapper.sendMessage(getCommandUsage());
 		}
 	}
 
