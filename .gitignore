@@ -1,11 +1,16 @@
 *.class
 
 Keplerbot/bin/
+Keplerbot Updater/bin/
 .metadata/
+RemoteSystemsTempFiles/
 Keplerbot/target/
 Keplerbot/.project
-Keplerbot/.settings
+Keplerbot Updater/.project
+Keplerbot/.settings/
+Keplerbot Updater/.settings/
 Keplerbot/.classpath
+Keplerbot Updater/.classpath
 
 Keplerbot/log.txt
 Keplerbot/presets.txt
