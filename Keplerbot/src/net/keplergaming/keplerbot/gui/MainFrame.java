@@ -79,7 +79,7 @@ public class MainFrame {
 			@Override
 			public void run() {
 				try {
-					MainLogger.info("Starting KeplerBot "+ Version.getVersion());
+					MainLogger.info("Starting KeplerBot "+ Version.VERSION);
 
 					MainLogger.fine("Starting up KeplerBot MainFrame");
 					MainLogger.fine("Java version: " + System.getProperty("java.version"));
@@ -154,7 +154,7 @@ public class MainFrame {
 		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.LEFT);
 		tabbedPane.setFocusable(false);
 
-		JLabel lblVersion = new JLabel(Version.getVersion());
+		JLabel lblVersion = new JLabel(Version.VERSION);
 		lblVersion.setToolTipText("Up to date\r\n");
 		lblVersion.setHorizontalAlignment(SwingConstants.RIGHT);
 		GroupLayout groupLayout = new GroupLayout(frmKeplerbot.getContentPane());

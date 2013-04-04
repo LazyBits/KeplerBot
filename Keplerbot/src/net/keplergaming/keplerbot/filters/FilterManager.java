@@ -9,11 +9,12 @@ import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 
 import org.pircbotx.User;
+import org.pircbotx.hooks.Listener;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
-public class FilterManager extends ListenerAdapter<KeplerBot>{
+public class FilterManager extends ListenerAdapter<KeplerBot> implements Listener<KeplerBot>{
 	
 	private Map<String, Filter> filterMap;
 	private StreamLogger logger;

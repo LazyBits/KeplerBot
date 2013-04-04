@@ -2,10 +2,15 @@
 
 Keplerbot/bin/
 .metadata/
+Keplerbot/target/
+Keplerbot/.project
+Keplerbot/.settings
+Keplerbot/.classpath
+
 Keplerbot/log.txt
 Keplerbot/presets.txt
 Keplerbot/keplerbot.properties
-Keplerbot/logs/*
-Keplerbot/configs/*
-Keplerbot/commands/*
-Keplerbot/news/*
+Keplerbot/logs/
+Keplerbot/configs/
+Keplerbot/commands/
+Keplerbot/news/

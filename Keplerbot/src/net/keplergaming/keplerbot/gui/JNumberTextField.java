@@ -1,7 +1,10 @@
 package net.keplergaming.keplerbot.gui;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JTextField;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
 
 @SuppressWarnings("serial")
 public class JNumberTextField extends JTextField {

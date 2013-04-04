@@ -3,10 +3,11 @@ package net.keplergaming.keplerbot.permissions;
 import net.keplergaming.keplerbot.KeplerBot;
 import net.keplergaming.keplerbot.KeplerBotWrapper;
 
+import org.pircbotx.hooks.Listener;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
-public class PermissionsManager extends ListenerAdapter<KeplerBot> implements Runnable{
+public class PermissionsManager extends ListenerAdapter<KeplerBot> implements Runnable, Listener<KeplerBot>{
 
 	public PermissionsManager(KeplerBotWrapper wrapper) {
 		this.wrapper = wrapper;

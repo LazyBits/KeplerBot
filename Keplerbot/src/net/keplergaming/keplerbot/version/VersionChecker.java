@@ -39,7 +39,7 @@ public class VersionChecker {
 	}
 
 	public boolean requiresUpdate() {
-		return !Version.getVersion().equalsIgnoreCase(latest) && latest != null;
+		return !Version.VERSION.equalsIgnoreCase(latest) && latest != null;
 	}
 
 	private void checkVersion() {

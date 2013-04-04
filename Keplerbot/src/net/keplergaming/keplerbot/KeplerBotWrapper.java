@@ -15,13 +15,14 @@ import net.keplergaming.keplerbot.proxy.SocksSocketFactory;
 import net.keplergaming.keplerbot.version.Version;
 
 import org.pircbotx.Channel;
+import org.pircbotx.hooks.Listener;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.DisconnectEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.UnknownEvent;
 
-public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runnable {
+public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runnable, Listener<KeplerBot> {
 
 	public KeplerBotWrapper(StreamLogPannel pannel, String streamer, boolean joinMessage) {
 		this.streamer = streamer;
@@ -49,7 +50,7 @@ public class KeplerBotWrapper extends ListenerAdapter<KeplerBot> implements Runn
 		bot.setVerbose(true);
 		bot.setName(MainFrame.getInstance().getConfig().getString(ConfigConstants.USERNAME.getKey(), (String) ConfigConstants.USERNAME.getDefaultValue()));
 		bot.setLogin(MainFrame.getInstance().getConfig().getString(ConfigConstants.USERNAME.getKey(), (String) ConfigConstants.USERNAME.getDefaultValue()));
-		bot.setVersion("KeplerBot " + Version.getVersion());
+		bot.setVersion("KeplerBot " + Version.VERSION);
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 

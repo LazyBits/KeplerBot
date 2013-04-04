@@ -19,10 +19,11 @@ import net.keplergaming.keplerbot.exception.BotException;
 import net.keplergaming.keplerbot.logger.StreamLogger;
 import net.keplergaming.keplerbot.utils.StringUtils;
 
+import org.pircbotx.hooks.Listener;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-public class CommandManager extends ListenerAdapter<KeplerBot>{
+public class CommandManager extends ListenerAdapter<KeplerBot> implements Listener<KeplerBot>{
 	
 	private Map<String, ICommand> commandMap;
 	private Map<String, ICommand> aliasMap;
