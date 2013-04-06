@@ -95,7 +95,7 @@ public class VersionChecker {
 			}
 
 			MainLogger.fine("Running updater");
-			Runtime.getRuntime().exec("java -jar ./updater.jar " + " " + link + " Keplerbot.jar");
+			Runtime.getRuntime().exec("java -jar ./updater.jar " + " " + link + " " + this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
 			System.exit(1);
 		} catch (IOException e) {
 			MainLogger.warning("Failed to start updater.jar", e);

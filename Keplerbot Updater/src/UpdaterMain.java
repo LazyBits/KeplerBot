@@ -67,27 +67,8 @@ public class UpdaterMain {
 		txtpnUpdating.setEditable(false);
 		txtpnUpdating.setText("Updating...");
 		GroupLayout groupLayout = new GroupLayout(frmUpdater.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(txtpnUpdating, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(126))))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(txtpnUpdating, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(11)
-					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE).addContainerGap()).addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup().addComponent(txtpnUpdating, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(126)))));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(txtpnUpdating, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(11).addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		frmUpdater.getContentPane().setLayout(groupLayout);
 		frmUpdater.pack();
 		frmUpdater.setVisible(true);
@@ -167,7 +148,7 @@ public class UpdaterMain {
 			if (oldFile.delete()) {
 				newFile.renameTo(oldFile);
 			} else {
-				System.out.println("Delete operation is failed.");
+				System.out.println("Failed to delete old jar");
 			}
 
 		} catch (Exception e) {
@@ -182,6 +163,6 @@ public class UpdaterMain {
 			e.printStackTrace();
 		}
 
-		System.exit(3);
+		System.exit(0);
 	}
 }
