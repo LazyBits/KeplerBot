@@ -2,8 +2,8 @@ package net.keplergaming.keplerbot.config;
 
 public enum ConfigConstants {
 
-	USERNAME("twitch_name", " "),
-	PASSWORD("twitch_password", " "),
+	USERNAME("twitch_name", ""),
+	PASSWORD("twitch_password", ""),
 	BOT_NAME("bot_name", "KeplerBot"),
 	JOIN_MESSAGE("join_message", "%s has joined your stream"),
 	LEAVE_MESSAGE("leave_message", "%s has left your stream"),
