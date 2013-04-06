@@ -314,6 +314,19 @@ public class MainFrame {
 		});
 		btnSend.setFocusable(false);
 
+		JButton btnBrowser = new JButton("Open in Browser");
+		btnBrowser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StreamLogPannel panel = (StreamLogPannel)streamTabs.getSelectedComponent();
+				
+				if (panel != null) {
+					DesktopUtils.openUrl("http://www.twitch.tv/" + panel.getWrapper().getStreamer());
+				}
+			}
+		});
+		btnBrowser.setFocusable(false);
+
 		JButton btnStreamConfig = new JButton("Stream Config");
 		btnStreamConfig.addActionListener(new ActionListener() {
 			@Override
@@ -329,8 +342,8 @@ public class MainFrame {
 		btnStreamConfig.setFocusable(false);
 
 		GroupLayout gl_streamPanel = new GroupLayout(streamPanel);
-		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(lblPresets).addComponent(btnAddPreset, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE).addComponent(btnStreamConfig, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnResetStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnRemoveStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnAddStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)).addGap(7)));
-		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(18).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.RELATED, 152, Short.MAX_VALUE).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnResetStream).addGap(18).addComponent(btnStreamConfig)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
+		gl_streamPanel.setHorizontalGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(lblPresets).addComponent(btnAddPreset, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE).addComponent(btnAddStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnRemoveStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnResetStream, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnStreamConfig, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE).addComponent(btnBrowser, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)).addGap(18).addGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addComponent(chatBox, GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSend)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)).addGap(7)));
+		gl_streamPanel.setVerticalGroup(gl_streamPanel.createParallelGroup(Alignment.TRAILING).addGroup(gl_streamPanel.createSequentialGroup().addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_streamPanel.createSequentialGroup().addContainerGap().addComponent(lblPresets).addPreferredGap(ComponentPlacement.RELATED).addComponent(comboBoxPresets, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnAddPreset).addGap(18).addComponent(btnAddStream).addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE).addComponent(btnRemoveStream).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnResetStream).addGap(41).addComponent(btnBrowser).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnStreamConfig)).addComponent(streamTabs, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)).addPreferredGap(ComponentPlacement.UNRELATED).addGroup(gl_streamPanel.createParallelGroup(Alignment.LEADING).addComponent(btnSend).addComponent(chatBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addContainerGap()));
 		streamPanel.setLayout(gl_streamPanel);
 
 		final JPanel configPanel = new JPanel();
