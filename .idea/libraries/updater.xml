@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="updater">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Keplerbot/res/net/keplergaming/keplerbot/resources/updater.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
